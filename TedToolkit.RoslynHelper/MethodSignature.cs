@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper;
 /// <summary>
 ///     The signature of a method
 /// </summary>
-/// <param name="methodSymbol"></param>
+/// <param name="methodSymbol">The method symbol</param>
 public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<MethodSignature>
 {
     /// <summary>
@@ -35,7 +35,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     /// <summary>
     ///     Tye parameter types.
     /// </summary>
-    public ITypeSymbol[] ParameterTypes { get; } = methodSymbol.Parameters
+    public IReadOnlyList<ITypeSymbol> ParameterTypes { get; } = methodSymbol.Parameters
         .Skip(methodSymbol.IsExtensionMethod ? 1 : 0)
         .Select(p => p.Type.OriginalDefinition)
         .ToArray();
@@ -43,7 +43,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     /// <summary>
     ///     The Ref Kinds.
     /// </summary>
-    public RefKind[] RefKinds { get; } = methodSymbol.Parameters
+    public IReadOnlyList<RefKind> RefKinds { get; } = methodSymbol.Parameters
         .Skip(methodSymbol.IsExtensionMethod ? 1 : 0)
         .Select(i => i.RefKind)
         .ToArray();
@@ -57,21 +57,36 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     /// <inheritdoc />
     public bool Equals(MethodSignature other)
     {
-        if (!MethodName.Equals(other.MethodName)) return false;
-        if (!TypeArgumentsCount.Equals(other.TypeArgumentsCount)) return false;
-        if (EqualityWithContainingType &&
-            !ContainingType.Equals(other.ContainingType, SymbolEqualityComparer.Default)) return false;
-        if (!ParameterTypes.Length.Equals(other.ParameterTypes.Length)) return false;
-        for (var i = 0; i < ParameterTypes.Length; i++)
+        if (!MethodName.Equals(other.MethodName, StringComparison.Ordinal))
+            return false;
+
+        if (!TypeArgumentsCount.Equals(other.TypeArgumentsCount))
+            return false;
+
+        if (EqualityWithContainingType
+            && !ContainingType.Equals(other.ContainingType, SymbolEqualityComparer.Default))
+        {
+            return false;
+        }
+
+        if (!ParameterTypes.Count.Equals(other.ParameterTypes.Count))
+            return false;
+
+        for (var i = 0; i < ParameterTypes.Count; i++)
         {
             var thisType = ParameterTypes[i];
             var otherType = other.ParameterTypes[i];
             if (thisType.TypeKind == TypeKind.TypeParameter
                 && otherType.TypeKind == TypeKind.TypeParameter)
+            {
                 continue;
+            }
 
-            if (RefKinds[i] != other.RefKinds[i]) return false;
-            if (!thisType.Equals(otherType, SymbolEqualityComparer.Default)) return false;
+            if (RefKinds[i] != other.RefKinds[i])
+                return false;
+
+            if (!thisType.Equals(otherType, SymbolEqualityComparer.Default))
+                return false;
         }
 
         return true;
@@ -79,9 +94,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
-    {
-        return obj is MethodSignature other && Equals(other);
-    }
+        => obj is MethodSignature other && Equals(other);
 
     /// <inheritdoc />
     public override int GetHashCode()
@@ -89,9 +102,27 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
         unchecked
         {
             var hashCode = MethodName.GetHashCode();
-            hashCode = (hashCode * 397) ^ ParameterTypes.Length.GetHashCode();
+            hashCode = (hashCode * 397) ^ ParameterTypes.Count.GetHashCode();
             hashCode = (hashCode * 397) ^ TypeArgumentsCount.GetHashCode();
             return hashCode;
         }
     }
+
+    /// <summary>
+    /// Equal
+    /// </summary>
+    /// <param name="left">left</param>
+    /// <param name="right">right</param>
+    /// <returns>result</returns>
+    public static bool operator ==(in MethodSignature left, in MethodSignature right)
+        => left.Equals(right);
+
+    /// <summary>
+    /// Not Equal
+    /// </summary>
+    /// <param name="left">left</param>
+    /// <param name="right">right</param>
+    /// <returns>result</returns>
+    public static bool operator !=(in MethodSignature left, in MethodSignature right)
+        => !(left == right);
 }

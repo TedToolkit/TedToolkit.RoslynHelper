@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
+/// The names.
 /// </summary>
 public interface IName
 {
@@ -42,15 +43,4 @@ public interface IName
     ///     Full Name without global
     /// </summary>
     string FullNameNoGlobal { get; }
-}
-
-/// <summary>
-/// </summary>
-/// <typeparam name="T"></typeparam>
-public interface IName<out T> : IName where T : ISymbol
-{
-    /// <summary>
-    ///     Symbol
-    /// </summary>
-    public T Symbol { get; }
 }

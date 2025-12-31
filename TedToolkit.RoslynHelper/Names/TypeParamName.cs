@@ -5,28 +5,36 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using TedToolkit.RoslynHelper.Extensions;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
+/// Type param.
 /// </summary>
 public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
 {
-    internal TypeParamName(ITypeParameterSymbol symbol) : base(symbol)
+    /// <summary>
+    /// Create by the symbol
+    /// </summary>
+    /// <param name="symbol">symbol.</param>
+    internal TypeParamName(ITypeParameterSymbol symbol)
+        : base(symbol)
     {
     }
 
     /// <summary>
     ///     Prefix
     /// </summary>
-    public string Prefix { get; set; } = string.Empty;
+    public string Prefix { get; set; } = "";
 
     /// <summary>
+    /// Syntax
     /// </summary>
     public TypeParameterSyntax Syntax
     {
@@ -37,7 +45,7 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
             {
                 VarianceKind.In => typeParameter.WithVarianceKeyword(Token(SyntaxKind.InKeyword)),
                 VarianceKind.Out => typeParameter.WithVarianceKeyword(Token(SyntaxKind.OutKeyword)),
-                _ => typeParameter
+                _ => typeParameter,
             };
         }
     }
@@ -45,9 +53,11 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
     /// <summary>
     ///     The Syntax name
     /// </summary>
-    public string SyntaxName => Prefix + Symbol.Name;
+    public string SyntaxName
+        => Prefix + Symbol.Name;
 
     /// <summary>
+    /// Constraint
     /// </summary>
     public TypeParameterConstraintClauseSyntax? ConstraintClause
     {
@@ -72,12 +82,12 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
             if (Symbol.HasConstructorConstraint)
                 constraints.Add(ConstructorConstraint());
 
-            if (constraints.Count is 0) return null;
+            if (constraints.Count is 0)
+                return null;
 
             return TypeParameterConstraintClause(
                 IdentifierName(Prefix + Symbol.Name),
-                SeparatedList(constraints)
-            );
+                SeparatedList(constraints));
         }
     }
 }

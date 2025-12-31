@@ -10,47 +10,66 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <inheritdoc />
-public abstract class BaseName<T> : IName<T> where T : ISymbol
+public abstract class BaseName<T> : IName<T>
+    where T : ISymbol
 {
-    private readonly Lazy<string> _lazyFullName,
-        _lazySummaryName,
-        _lazyFullNameNoGlobal,
-        _lazyFullNameNull,
-        _lazyMiniName;
+    private readonly Lazy<string> _lazyFullName;
 
+    private readonly Lazy<string> _lazySummaryName;
+
+    private readonly Lazy<string> _lazyFullNameNoGlobal;
+
+    private readonly Lazy<string> _lazyFullNameNull;
+
+    private readonly Lazy<string> _lazyMiniName;
+
+    /// <summary>
+    /// Create the base name
+    /// </summary>
+    /// <param name="symbol">the symbol</param>
     private protected BaseName(T symbol)
     {
         Symbol = symbol;
-        _lazyFullName = new Lazy<string>(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
-        _lazyFullNameNull = new Lazy<string>(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+        _lazyFullName = new(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat));
+        _lazyFullNameNull = new(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
             .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)));
-        _lazyFullNameNoGlobal = new Lazy<string>(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+        _lazyFullNameNoGlobal = new(() => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
             .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
-        _lazyMiniName = new Lazy<string>(() => symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
-        _lazySummaryName = new Lazy<string>(GetSummaryName);
+        _lazyMiniName = new(() => symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
+        _lazySummaryName = new(GetSummaryName);
     }
 
     /// <inheritdoc />
     public T Symbol { get; }
 
     /// <inheritdoc />
-    public string Name => Symbol.Name;
+    public string Name
+        => Symbol.Name;
 
     /// <inheritdoc />
-    public string MiniName => _lazyMiniName.Value;
+    public string MiniName
+        => _lazyMiniName.Value;
 
     /// <inheritdoc />
-    public string FullNameNoGlobal => _lazyFullNameNoGlobal.Value;
+    public string FullNameNoGlobal
+        => _lazyFullNameNoGlobal.Value;
 
     /// <inheritdoc />
-    public string FullName => _lazyFullName.Value;
+    public string FullName
+        => _lazyFullName.Value;
 
     /// <inheritdoc />
-    public string FullNameNull => _lazyFullNameNull.Value;
+    public string FullNameNull
+        => _lazyFullNameNull.Value;
 
     /// <inheritdoc />
-    public string SummaryName => _lazySummaryName.Value;
+    public string SummaryName
+        => _lazySummaryName.Value;
 
+    /// <summary>
+    /// Get the summary name.
+    /// </summary>
+    /// <returns>summary string.</returns>
     private protected virtual string GetSummaryName()
     {
         return ToSummary(Symbol.OriginalDefinition
@@ -58,7 +77,5 @@ public abstract class BaseName<T> : IName<T> where T : ISymbol
     }
 
     private static string ToSummary(string name)
-    {
-        return name.Replace('<', '{').Replace('>', '}');
-    }
+        => name.Replace('<', '{').Replace('>', '}');
 }

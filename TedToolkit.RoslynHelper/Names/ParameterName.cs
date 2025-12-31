@@ -5,19 +5,26 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using TedToolkit.RoslynHelper.Extensions;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
+/// The parameter name.
 /// </summary>
 public class ParameterName : BaseName<IParameterSymbol>
 {
-    internal ParameterName(IParameterSymbol symbol) : base(symbol)
+    /// <summary>
+    /// Create by the parameter name.
+    /// </summary>
+    /// <param name="symbol">symbol</param>
+    internal ParameterName(IParameterSymbol symbol)
+        : base(symbol)
     {
         IsIn = symbol.RefKind is RefKind.In or RefKind.Ref or RefKind.None;
         IsOut = symbol.RefKind is RefKind.Out or RefKind.Ref;
@@ -25,10 +32,12 @@ public class ParameterName : BaseName<IParameterSymbol>
     }
 
     /// <summary>
+    /// Has in.
     /// </summary>
     public bool IsIn { get; }
 
     /// <summary>
+    /// Has out
     /// </summary>
     public bool IsOut { get; }
 
@@ -47,31 +56,25 @@ public class ParameterName : BaseName<IParameterSymbol>
             var param = Parameter(Identifier(Name)).WithType(IdentifierName(Type.FullName));
 
             if (Symbol.ScopedKind is not ScopedKind.None)
-            {
                 param = param.AddModifiers(Token(SyntaxKind.ScopedKeyword));
-            }
-            
+
             switch (Symbol.RefKind)
             {
                 case RefKind.Ref:
                     param = param.AddModifiers(Token(SyntaxKind.RefKeyword));
                     break;
+
                 case RefKind.Out:
                     param = param.AddModifiers(Token(SyntaxKind.OutKeyword));
                     break;
+
                 case RefKind.In:
                     param = param.AddModifiers(Token(SyntaxKind.InKeyword));
-                    break;
-                case RefKind.None:
-                case RefKind.RefReadOnlyParameter:
-                default:
                     break;
             }
 
             if (Symbol.IsParams)
-            {
                 param = param.AddModifiers(Token(SyntaxKind.ParamsKeyword));
-            }
 
             if (DefaultValueExpression is { } defaultExpression)
                 param = param.WithDefault(EqualsValueClause(defaultExpression));
@@ -83,8 +86,8 @@ public class ParameterName : BaseName<IParameterSymbol>
     /// <summary>
     ///     The default value expression
     /// </summary>
-    public ExpressionSyntax? DefaultValueExpression => GetDefaultValueExpression(Symbol);
-
+    public ExpressionSyntax? DefaultValueExpression
+        => GetDefaultValueExpression(Symbol);
 
     private static ExpressionSyntax? GetDefaultValueExpression(IParameterSymbol parameter)
     {
@@ -94,10 +97,8 @@ public class ParameterName : BaseName<IParameterSymbol>
         var value = parameter.ExplicitDefaultValue;
         var type = parameter.Type;
 
-        if (value == null)
-        {
+        if (value is null)
             return LiteralExpression(SyntaxKind.DefaultLiteralExpression);
-        }
 
         switch (type.SpecialType)
         {
@@ -105,25 +106,29 @@ public class ParameterName : BaseName<IParameterSymbol>
                 return LiteralExpression(
                     SyntaxKind.StringLiteralExpression,
                     Literal((string)value));
+
             case SpecialType.System_Char:
                 return LiteralExpression(
                     SyntaxKind.CharacterLiteralExpression,
                     Literal((char)value));
+
             case SpecialType.System_Boolean:
                 return LiteralExpression((bool)value
                     ? SyntaxKind.TrueLiteralExpression
                     : SyntaxKind.FalseLiteralExpression);
         }
 
-        if (type is INamedTypeSymbol { EnumUnderlyingType: not null } && value is IConvertible)
+        if (type is INamedTypeSymbol { EnumUnderlyingType: not null, } && value is IConvertible)
         {
             var enumMember = type.GetMembers()
                 .OfType<IFieldSymbol>()
                 .FirstOrDefault(f => f.HasConstantValue && Equals(f.ConstantValue, value));
 
-            if (enumMember != null)
+            if (enumMember is not null)
+            {
                 return ParseExpression(
                     $"{type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}.{enumMember.Name}");
+            }
         }
 
         return value switch
@@ -135,7 +140,7 @@ public class ParameterName : BaseName<IParameterSymbol>
             byte byteValue => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(byteValue)),
             short shortValue => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(shortValue)),
             decimal decimalValue => LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(decimalValue)),
-            _ => ParseExpression(value.ToString())
+            _ => ParseExpression(value.ToString()),
         };
     }
 }

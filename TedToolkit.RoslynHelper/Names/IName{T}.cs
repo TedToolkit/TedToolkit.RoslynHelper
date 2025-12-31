@@ -1,24 +1,23 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ITypeParametersName.cs" company="TedToolkit">
+// <copyright file="IName{T}.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
-/// The Type parameter name.
+/// The I Name
 /// </summary>
-public interface ITypeParametersName
+/// <typeparam name="T">The type of the symbol</typeparam>
+public interface IName<out T> : IName
+    where T : ISymbol
 {
     /// <summary>
-    ///     Has the type parameters.
+    ///     Symbol
     /// </summary>
-    bool HasTypeParameters { get; }
-
-    /// <summary>
-    ///     Get the type parameters symbol
-    /// </summary>
-    IReadOnlyList<TypeParamName> TypeParameters { get; }
+    T Symbol { get; }
 }
