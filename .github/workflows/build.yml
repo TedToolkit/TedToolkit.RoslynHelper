@@ -1,0 +1,7 @@
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run-build-project:
+    uses: TedToolkit/TedToolkit/.github/workflows/build.yml@development
