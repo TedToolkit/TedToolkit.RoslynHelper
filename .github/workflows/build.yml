@@ -5,3 +5,4 @@ on:
 jobs:
   run-build-project:
     uses: TedToolkit/TedToolkit/.github/workflows/build.yml@development
+    secrets: inherit
