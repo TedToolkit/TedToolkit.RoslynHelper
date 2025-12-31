@@ -17,12 +17,12 @@ public static class RoslynExtensions
     /// <summary>
     ///     Get the base types and this type.
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">Type</param>
+    /// <returns>Result</returns>
     public static IEnumerable<ITypeSymbol> GetBaseTypesAndThis(this ITypeSymbol type)
     {
         var current = type;
-        while (current != null)
+        while (current is not null)
         {
             yield return current;
             current = current.BaseType;
@@ -32,12 +32,12 @@ public static class RoslynExtensions
     /// <summary>
     ///     Get the base types
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
+    /// <param name="type">type</param>
+    /// <returns>result</returns>
     public static IEnumerable<ITypeSymbol> GetBaseTypes(this ITypeSymbol type)
     {
-        var current = type.BaseType;
-        while (current != null)
+        var current = type?.BaseType;
+        while (current is not null)
         {
             yield return current;
             current = current.BaseType;
@@ -47,8 +47,8 @@ public static class RoslynExtensions
     /// <summary>
     ///     Print a node to string.
     /// </summary>
-    /// <param name="node"></param>
-    /// <returns></returns>
+    /// <param name="node">node</param>
+    /// <returns>string</returns>
     public static string NodeToString(this SyntaxNode node)
     {
         using var stringWriter = new StringWriter();

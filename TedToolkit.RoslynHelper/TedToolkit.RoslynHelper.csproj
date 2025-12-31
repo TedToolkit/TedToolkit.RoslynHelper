@@ -12,4 +12,8 @@
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="MethodSignature.sync-conflict-20251231-180100-IWND5OL.cs" />
+  </ItemGroup>
 </Project>

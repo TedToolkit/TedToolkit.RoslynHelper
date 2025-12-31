@@ -6,21 +6,28 @@
 // -----------------------------------------------------------------------
 
 using System.Text;
-using TedToolkit.RoslynHelper.Extensions;
+
 using Microsoft.CodeAnalysis;
+using TedToolkit.RoslynHelper.Extensions;
 
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
+/// The name for the method.
 /// </summary>
 public class MethodName : TypeParametersName<IMethodSymbol>
 {
-    internal MethodName(IMethodSymbol methodSymbol) : base(methodSymbol)
+    /// <summary>
+    /// The method name.
+    /// </summary>
+    /// <param name="methodSymbol">symbol</param>
+    internal MethodName(IMethodSymbol methodSymbol)
+        : base(methodSymbol)
     {
         Parameters = methodSymbol.Parameters.GetNames().ToArray();
         ReturnType = methodSymbol.ReturnType.GetName();
         ContainingType = methodSymbol.ContainingType.GetName();
-        Signature = new MethodSignature(methodSymbol);
+        Signature = new(methodSymbol);
     }
 
     /// <summary>
@@ -29,8 +36,9 @@ public class MethodName : TypeParametersName<IMethodSymbol>
     public MethodSignature Signature { get; }
 
     /// <summary>
+    /// The parameters.
     /// </summary>
-    public ParameterName[] Parameters { get; }
+    public IReadOnlyList<ParameterName> Parameters { get; }
 
     /// <summary>
     ///     Return types.
@@ -42,11 +50,11 @@ public class MethodName : TypeParametersName<IMethodSymbol>
     /// </summary>
     public TypeName ContainingType { get; }
 
+    /// <inheritdoc/>
     private protected override IEnumerable<ITypeParameterSymbol> GetTypeParameters(IMethodSymbol symbol)
-    {
-        return symbol.TypeParameters;
-    }
+        => symbol.TypeParameters;
 
+    /// <inheritdoc/>
     private protected override string GetSummaryName()
     {
         var builder = new StringBuilder(ContainingType.SummaryName)
@@ -56,18 +64,18 @@ public class MethodName : TypeParametersName<IMethodSymbol>
         {
             var stringBuilder = new StringBuilder();
             if (p.Symbol.ScopedKind is not ScopedKind.None)
-            {
                 stringBuilder.Append("scoped ");
-            }
 
             switch (p.Symbol.RefKind)
             {
                 case RefKind.Ref:
                     stringBuilder.Append("ref ");
                     break;
+
                 case RefKind.Out:
                     stringBuilder.Append("in ");
                     break;
+
                 case RefKind.In:
                     stringBuilder.Append("out ");
                     break;
