@@ -119,4 +119,15 @@ internal class TypeDeclarationTests
 
         await Assert.That(code).Contains("internal event global::System.Action<int> Item;");
     }
+
+    [Test]
+    public async Task DelegateTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Delegate("ADelegate").Public))
+            .ToCode();
+
+        await Assert.That(code).Contains("public delegate void ADelegate();");
+    }
 }

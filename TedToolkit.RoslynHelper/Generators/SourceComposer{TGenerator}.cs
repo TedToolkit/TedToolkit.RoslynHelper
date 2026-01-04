@@ -259,4 +259,24 @@ public static class SourceComposer<TGenerator>
         AddGeneratorAttribute(ref instance);
         return ref instance;
     }
+
+    /// <summary>
+    /// Create the method
+    /// </summary>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="returnType">return returnType</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Types.Delegate Delegate(
+        string identifier,
+        scoped in ReturnType? returnType = null,
+        in Types.Delegate result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        instance.ReturnType = returnType;
+        AddGeneratorAttribute(ref instance);
+        return ref instance;
+    }
 }

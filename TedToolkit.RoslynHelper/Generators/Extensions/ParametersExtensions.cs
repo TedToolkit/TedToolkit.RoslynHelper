@@ -34,6 +34,11 @@ public static class ParametersExtensions
             if (instance.Parameters.Count is 0)
                 return;
 
+            instance.AddParametersNoReturn(ref builder);
+        }
+
+        internal void AddParametersNoReturn(ref SourceBuilder builder)
+        {
             builder.Append('(');
             var isNotStart = false;
             foreach (var parameter in instance.Parameters)
