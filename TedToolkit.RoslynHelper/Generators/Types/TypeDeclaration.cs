@@ -45,6 +45,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
             TypeDeclarationType.REF_STRUCT => "ref struct ",
             TypeDeclarationType.RECORD => "record ",
             TypeDeclarationType.RECORD_STRUCT => "record struct ",
+            TypeDeclarationType.INTERFACE => "interface ",
             _ => throw new InvalidOperationException("The type is invalid."),
         });
         builder.Append(Identifier);

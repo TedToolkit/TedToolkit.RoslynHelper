@@ -22,6 +22,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
     IUnsafe,
     IPartial,
     IStatic,
+    IReadonly,
     IPolymorphism,
     IDescription,
     IStatementOwner,
@@ -47,7 +48,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         this.AddPartial(ref builder);
 
         if (ReturnType.HasValue)
-            ReturnType.Value.Type.ToCode(ref builder);
+            ReturnType.Value.ToCode(ref builder);
         else
             builder.Append("void");
 
@@ -88,4 +89,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
     /// <inheritdoc />
     public List<ToCodeHandler> Statements
         => field ??= [];
+
+    /// <inheritdoc />
+    public bool IsReadonly { get; set; }
 }

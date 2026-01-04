@@ -21,16 +21,20 @@ public static class SourceComposer
     /// <summary>
     /// Create a file
     /// </summary>
+    /// <typeparam name="TGenerator">Generator type</typeparam>
     /// <param name="fileName">file name</param>
     /// <param name="nameSpace">nameSpace</param>
     /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref SourceFile File(string fileName, MemberAccess nameSpace, in SourceFile result = default)
+    public static ref SourceFile File<TGenerator>(string fileName, MemberAccess nameSpace, in SourceFile result = default)
     {
+        var type = typeof(TGenerator);
         ref var instance = ref Unsafe.AsRef(in result);
         instance.FileName = fileName;
         instance.NameSpace = nameSpace;
+        instance.ToolName = type.FullName ?? type.Name;
+        instance.Version = type.Assembly.GetName().Version.ToString();
         return ref instance;
     }
 
@@ -106,6 +110,21 @@ public static class SourceComposer
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Identifier = identifier;
         instance.Type = TypeDeclarationType.RECORD_STRUCT;
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create a <see langword="interface"/>
+    /// </summary>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>class</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref TypeDeclaration Interface(string identifier, in TypeDeclaration result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        instance.Type = TypeDeclarationType.INTERFACE;
         return ref instance;
     }
 
@@ -219,15 +238,18 @@ public static class SourceComposer
     /// Create the returnType
     /// </summary>
     /// <param name="type">the Type</param>
+    /// <param name="storageKind">ref type</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref ReturnType ReturnType(
         scoped in MemberAccess type,
+        StorageKind storageKind = StorageKind.NONE,
         in ReturnType result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Type = type;
+        instance.StorageKind = storageKind;
         return ref instance;
     }
 

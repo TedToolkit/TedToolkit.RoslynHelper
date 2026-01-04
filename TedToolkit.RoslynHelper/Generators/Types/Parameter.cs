@@ -13,11 +13,12 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// The Parameter
 /// </summary>
 /// <param name="Type">The Parameter Type</param>
-/// <param name="Identifier">The Identifier</param>
+/// <param name="Identifier">The Variable</param>
 public record struct Parameter(MemberAccess Type, string Identifier) :
     IToCode,
     IDescription,
-    IVariables
+    IVariables,
+    IStorageKind
 {
     /// <inheritdoc />
     public List<string> Description
@@ -39,6 +40,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        this.AddStorageKind(ref builder);
         Type.ToCode(ref builder);
         builder.Append(" @");
         builder.Append(Identifier);
@@ -48,4 +50,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
         builder.Append(" = ");
         Default(ref builder);
     }
+
+    /// <inheritdoc />
+    public StorageKind StorageKind { get; set; }
 }

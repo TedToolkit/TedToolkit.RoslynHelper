@@ -24,7 +24,7 @@ public static class MemberOwnerExtensions
         /// <typeparam name="TMember">member type</typeparam>
         /// <returns>the item</returns>
         public ref TItem AddMember<TMember>(TMember member)
-            where TMember : struct, IMember
+            where TMember : struct, IMember, IAttributes
         {
             instance.Members.Add(member.ToCode);
             return ref instance;

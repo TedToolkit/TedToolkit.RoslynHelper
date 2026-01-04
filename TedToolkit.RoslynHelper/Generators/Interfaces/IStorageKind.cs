@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IVariables.cs" company="TedToolkit">
+// <copyright file="IStorageKind.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the items that has Variable for calling.
+/// The ref Type
 /// </summary>
-public interface IVariables
+public interface IStorageKind
 {
     /// <summary>
-    /// The identifier
+    /// Ref Type
     /// </summary>
-    string Variable { get; set; }
+    StorageKind StorageKind { get; set; }
 }

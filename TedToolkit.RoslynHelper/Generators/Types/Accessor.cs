@@ -18,6 +18,7 @@ public record struct Accessor(AccessorType Type) :
     IAttributes,
     IAccessibility,
     IUnsafe,
+    IReadonly,
     IStatementOwner
 {
     /// <inheritdoc />
@@ -51,4 +52,7 @@ public record struct Accessor(AccessorType Type) :
     /// <inheritdoc/>
     public List<ToCodeHandler> Statements
         => field ??= [];
+
+    /// <inheritdoc />
+    public bool IsReadonly { get; set; }
 }

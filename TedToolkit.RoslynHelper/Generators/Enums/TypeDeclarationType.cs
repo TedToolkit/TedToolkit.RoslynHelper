@@ -38,4 +38,9 @@ public enum TypeDeclarationType
     /// <see langword="record"/> <see langword="struct"/>
     /// </summary>
     RECORD_STRUCT = 4,
+
+    /// <summary>
+    /// <see langword="interface"/>
+    /// </summary>
+    INTERFACE = 5,
 }

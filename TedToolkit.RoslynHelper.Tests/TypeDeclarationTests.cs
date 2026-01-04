@@ -7,7 +7,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task StaticClassTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public.Static.Unsafe.Partial)
             .ToCode();
 
@@ -17,7 +17,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task BaseTypeTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public.AddBaseType<IDisposable>())
             .ToCode();
 
@@ -27,18 +27,18 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParametersTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10)))
+                .AddParameter(SourceComposer.Parameter<int>("item").ScopedIn.AddDefault(10)))
             .ToCode();
 
-        await Assert.That(code).Contains("int @item = 10");
+        await Assert.That(code).Contains("scoped in int @item = 10");
     }
 
     [Test]
     public async Task SummaryTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddDescription("Good"))
             .ToCode();
@@ -51,7 +51,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParameterSummaryTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10).AddDescription("Good")))
             .ToCode();
@@ -64,7 +64,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task MethodTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddMember(SourceComposer.Method("Method")
                     .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10))))
@@ -76,7 +76,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task PropertyTest()
     {
-        var code = SourceComposer.File("File", "Space")
+        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddMember(SourceComposer.Property("Item", SourceComposer.Type<long>()).Internal
                     .AddAccessor(SourceComposer.Accessor(AccessorType.GET))))
