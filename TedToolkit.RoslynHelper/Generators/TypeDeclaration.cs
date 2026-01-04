@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
-
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
 namespace TedToolkit.RoslynHelper.Generators;
@@ -98,7 +96,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         => field ??= [];
 
     /// <inheritdoc />
-    public List<MemberHandler> Members
+    public List<ToCodeHandler> Members
         => field ??= [];
 
     /// <inheritdoc />

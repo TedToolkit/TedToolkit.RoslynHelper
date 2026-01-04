@@ -7,8 +7,6 @@
 
 using System.Globalization;
 
-using Cysharp.Text;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>

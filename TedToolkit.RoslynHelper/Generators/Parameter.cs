@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
-
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
 namespace TedToolkit.RoslynHelper.Generators;
@@ -27,7 +25,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <summary>
     /// The default value.
     /// </summary>
-    public MemberHandler? Default { get; internal set; }
+    public ToCodeHandler? Default { get; internal set; }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

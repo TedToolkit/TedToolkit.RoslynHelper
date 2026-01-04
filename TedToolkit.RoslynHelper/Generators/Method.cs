@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
+using TedToolkit.RoslynHelper.Generators.Delegates;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -23,7 +23,9 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
     IPartial,
     IStatic,
     IPolymorphism,
-    IDescription
+    IDescription,
+    IStatementOwner,
+    IStatement
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
@@ -53,6 +55,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
 
         builder.Append(Identifier);
         this.AddParameters(ref builder);
+        this.AddStatements(ref builder);
     }
 
     /// <inheritdoc/>
@@ -80,5 +83,9 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
 
     /// <inheritdoc />
     public List<string> Description
+        => field ??= [];
+
+    /// <inheritdoc />
+    public List<ToCodeHandler> Statements
         => field ??= [];
 }

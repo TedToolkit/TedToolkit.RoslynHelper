@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>

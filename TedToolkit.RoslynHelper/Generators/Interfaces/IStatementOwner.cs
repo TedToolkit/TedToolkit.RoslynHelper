@@ -1,20 +1,21 @@
-// -----------------------------------------------------------------------
-// <copyright file="IToCode.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="IStatementOwner.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Delegates;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the codes.
+/// The owner of the statements.
 /// </summary>
-public interface IToCode
+public interface IStatementOwner
 {
     /// <summary>
-    /// Get the codes
+    /// The members
     /// </summary>
-    /// <param name="builder">builder</param>
-    void ToCode(ref SourceBuilder builder);
+    List<ToCodeHandler> Statements { get; }
 }

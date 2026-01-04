@@ -7,7 +7,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task StaticClassTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public.Static.Unsafe.Partial)
             .ToCode();
 
@@ -17,7 +17,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task BaseTypeTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public.AddBaseType<IDisposable>())
             .ToCode();
 
@@ -27,7 +27,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParametersTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10)))
             .ToCode();
@@ -38,7 +38,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task SummaryTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddDescription("Good"))
             .ToCode();
@@ -51,7 +51,7 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParameterSummaryTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
                 .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10).AddDescription("Good")))
             .ToCode();
@@ -64,8 +64,12 @@ internal class TypeDeclarationTests
     [Test]
     public async Task MethodTest()
     {
-        var code = SourceComposer.File("File")
+        var code = SourceComposer.File("File", "Space")
             .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddMember(SourceComposer.Method("Method")));
+                .AddMember(SourceComposer.Method("Method")
+                    .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10))))
+            .ToCode();
+
+        await Assert.That(code).Contains("void Method(");
     }
 }

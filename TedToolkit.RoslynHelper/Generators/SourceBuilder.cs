@@ -97,9 +97,9 @@ public record struct SourceBuilder : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BeginBlock()
     {
+        AppendLine();
         Append('{');
         Indent();
-        AppendLine();
     }
 
     /// <summary>

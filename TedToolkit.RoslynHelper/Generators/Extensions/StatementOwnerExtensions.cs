@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="MemberOwnerExtensions.cs" company="TedToolkit">
+// <copyright file="StatementOwnerExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,42 +8,36 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IMemberOwner"/>
+/// The extensions for the <see cref="IStatementOwner"/>
 /// </summary>
-public static class MemberOwnerExtensions
+public static class StatementOwnerExtensions
 {
 #pragma warning disable CA1034
     extension<TItem>(ref TItem instance)
-        where TItem : struct, IMemberOwner
+        where TItem : struct, IStatementOwner
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add the member.
+        /// Add the statement
         /// </summary>
-        /// <param name="member">the member</param>
-        /// <typeparam name="TMember">member type</typeparam>
+        /// <param name="statement">the statement</param>
+        /// <typeparam name="TStatement">statement type</typeparam>
         /// <returns>the item</returns>
-        public ref TItem AddMember<TMember>(TMember member)
-            where TMember : struct, IMember
+        public ref TItem AddStatement<TStatement>(TStatement statement)
+            where TStatement : struct, IStatement
         {
-            instance.Members.Add(member.ToCode);
+            instance.Statements.Add(statement.ToCode);
             return ref instance;
         }
 
-        internal void AddMembers(ref SourceBuilder builder)
+        internal void AddStatements(ref SourceBuilder builder)
         {
-            if (instance.Members.Count is 0)
-            {
-                builder.Append(';');
-                return;
-            }
-
             builder.BeginBlock();
 
-            foreach (var member in instance.Members)
+            foreach (var statement in instance.Statements)
             {
                 builder.AppendLine();
-                member(ref builder);
+                statement(ref builder);
             }
 
             builder.EndBlock();
