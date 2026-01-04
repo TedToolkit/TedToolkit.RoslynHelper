@@ -1,44 +1,49 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IName.cs" company="TedToolkit">
+// <copyright file="Polymorphism.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Names;
+namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The names.
+/// The type of the polymorphism.
 /// </summary>
-public interface IName
+public enum Polymorphism
 {
     /// <summary>
-    ///     Full Name
+    /// None
     /// </summary>
-    string FullName { get; }
+    NONE = 0,
 
     /// <summary>
-    ///     Full Name with Null
+    /// <see langword="virtual"/>
     /// </summary>
-    string FullNameNull { get; }
+    VIRTUAL = 1,
 
     /// <summary>
-    ///     Summary Name
+    /// <see langword="abstract"/>
     /// </summary>
-    string SummaryName { get; }
+    ABSTRACT = 2,
 
     /// <summary>
-    ///     Name
+    /// <see langword="override"/>
     /// </summary>
-    string Name { get; }
+    OVERRIDE = 3,
 
     /// <summary>
-    ///     MiniName
+    /// <see langword="sealed"/>
     /// </summary>
-    string MiniName { get; }
+    SEALED = 4,
 
     /// <summary>
-    ///     Full Name without global
+    /// <see langword="sealed"/> <see langword="override"/>
     /// </summary>
-    string FullNameNoGlobal { get; }
+    SEALED_OVERRIDE = 5,
+
+    /// <summary>
+    /// <see langword="new"/>
+    /// </summary>
+    NEW = 6,
 }
