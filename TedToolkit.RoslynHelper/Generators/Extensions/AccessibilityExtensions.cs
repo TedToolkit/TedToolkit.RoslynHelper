@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
 using Cysharp.Text;
 
 namespace TedToolkit.RoslynHelper.Generators;

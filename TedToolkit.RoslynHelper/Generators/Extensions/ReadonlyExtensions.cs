@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="PartialExtensions.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="ReadonlyExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -10,33 +10,33 @@ using Cysharp.Text;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IPartial"/>
+/// The extensions for the <see cref="IReadonly"/>
 /// </summary>
-public static class PartialExtensions
+public static class ReadonlyExtensions
 {
 #pragma warning disable CA1034
     extension<TItem>(ref TItem instance)
-        where TItem : struct, IPartial
+        where TItem : struct, IReadonly
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see langword="partial"/>
         /// </summary>
-        public ref TItem Partial
+        public ref TItem Readonly
         {
             get
             {
-                instance.IsPartial = true;
+                instance.IsReadonly = true;
                 return ref instance;
             }
         }
 
-        internal void AddPartial(ref Utf16ValueStringBuilder builder)
+        internal void AddReadonly(ref Utf16ValueStringBuilder builder)
         {
-            if (!instance.IsPartial)
+            if (!instance.IsReadonly)
                 return;
 
-            builder.Append("partial ");
+            builder.Append("readonly ");
         }
     }
 }

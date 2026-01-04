@@ -14,13 +14,30 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// </summary>
 internal static class GeneralExtensions
 {
-    /// <summary>
-    /// Indent the string
-    /// </summary>
+#pragma warning disable RCS1139, RCS1263
     /// <param name="str">the target string</param>
-    /// <returns>result</returns>
-    public static string Indent(this string str)
-        => "\n\t" + str.Replace("\n", "\n\t");
+    extension(string str)
+#pragma warning restore RCS1139, RCS1263
+#pragma warning disable S2325
+    {
+        /// <summary>
+        /// Indent the string
+        /// </summary>
+        /// <returns>result</returns>
+        public string Indent()
+            => str.AddLeading("\t");
+
+        /// <summary>
+        /// To the summary
+        /// </summary>
+        /// <returns>result string</returns>
+        public string ToSummary()
+            => str.AddLeading("/// ");
+
+        private string AddLeading(string leading)
+            => leading + str.Replace("\n", "\n" + leading);
+    }
+#pragma warning restore S2325
 
     private static class ArrayAccessor<T>
     {
