@@ -31,7 +31,7 @@ public static class StaticExtensions
             }
         }
 
-        internal void AddStatic(ref Utf16ValueStringBuilder builder)
+        internal void AddStatic(ref SourceBuilder builder)
         {
             if (!instance.IsStatic)
                 return;

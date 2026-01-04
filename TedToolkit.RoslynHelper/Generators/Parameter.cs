@@ -7,6 +7,8 @@
 
 using Cysharp.Text;
 
+using TedToolkit.RoslynHelper.Generators.Delegates;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -25,22 +27,18 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <summary>
     /// The default value.
     /// </summary>
-    public string Default { get; internal set; } = "";
+    public MemberHandler? Default { get; internal set; }
 
     /// <inheritdoc />
-    public readonly string ToCode()
+    public void ToCode(ref SourceBuilder builder)
     {
-        using var builder = ZString.CreateStringBuilder();
-
-        builder.Append(Type.ToCode());
+        Type.ToCode(ref builder);
         builder.Append(" @");
         builder.Append(Identifier);
-        if (!string.IsNullOrEmpty(Default))
-        {
-            builder.Append(" = ");
-            builder.Append(Default);
-        }
+        if (Default is null)
+            return;
 
-        return builder.ToString();
+        builder.Append(" = ");
+        Default(ref builder);
     }
 }

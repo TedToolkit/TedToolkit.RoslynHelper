@@ -31,7 +31,7 @@ public static class PartialExtensions
             }
         }
 
-        internal void AddPartial(ref Utf16ValueStringBuilder builder)
+        internal void AddPartial(ref SourceBuilder builder)
         {
             if (!instance.IsPartial)
                 return;

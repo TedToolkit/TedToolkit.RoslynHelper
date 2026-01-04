@@ -1,21 +1,14 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IMemberOwner.cs" company="TedToolkit">
+// <copyright file="MemberHandler.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Delegates;
 
 /// <summary>
-/// The owner of the member.
+/// The member delegate.
 /// </summary>
-public interface IMemberOwner
-{
-    /// <summary>
-    /// The members
-    /// </summary>
-    List<MemberHandler> Members { get; }
-}
+/// <param name="builder">builder</param>
+public delegate void MemberHandler(ref SourceBuilder builder);

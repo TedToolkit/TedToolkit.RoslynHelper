@@ -31,7 +31,7 @@ public static class ReadonlyExtensions
             }
         }
 
-        internal void AddReadonly(ref Utf16ValueStringBuilder builder)
+        internal void AddReadonly(ref SourceBuilder builder)
         {
             if (!instance.IsReadonly)
                 return;

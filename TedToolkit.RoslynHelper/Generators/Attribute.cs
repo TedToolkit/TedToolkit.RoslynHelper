@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Cysharp.Text;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -16,6 +18,6 @@ public record struct Attribute :
     IToCode
 {
     /// <inheritdoc/>
-    public string ToCode()
+    public void ToCode(ref SourceBuilder builder)
         => throw new NotImplementedException();
 }

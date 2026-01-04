@@ -14,31 +14,6 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// </summary>
 internal static class GeneralExtensions
 {
-#pragma warning disable RCS1139, RCS1263
-    /// <param name="str">the target string</param>
-    extension(string str)
-#pragma warning restore RCS1139, RCS1263
-#pragma warning disable S2325
-    {
-        /// <summary>
-        /// Indent the string
-        /// </summary>
-        /// <returns>result</returns>
-        public string Indent()
-            => str.AddLeading("\t");
-
-        /// <summary>
-        /// To the summary
-        /// </summary>
-        /// <returns>result string</returns>
-        public string ToSummary()
-            => str.AddLeading("/// ");
-
-        private string AddLeading(string leading)
-            => leading + str.Replace("\n", "\n" + leading);
-    }
-#pragma warning restore S2325
-
     private static class ArrayAccessor<T>
     {
         public static readonly FieldInfo ItemsField = typeof(List<T>)

@@ -110,7 +110,7 @@ public static class AccessibilityExtensions
             }
         }
 
-        internal void AddAccessibility(ref Utf16ValueStringBuilder builder)
+        internal void AddAccessibility(ref SourceBuilder builder)
         {
             if (instance.Accessibility is Accessibility.NONE)
                 return;

@@ -31,7 +31,7 @@ public static class UnsafeExtensions
             }
         }
 
-        internal void AddUnsafe(ref Utf16ValueStringBuilder builder)
+        internal void AddUnsafe(ref SourceBuilder builder)
         {
             if (!instance.IsUnsafe)
                 return;

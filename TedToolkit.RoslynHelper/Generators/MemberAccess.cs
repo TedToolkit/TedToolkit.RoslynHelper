@@ -30,9 +30,8 @@ public record struct MemberAccess() :
     public string Alias { get; set; } = "";
 
     /// <inheritdoc />
-    public string ToCode()
+    public void ToCode(ref SourceBuilder builder)
     {
-        using var builder = ZString.CreateStringBuilder();
         if (!string.IsNullOrEmpty(Alias))
         {
             builder.Append(Alias);
@@ -45,12 +44,10 @@ public record struct MemberAccess() :
             if (isNotStart)
                 builder.Append('.');
 
-            builder.Append(memberAccessItem.ToCode());
+            memberAccessItem.ToCode(ref builder);
 
             isNotStart = true;
         }
-
-        return builder.ToString();
     }
 
     /// <inheritdoc />

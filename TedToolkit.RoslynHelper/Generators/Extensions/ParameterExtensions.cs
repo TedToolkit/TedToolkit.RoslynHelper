@@ -26,7 +26,7 @@ public static class ParameterExtensions
         /// </summary>
         public ref Parameter AddDefault()
         {
-            instance.Default = "default";
+            instance.Default = (ref builder) => builder.Append("default");
             return ref instance;
         }
 
@@ -36,7 +36,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(MemberAccess value)
         {
-            instance.Default = value.ToCode();
+            instance.Default = value.ToCode;
             return ref instance;
         }
 
@@ -46,7 +46,12 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(string value)
         {
-            instance.Default = ZString.Concat('"', value, '"');
+            instance.Default = (ref builder) =>
+            {
+                builder.Append('"');
+                builder.Append(value);
+                builder.Append('"');
+            };
             return ref instance;
         }
 
@@ -56,7 +61,12 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(char value)
         {
-            instance.Default = ZString.Concat('\'', value, '\'');
+            instance.Default = (ref builder) =>
+            {
+                builder.Append('\'');
+                builder.Append(value);
+                builder.Append('\'');
+            };
             return ref instance;
         }
 
@@ -66,7 +76,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(int value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -76,7 +86,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(long value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -86,7 +96,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(uint value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -96,7 +106,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(ulong value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -106,7 +116,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(byte value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -116,7 +126,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(sbyte value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -126,7 +136,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(short value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -136,7 +146,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(ushort value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -146,7 +156,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(double value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -156,7 +166,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(float value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
 
@@ -166,7 +176,7 @@ public static class ParameterExtensions
         /// <param name="value">defaultValue</param>
         public ref Parameter AddDefault(decimal value)
         {
-            instance.Default = value.ToString(CultureInfo.InvariantCulture);
+            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
             return ref instance;
         }
     }

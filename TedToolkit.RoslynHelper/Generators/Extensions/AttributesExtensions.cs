@@ -30,7 +30,7 @@ public static class AttributesExtensions
             return ref instance;
         }
 
-        internal void AddAttributes(ref Utf16ValueStringBuilder builder)
+        internal void AddAttributes(ref SourceBuilder builder)
         {
             if (instance.Attributes.Count == 0)
                 return;
@@ -38,7 +38,7 @@ public static class AttributesExtensions
             foreach (var attribute in instance.Attributes.AsSpan())
             {
                 builder.Append('[');
-                builder.Append(attribute.ToCode());
+                attribute.ToCode(ref builder);
                 builder.Append(']');
                 builder.AppendLine();
             }

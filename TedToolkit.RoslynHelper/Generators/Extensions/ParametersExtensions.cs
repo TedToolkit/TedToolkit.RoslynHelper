@@ -29,7 +29,7 @@ public static class ParametersExtensions
             return ref instance;
         }
 
-        internal void AddParameters(ref Utf16ValueStringBuilder builder)
+        internal void AddParameters(ref SourceBuilder builder)
         {
             if (instance.Parameters.Count is 0)
                 return;
@@ -44,7 +44,7 @@ public static class ParametersExtensions
                     builder.AppendLine();
 
                 builder.Append('\t');
-                builder.Append(parameter.ToCode());
+                parameter.ToCode(ref builder);
 
                 isNotStart = true;
             }
@@ -52,7 +52,7 @@ public static class ParametersExtensions
             builder.Append(')');
         }
 
-        internal void AddParametersSummary(ref Utf16ValueStringBuilder builder)
+        internal void AddParametersSummary(ref SourceBuilder builder)
         {
             if (instance.Parameters.Count is 0)
                 return;
@@ -66,9 +66,9 @@ public static class ParametersExtensions
 
                 builder.Append("/// <param name=\"@");
                 builder.Append(instanceParameter.Identifier);
-                builder.Append("\">");
+                builder.AppendLine("\">");
                 instanceParameter.AddDescriptionItems(ref builder);
-                builder.AppendLine("</param>");
+                builder.AppendLine("/// </param>");
             }
         }
     }

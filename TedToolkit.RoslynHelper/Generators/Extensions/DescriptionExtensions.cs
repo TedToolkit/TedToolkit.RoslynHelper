@@ -29,7 +29,7 @@ public static class DescriptionExtensions
             return ref instance;
         }
 
-        internal void AddSummary(ref Utf16ValueStringBuilder builder)
+        internal void AddSummary(ref SourceBuilder builder)
         {
             if (instance.Description.Count == 0)
                 return;
@@ -40,10 +40,13 @@ public static class DescriptionExtensions
             builder.AppendLine("/// </summary>");
         }
 
-        internal void AddDescriptionItems(ref Utf16ValueStringBuilder builder)
+        internal void AddDescriptionItems(ref SourceBuilder builder)
         {
+            builder.Append("/// ");
             foreach (var descriptionItem in instance.Description)
-                builder.AppendLine(descriptionItem.ToSummary());
+                builder.Append(descriptionItem);
+
+            builder.AppendLine();
         }
     }
 }

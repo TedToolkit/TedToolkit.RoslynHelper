@@ -1,22 +1,19 @@
-// -----------------------------------------------------------------------
-// <copyright file="IToCode.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="IPolymorphism.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the codes.
+/// For the Polymorphism
 /// </summary>
-public interface IToCode
+public interface IPolymorphism
 {
     /// <summary>
-    /// Get the codes
+    /// The Polymorphism
     /// </summary>
-    /// <param name="builder">builder</param>
-    void ToCode(ref SourceBuilder builder);
+    Polymorphism Polymorphism { get; set; }
 }

@@ -36,9 +36,8 @@ public record struct MemberAccessItem(string Identifier) :
         => field ??= [];
 
     /// <inheritdoc />
-    public string ToCode()
+    public void ToCode(ref SourceBuilder builder)
     {
-        using var builder = ZString.CreateStringBuilder();
         builder.Append(Identifier);
         if (Types.Count > 0)
         {
@@ -49,7 +48,7 @@ public record struct MemberAccessItem(string Identifier) :
                 if (isNotStart)
                     builder.Append(", ");
 
-                builder.Append(memberAccess.ToCode());
+                memberAccess.ToCode(ref builder);
 
                 isNotStart = true;
             }
@@ -62,8 +61,6 @@ public record struct MemberAccessItem(string Identifier) :
 
         if (IsArray)
             builder.Append("[]");
-
-        return builder.ToString();
     }
 
     /// <inheritdoc />

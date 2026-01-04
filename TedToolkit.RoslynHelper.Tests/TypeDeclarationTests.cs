@@ -7,28 +7,30 @@ internal class TypeDeclarationTests
     [Test]
     public async Task StaticClassTest()
     {
-        var instance = SourceComposer.Class("FirstClass").Public.Static.Unsafe.Partial;
-        var code = instance.ToCode();
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public.Static.Unsafe.Partial)
+            .ToCode();
 
-        await Assert.That(code).EqualTo("public static unsafe partial class FirstClass");
+        await Assert.That(code).Contains("public static unsafe partial class FirstClass");
     }
 
     [Test]
     public async Task BaseTypeTest()
     {
-        var instance = SourceComposer.Class("FirstClass").Public
-            .AddBaseType<IDisposable>();
-        var code = instance.ToCode();
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public.AddBaseType<IDisposable>())
+            .ToCode();
 
-        await Assert.That(code).EndsWith("global::System.IDisposable");
+        await Assert.That(code).Contains("global::System.IDisposable");
     }
 
     [Test]
     public async Task ParametersTest()
     {
-        var instance = SourceComposer.Class("FirstClass").Public
-            .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10));
-        var code = instance.ToCode();
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public
+                .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10)))
+            .ToCode();
 
         await Assert.That(code).Contains("int @item = 10");
     }
@@ -36,10 +38,34 @@ internal class TypeDeclarationTests
     [Test]
     public async Task SummaryTest()
     {
-        var instance = SourceComposer.Class("FirstClass").Public
-            .AddDescription("Good");
-        var code = instance.ToCode();
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public
+                .AddDescription("Good"))
+            .ToCode();
 
-        await Assert.That(code).Contains("int @item = 10");
+        await Assert.That(code).Contains("/// <summary>");
+        await Assert.That(code).Contains("/// Good");
+        await Assert.That(code).Contains("/// </summary>");
+    }
+
+    [Test]
+    public async Task ParameterSummaryTest()
+    {
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public
+                .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10).AddDescription("Good")))
+            .ToCode();
+
+        await Assert.That(code).Contains("/// <param name=\"@item\">");
+        await Assert.That(code).Contains("/// Good");
+        await Assert.That(code).Contains("/// </param>");
+    }
+
+    [Test]
+    public async Task MethodTest()
+    {
+        var code = SourceComposer.File("File")
+            .AddMember(SourceComposer.Class("FirstClass").Public
+                .AddMember(SourceComposer.Method("Method")));
     }
 }

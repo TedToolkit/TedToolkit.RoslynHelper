@@ -7,6 +7,8 @@
 
 using Cysharp.Text;
 
+using TedToolkit.RoslynHelper.Generators.Delegates;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -24,72 +26,51 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IAttributes,
     IReadonly,
     IDescription,
-    IParameters
+    IParameters,
+    IPolymorphism
 {
     /// <inheritdoc />
-    public string ToCode()
+    public void ToCode(ref SourceBuilder builder)
     {
-        var builder = ZString.CreateStringBuilder();
-        try
+        this.AddSummary(ref builder);
+        this.AddParametersSummary(ref builder);
+        this.AddAttributes(ref builder);
+        this.AddAccessibility(ref builder);
+        this.AddStatic(ref builder);
+        this.AddPolymorphism(ref builder);
+        this.AddUnsafe(ref builder);
+        this.AddPartial(ref builder);
+        builder.Append(Type switch
         {
-            this.AddSummary(ref builder);
-            this.AddParametersSummary(ref builder);
-            this.AddAttributes(ref builder);
-            this.AddAccessibility(ref builder);
-            this.AddStatic(ref builder);
-            this.AddUnsafe(ref builder);
-            this.AddPartial(ref builder);
-            builder.Append(Type switch
-            {
-                TypeDeclarationType.CLASS => "class ",
-                TypeDeclarationType.STRUCT => "struct ",
-                TypeDeclarationType.REF_STRUCT => "ref struct ",
-                TypeDeclarationType.RECORD => "record ",
-                TypeDeclarationType.RECORD_STRUCT => "record struct ",
-                _ => throw new InvalidOperationException("The type is invalid."),
-            });
-            builder.Append(Identifier);
-            this.AddParameters(ref builder);
+            TypeDeclarationType.CLASS => "class ",
+            TypeDeclarationType.STRUCT => "struct ",
+            TypeDeclarationType.REF_STRUCT => "ref struct ",
+            TypeDeclarationType.RECORD => "record ",
+            TypeDeclarationType.RECORD_STRUCT => "record struct ",
+            _ => throw new InvalidOperationException("The type is invalid."),
+        });
+        builder.Append(Identifier);
+        this.AddParameters(ref builder);
 
-            if (BaseTypes.Count > 0)
-            {
-                builder.Append(" :");
-                var isNotStart = false;
-                foreach (var memberAccess in BaseTypes)
-                {
-                    if (isNotStart)
-                        builder.AppendLine(',');
-                    else
-                        builder.AppendLine();
-
-                    builder.Append('\t');
-                    builder.Append(memberAccess.ToCode());
-
-                    isNotStart = true;
-                }
-            }
-
-            if (Members.Count > 0)
-            {
-                builder.AppendLine();
-                builder.AppendLine('{');
-
-                foreach (var member in Members)
-                {
-                    builder.Append(member);
-                    builder.AppendLine();
-                    builder.AppendLine();
-                }
-
-                builder.Append('}');
-            }
-
-            return builder.ToString();
-        }
-        finally
+        if (BaseTypes.Count > 0)
         {
-            builder.Dispose();
+            builder.Append(" :");
+            var isNotStart = false;
+            foreach (var memberAccess in BaseTypes)
+            {
+                if (isNotStart)
+                    builder.AppendLine(',');
+                else
+                    builder.AppendLine();
+
+                builder.Append('\t');
+                memberAccess.ToCode(ref builder);
+
+                isNotStart = true;
+            }
         }
+
+        this.AddMembers(ref builder);
     }
 
     /// <inheritdoc />
@@ -117,7 +98,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         => field ??= [];
 
     /// <inheritdoc />
-    public List<string> Members
+    public List<MemberHandler> Members
         => field ??= [];
 
     /// <inheritdoc />
@@ -130,4 +111,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     /// <inheritdoc />
     public List<Parameter> Parameters
         => field ??= [];
+
+    /// <inheritdoc />
+    public Polymorphism Polymorphism { get; set; }
 }

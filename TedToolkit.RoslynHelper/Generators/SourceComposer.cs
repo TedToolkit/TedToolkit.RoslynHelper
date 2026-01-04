@@ -18,6 +18,20 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class SourceComposer
 {
     /// <summary>
+    /// Create a file
+    /// </summary>
+    /// <param name="fileName">file name</param>
+    /// <param name="result">result</param>
+    /// <returns>class</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref SourceFile File(string fileName, in SourceFile result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.FileName = fileName;
+        return ref instance;
+    }
+
+    /// <summary>
     /// Create a <see langword="class"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
@@ -141,6 +155,41 @@ public static class SourceComposer
         instance.Identifier = identifier;
         instance.Type = type;
         modifier?.Invoke(ref instance);
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the method
+    /// </summary>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="returnType">return returnType</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Method Method(
+        string identifier,
+        scoped in ReturnType? returnType = null,
+        in Method result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        instance.ReturnType = returnType;
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the returnType
+    /// </summary>
+    /// <param name="type">the Type</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref ReturnType ReturnType(
+        scoped in MemberAccess type,
+        in ReturnType result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = type;
         return ref instance;
     }
 

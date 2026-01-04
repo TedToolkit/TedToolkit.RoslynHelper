@@ -26,8 +26,25 @@ public static class MemberOwnerExtensions
         public ref TItem AddMember<TMember>(TMember member)
             where TMember : struct, IMember
         {
-            instance.Members.Add(member.ToCode().Indent());
+            instance.Members.Add(member.ToCode);
             return ref instance;
+        }
+
+        internal void AddMembers(ref SourceBuilder builder)
+        {
+            if (instance.Members.Count is 0)
+                return;
+
+            builder.BeginBlock();
+
+            foreach (var member in instance.Members)
+            {
+                member(ref builder);
+                builder.AppendLine();
+                builder.AppendLine();
+            }
+
+            builder.EndBlock();
         }
     }
 }

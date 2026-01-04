@@ -1,21 +1,20 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IMemberOwner.cs" company="TedToolkit">
+// <copyright file="ReturnType.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The owner of the member.
+/// The Return Type
 /// </summary>
-public interface IMemberOwner
+/// <param name="Type">return Type</param>
+public record struct ReturnType(MemberAccess Type)
+    : IDescription
 {
-    /// <summary>
-    /// The members
-    /// </summary>
-    List<MemberHandler> Members { get; }
+    /// <inheritdoc />
+    public List<string> Description
+        => field ??= [];
 }
