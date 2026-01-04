@@ -2,13 +2,15 @@ using TedToolkit.RoslynHelper.Generators;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
+using static SourceComposer;
+using static SourceComposer<TypeDeclarationTests>;
 internal class TypeDeclarationTests
 {
     [Test]
     public async Task StaticClassTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public.Static.Unsafe.Partial)
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public.Static.Unsafe.Partial)
             .ToCode();
 
         await Assert.That(code).Contains("public static unsafe partial class FirstClass");
@@ -17,8 +19,8 @@ internal class TypeDeclarationTests
     [Test]
     public async Task BaseTypeTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public.AddBaseType<IDisposable>())
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public.AddBaseType<IDisposable>())
             .ToCode();
 
         await Assert.That(code).Contains("global::System.IDisposable");
@@ -27,9 +29,9 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParametersTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddParameter(SourceComposer.Parameter<int>("item").ScopedIn.AddDefault(10)))
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public
+                .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int @item = 10");
@@ -38,8 +40,8 @@ internal class TypeDeclarationTests
     [Test]
     public async Task SummaryTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public
                 .AddDescription("Good"))
             .ToCode();
 
@@ -51,9 +53,9 @@ internal class TypeDeclarationTests
     [Test]
     public async Task ParameterSummaryTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10).AddDescription("Good")))
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public
+                .AddParameter(Parameter<int>("item").AddDefault(Argument(10)).AddDescription("Good")))
             .ToCode();
 
         await Assert.That(code).Contains("/// <param name=\"@item\">");
@@ -64,10 +66,10 @@ internal class TypeDeclarationTests
     [Test]
     public async Task MethodTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddMember(SourceComposer.Method("Method")
-                    .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10))))
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public
+                .AddMember(Method("Method")
+                    .AddParameter(Parameter<int>("item").AddDefault(Argument(10)))))
             .ToCode();
 
         await Assert.That(code).Contains("void Method(");
@@ -76,10 +78,10 @@ internal class TypeDeclarationTests
     [Test]
     public async Task PropertyTest()
     {
-        var code = SourceComposer.File<TypeDeclarationTests>("File", "Space")
-            .AddMember(SourceComposer.Class("FirstClass").Public
-                .AddMember(SourceComposer.Property("Item", SourceComposer.Type<long>()).Internal
-                    .AddAccessor(SourceComposer.Accessor(AccessorType.GET))))
+        var code = File("File", "Space")
+            .AddMember(Class("FirstClass").Public
+                .AddMember(Property("Item", SourceComposer.Type<long>()).Internal
+                    .AddAccessor(Accessor(AccessorType.GET))))
             .ToCode();
 
         await Assert.That(code).Contains("internal long Item");

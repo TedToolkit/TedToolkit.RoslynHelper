@@ -5,10 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Globalization;
 using System.Runtime.CompilerServices;
+
+using Cysharp.Text;
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 using TedToolkit.RoslynHelper.Generators.Types;
+
+using Attribute = System.Attribute;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -21,110 +26,16 @@ public static class SourceComposer
     /// <summary>
     /// Create a file
     /// </summary>
-    /// <typeparam name="TGenerator">Generator type</typeparam>
     /// <param name="fileName">file name</param>
     /// <param name="nameSpace">nameSpace</param>
     /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref SourceFile File<TGenerator>(string fileName, MemberAccess nameSpace, in SourceFile result = default)
+    public static ref SourceFile File(string fileName, MemberAccess nameSpace, in SourceFile result = default)
     {
-        var type = typeof(TGenerator);
         ref var instance = ref Unsafe.AsRef(in result);
         instance.FileName = fileName;
         instance.NameSpace = nameSpace;
-        instance.ToolName = type.FullName ?? type.Name;
-        instance.Version = type.Assembly.GetName().Version.ToString();
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="class"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Class(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.CLASS;
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="struct"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Struct(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.STRUCT;
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="ref"/> <see langword="struct"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration RefStruct(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.REF_STRUCT;
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="record"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Record(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.RECORD;
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="record"/> <see langword="struct"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration RecordStruct(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.RECORD_STRUCT;
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create a <see langword="interface"/>
-    /// </summary>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>class</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Interface(string identifier, in TypeDeclaration result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = TypeDeclarationType.INTERFACE;
         return ref instance;
     }
 
@@ -132,15 +43,14 @@ public static class SourceComposer
     /// Create the parameter
     /// </summary>
     /// <param name="identifier">parameter name</param>
-    /// <param name="modifier">modifier</param>
     /// <param name="result">result</param>
     /// <typeparam name="T">type of the parameter</typeparam>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Parameter Parameter<T>(string identifier, ModifierHandler<Parameter>? modifier = null,
+    public static ref Parameter Parameter<T>(string identifier,
         in Parameter result = default)
     {
-        return ref Parameter(Type<T>(), identifier, modifier, result);
+        return ref Parameter(Type<T>(), identifier, result);
     }
 
     /// <summary>
@@ -148,14 +58,13 @@ public static class SourceComposer
     /// </summary>
     /// <param name="type">the type</param>
     /// <param name="identifier">parameter name</param>
-    /// <param name="modifier">modifier</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Parameter Parameter(Type type, string identifier, ModifierHandler<Parameter>? modifier = null,
+    public static ref Parameter Parameter(Type type, string identifier,
         in Parameter result = default)
     {
-        return ref Parameter(Type(type), identifier, modifier, result);
+        return ref Parameter(Type(type), identifier, result);
     }
 
     /// <summary>
@@ -163,75 +72,199 @@ public static class SourceComposer
     /// </summary>
     /// <param name="type">the type</param>
     /// <param name="identifier">parameter name</param>
-    /// <param name="modifier">modifier</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Parameter Parameter(
         scoped in MemberAccess type,
         string identifier,
-        ModifierHandler<Parameter>? modifier = null,
         in Parameter result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Identifier = identifier;
         instance.Type = type;
-        modifier?.Invoke(ref instance);
         return ref instance;
     }
 
     /// <summary>
-    /// Create the Accessor
+    /// Create an attribute.
     /// </summary>
-    /// <param name="type">accessor type</param>
+    /// <typeparam name="T">Type</typeparam>
     /// <param name="result">result</param>
-    /// <returns>parameter</returns>
+    /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Accessor Accessor(
-        AccessorType type,
-        in Accessor result = default)
+    public static ref Types.Attribute Attribute<T>(
+        in Types.Attribute result = default)
+        where T : Attribute
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
-        return ref instance;
+        return ref Attribute(Type<T>(), result);
     }
 
     /// <summary>
-    /// Create the property
+    /// Create an attribute.
     /// </summary>
-    /// <param name="identifier">parameter name</param>
-    /// <param name="type">return returnType</param>
+    /// <param name="type">Type</param>
     /// <param name="result">result</param>
-    /// <returns>parameter</returns>
+    /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Property Property(
-        string identifier,
+    public static ref Types.Attribute Attribute(
+        Type type,
+        in Types.Attribute result = default)
+    {
+        return ref Attribute(Type(type), result);
+    }
+
+    /// <summary>
+    /// Create an attribute.
+    /// </summary>
+    /// <param name="type">Type</param>
+    /// <param name="result">result</param>
+    /// <returns>attribute</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Types.Attribute Attribute(
         scoped in MemberAccess type,
-        in Property result = default)
+        in Types.Attribute result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
         instance.Type = type;
         return ref instance;
     }
 
     /// <summary>
-    /// Create the method
+    /// Create the argument
     /// </summary>
-    /// <param name="identifier">parameter name</param>
-    /// <param name="returnType">return returnType</param>
+    /// <param name="variable">variable</param>
     /// <param name="result">result</param>
-    /// <returns>parameter</returns>
+    /// <returns>result</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Method Method(
-        string identifier,
-        scoped in ReturnType? returnType = null,
-        in Method result = default)
+    public static ref Argument Argument(
+        scoped in MemberAccess variable,
+        in Argument result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.ReturnType = returnType;
+        instance.Variable = variable;
         return ref instance;
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        string variable,
+        in Argument result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Variable = ZString.Concat('"', variable, '"');
+        return ref instance;
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        char variable,
+        in Argument result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Variable = ZString.Concat('\'', variable, '\'');
+        return ref instance;
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        int variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        long variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        uint variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        ulong variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        byte variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        sbyte variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        short variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        ushort variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        double variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        float variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
+    }
+
+    /// <inheritdoc cref="Argument(in MemberAccess, in TedToolkit.RoslynHelper.Generators.Types.Argument)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Argument Argument(
+        decimal variable,
+        in Argument result = default)
+    {
+        return ref Argument((MemberAccess)variable.ToString(CultureInfo.InvariantCulture), result);
     }
 
     /// <summary>

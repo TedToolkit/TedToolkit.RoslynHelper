@@ -26,7 +26,7 @@ public static class ParameterExtensions
         /// </summary>
         public ref Parameter AddDefault()
         {
-            instance.Default = (ref builder) => builder.Append("default");
+            instance.Default = SourceComposer.Argument((MemberAccess)"default");
             return ref instance;
         }
 
@@ -34,149 +34,9 @@ public static class ParameterExtensions
         /// Add default
         /// </summary>
         /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(MemberAccess value)
+        public ref Parameter AddDefault(Argument value)
         {
-            instance.Default = value.ToCode;
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(string value)
-        {
-            instance.Default = (ref builder) =>
-            {
-                builder.Append('"');
-                builder.Append(value);
-                builder.Append('"');
-            };
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(char value)
-        {
-            instance.Default = (ref builder) =>
-            {
-                builder.Append('\'');
-                builder.Append(value);
-                builder.Append('\'');
-            };
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(int value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(long value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(uint value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(ulong value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(byte value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(sbyte value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(short value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(ushort value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(double value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(float value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
-            return ref instance;
-        }
-
-        /// <summary>
-        /// Add default
-        /// </summary>
-        /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(decimal value)
-        {
-            instance.Default = (ref builder) => builder.Append(value.ToString(CultureInfo.InvariantCulture));
+            instance.Default = value;
             return ref instance;
         }
     }

@@ -35,10 +35,10 @@ public static class AttributesExtensions
 
             foreach (var attribute in instance.Attributes.AsSpan())
             {
-                builder.AppendLine();
                 builder.Append('[');
                 attribute.ToCode(ref builder);
                 builder.Append(']');
+                builder.AppendLine();
             }
         }
     }

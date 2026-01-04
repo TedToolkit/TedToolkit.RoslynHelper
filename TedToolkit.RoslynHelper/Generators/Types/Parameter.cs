@@ -35,7 +35,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <summary>
     /// The default value.
     /// </summary>
-    public ToCodeHandler? Default { get; internal set; }
+    public Argument? Default { get; internal set; }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -48,7 +48,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
             return;
 
         builder.Append(" = ");
-        Default(ref builder);
+        Default?.ToCode(ref builder);
     }
 
     /// <inheritdoc />

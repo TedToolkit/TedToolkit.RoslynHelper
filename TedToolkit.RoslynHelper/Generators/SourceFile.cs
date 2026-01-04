@@ -22,9 +22,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// </summary>
 /// <param name="FileName">file name</param>
 /// <param name="NameSpace">name space</param>
-/// <param name="ToolName">The tool name</param>
-/// <param name="Version">The version</param>
-public record struct SourceFile(string FileName, MemberAccess NameSpace, string ToolName, string Version) :
+public record struct SourceFile(string FileName, MemberAccess NameSpace) :
     IMemberOwner
 {
     /// <summary>
