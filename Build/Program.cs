@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
 using Sourcy.DotNet;
 
@@ -14,7 +14,10 @@ var pipeline = new TedPipeline(
             Solutions.TedToolkit_RoslynHelper,
         ],
         Solution = Solutions.TedToolkit_RoslynHelper,
-        TestFiles = [],
+        TestFiles =
+        [
+            Projects.TedToolkit_RoslynHelper_Tests,
+        ],
     },
     new FileInfo(Path.Combine(Projects.Build.Directory!.FullName, "appsettings.json")));
 

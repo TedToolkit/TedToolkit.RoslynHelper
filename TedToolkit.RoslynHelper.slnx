@@ -8,5 +8,6 @@
   <Project Path="Build/Build.csproj">
     <Build Solution="Debug|*" Project="false" />
   </Project>
+  <Project Path="TedToolkit.RoslynHelper.Tests/TedToolkit.RoslynHelper.Tests.csproj" />
   <Project Path="TedToolkit.RoslynHelper/TedToolkit.RoslynHelper.csproj" />
 </Solution>

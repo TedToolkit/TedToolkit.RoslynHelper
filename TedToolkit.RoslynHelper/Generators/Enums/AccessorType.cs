@@ -1,44 +1,39 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IName.cs" company="TedToolkit">
+// <copyright file="AccessorType.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Names;
+namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The names.
+/// The type of the accessor.
 /// </summary>
-public interface IName
+public enum AccessorType
 {
     /// <summary>
-    ///     Full Name
+    /// get
     /// </summary>
-    string FullName { get; }
+    GET = 0,
 
     /// <summary>
-    ///     Full Name with Null
+    /// set
     /// </summary>
-    string FullNameNull { get; }
+    SET = 1,
 
     /// <summary>
-    ///     Summary Name
+    /// init
     /// </summary>
-    string SummaryName { get; }
+    INIT = 2,
 
     /// <summary>
-    ///     Name
+    /// add
     /// </summary>
-    string Name { get; }
+    ADD = 3,
 
     /// <summary>
-    ///     MiniName
+    /// remove
     /// </summary>
-    string MiniName { get; }
-
-    /// <summary>
-    ///     Full Name without global
-    /// </summary>
-    string FullNameNoGlobal { get; }
+    REMOVE = 4,
 }

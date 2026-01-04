@@ -49,7 +49,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
         .ToArray();
 
     /// <summary>
-    ///     The type Argument counts.
+    ///     The type Parameter counts.
     /// </summary>
     public int TypeArgumentsCount { get; } =
         methodSymbol.TypeArguments.Length + methodSymbol.ContainingType.TypeArguments.Length;
