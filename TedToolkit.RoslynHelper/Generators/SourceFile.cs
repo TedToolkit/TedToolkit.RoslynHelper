@@ -5,14 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.CodeDom.Compiler;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
 
 using Microsoft.CodeAnalysis;
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
 using TedToolkit.RoslynHelper.Generators.Types;
 
 namespace TedToolkit.RoslynHelper.Generators;
@@ -56,10 +54,16 @@ public record struct SourceFile(string FileName)
             builder.Append("#pragma warning disable");
             builder.AppendLine();
 
-            foreach (var member in NameSpaces)
+            foreach (var attribute in Attributes)
             {
                 builder.AppendLine();
-                member.ToCode(ref builder);
+                attribute.ToCode(ref builder);
+            }
+
+            foreach (var nameSpace in NameSpaces)
+            {
+                builder.AppendLine();
+                nameSpace.ToCode(ref builder);
             }
 
             return builder.ToCode();
@@ -91,6 +95,14 @@ public record struct SourceFile(string FileName)
     /// </summary>
 #pragma warning disable S2325
     public List<NameSpace> NameSpaces
+#pragma warning restore S2325
+        => field ??= [];
+
+    /// <summary>
+    /// Attributes
+    /// </summary>
+#pragma warning disable S2325
+    public List<Types.Attribute> Attributes
 #pragma warning restore S2325
         => field ??= [];
 }

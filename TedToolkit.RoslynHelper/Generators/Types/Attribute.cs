@@ -20,9 +20,28 @@ public record struct Attribute(MemberAccess Type) :
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
+        builder.Append(Modifier switch
+        {
+            AttributeModifier.NONE => "",
+            AttributeModifier.FIELD => "field:",
+            AttributeModifier.RETURN => "return:",
+            AttributeModifier.ASSEMBLY => "assembly:",
+            AttributeModifier.MODULE => "module:",
+            AttributeModifier.TYPE => "type:",
+            AttributeModifier.PROPERTY => "property:",
+            AttributeModifier.EVENT => "event:",
+            AttributeModifier.PARAM => "param:",
+            _ => throw new InvalidOperationException(nameof(Modifier)),
+        });
+
         Type.ToCode(ref builder);
         this.AddArguments(ref builder);
     }
+
+    /// <summary>
+    /// The modifier of the attribute.
+    /// </summary>
+    public AttributeModifier Modifier { get; set; }
 
     /// <inheritdoc />
     public List<Argument> Arguments

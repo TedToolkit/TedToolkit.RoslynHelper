@@ -15,5 +15,5 @@ public interface IVariables
     /// <summary>
     /// The identifier
     /// </summary>
-    string Variable { get; set; }
+    string Variable { get; }
 }

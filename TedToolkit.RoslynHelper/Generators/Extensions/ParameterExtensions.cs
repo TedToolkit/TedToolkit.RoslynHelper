@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Globalization;
-
 using TedToolkit.RoslynHelper.Generators.Types;
 
 namespace TedToolkit.RoslynHelper.Generators;

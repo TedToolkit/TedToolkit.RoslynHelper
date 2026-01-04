@@ -31,5 +31,18 @@ public static class SourceFileExtensions
             instance.NameSpaces.Add(nameSpace);
             return ref instance;
         }
+
+        /// <summary>
+        /// Add a name space.
+        /// </summary>
+        /// <param name="attribute">the attribute</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref SourceFile AddAttribute(Types.Attribute attribute)
+        {
+            attribute.Modifier = AttributeModifier.ASSEMBLY;
+            instance.Attributes.Add(attribute);
+            return ref instance;
+        }
     }
 }

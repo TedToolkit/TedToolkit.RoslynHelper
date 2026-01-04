@@ -29,7 +29,7 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
     }
 
     /// <summary>
-    ///     Prefix
+    ///     Modifier
     /// </summary>
     public string Prefix { get; set; } = "";
 

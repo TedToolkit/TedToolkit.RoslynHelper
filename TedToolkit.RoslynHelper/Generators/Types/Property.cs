@@ -18,18 +18,15 @@ public record struct Property(MemberAccess Type, string Identifier) :
     IAccessibility,
     IPartial,
     IStatic,
+    IReadonly,
     IPolymorphism,
     IDescription,
     IAttributes,
     IAccessors
 {
-    /// <inheritdoc />
-    public string Variable
-    {
-        readonly get => Identifier;
-
-        set => Identifier = value;
-    }
+    /// <inheritdoc/>
+    public readonly string Variable
+        => Identifier;
 
     /// <inheritdoc />
     public Accessibility Accessibility { get; set; }
@@ -42,6 +39,7 @@ public record struct Property(MemberAccess Type, string Identifier) :
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
         this.AddStatic(ref builder);
+        this.AddReadonly(ref builder);
         this.AddPolymorphism(ref builder);
         this.AddPartial(ref builder);
 
@@ -71,4 +69,7 @@ public record struct Property(MemberAccess Type, string Identifier) :
     /// <inheritdoc />
     public List<Accessor> Accessors
         => field ??= [];
+
+    /// <inheritdoc />
+    public bool IsReadonly { get; set; }
 }

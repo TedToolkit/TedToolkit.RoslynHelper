@@ -55,11 +55,7 @@ public record struct Field(MemberAccess Type, string Identifier) :
     public List<string> Description
         => field ??= [];
 
-    /// <inheritdoc />
-    public string Variable
-    {
-        readonly get => Identifier;
-
-        set => Identifier = value;
-    }
+    /// <inheritdoc/>
+    public readonly string Variable
+        => Identifier;
 }

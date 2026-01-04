@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
+using Cysharp.Text;
 
 namespace TedToolkit.RoslynHelper.Generators.Types;
 
@@ -18,19 +18,16 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     IToCode,
     IDescription,
     IVariables,
+    IAttributes,
     IStorageKind
 {
     /// <inheritdoc />
     public List<string> Description
         => field ??= [];
 
-    /// <inheritdoc />
-    public string Variable
-    {
-        readonly get => Identifier;
-
-        set => Identifier = value;
-    }
+    /// <inheritdoc/>
+    public readonly string Variable
+        => ZString.Concat('@', Identifier);
 
     /// <summary>
     /// The default value.
@@ -40,6 +37,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        this.AddAttributes(ref builder);
         this.AddStorageKind(ref builder);
         Type.ToCode(ref builder);
         builder.Append(" @");
@@ -53,4 +51,8 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
 
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
+
+    /// <inheritdoc />
+    public List<Attribute> Attributes
+        => field ??= [];
 }

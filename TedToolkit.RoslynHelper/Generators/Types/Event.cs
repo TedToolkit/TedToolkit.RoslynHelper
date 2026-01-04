@@ -42,12 +42,8 @@ public record struct Event(MemberAccess Type, string Identifier) :
     }
 
     /// <inheritdoc/>
-    public string Variable
-    {
-        readonly get => Identifier;
-
-        set => Identifier = value;
-    }
+    public readonly string Variable
+        => Identifier;
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
