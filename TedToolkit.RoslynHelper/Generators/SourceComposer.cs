@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using TedToolkit.RoslynHelper.Generators.Delegates;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -91,6 +93,58 @@ public static class SourceComposer
     }
 
     /// <summary>
+    /// Create the parameter
+    /// </summary>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="modifier">modifier</param>
+    /// <param name="result">result</param>
+    /// <typeparam name="T">type of the parameter</typeparam>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Parameter Parameter<T>(string identifier, ModifierHandler<Parameter>? modifier = null,
+        in Parameter result = default)
+    {
+        return ref Parameter(Type<T>(), identifier, modifier, result);
+    }
+
+    /// <summary>
+    /// Create the parameter
+    /// </summary>
+    /// <param name="type">the type</param>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="modifier">modifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Parameter Parameter(Type type, string identifier, ModifierHandler<Parameter>? modifier = null,
+        in Parameter result = default)
+    {
+        return ref Parameter(Type(type), identifier, modifier, result);
+    }
+
+    /// <summary>
+    /// Create the parameter
+    /// </summary>
+    /// <param name="type">the type</param>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="modifier">modifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Parameter Parameter(
+        scoped in MemberAccess type,
+        string identifier,
+        ModifierHandler<Parameter>? modifier = null,
+        in Parameter result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        instance.Type = type;
+        modifier?.Invoke(ref instance);
+        return ref instance;
+    }
+
+    /// <summary>
     /// Get the type.
     /// </summary>
     /// <param name="result">result</param>
@@ -113,13 +167,13 @@ public static class SourceComposer
             throw new ArgumentNullException(nameof(type));
 
         ref var instance = ref Unsafe.AsRef(in result);
-        instance.Alias = "global";
         if (_typeAlias.TryGetValue(type, out var s))
         {
             instance.Items.Add(s);
             return ref instance;
         }
 
+        instance.Alias = "global";
         instance.Items.Add(type.Namespace);
         MemberAccessItem item = default;
         instance.Items.Add(TypeItem(type, ref item));

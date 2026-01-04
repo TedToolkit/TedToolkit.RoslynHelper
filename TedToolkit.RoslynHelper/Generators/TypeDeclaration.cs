@@ -23,7 +23,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IMemberOwner,
     IAttributes,
     IReadonly,
-    IDescription
+    IDescription,
+    IParameters
 {
     /// <inheritdoc />
     public string ToCode()
@@ -31,6 +32,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         var builder = ZString.CreateStringBuilder();
         try
         {
+            this.AddSummary(ref builder);
+            this.AddParametersSummary(ref builder);
             this.AddAttributes(ref builder);
             this.AddAccessibility(ref builder);
             this.AddStatic(ref builder);
@@ -46,6 +49,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
                 _ => throw new InvalidOperationException("The type is invalid."),
             });
             builder.Append(Identifier);
+            this.AddParameters(ref builder);
+
             if (BaseTypes.Count > 0)
             {
                 builder.Append(" :");
@@ -119,5 +124,10 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     public bool IsReadonly { get; set; }
 
     /// <inheritdoc />
-    public Description Description { get; }
+    public List<string> Description
+        => field ??= [];
+
+    /// <inheritdoc />
+    public List<Parameter> Parameters
+        => field ??= [];
 }

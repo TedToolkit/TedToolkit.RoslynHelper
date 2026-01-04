@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IDescription.cs" company="TedToolkit">
+// <copyright file="IParameters.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The item that has description.
+/// For the items that has Parameters
 /// </summary>
-public interface IDescription
+public interface IParameters
 {
     /// <summary>
-    /// The Description
+    /// The parameters
     /// </summary>
-    List<string> Description { get; }
+    List<Parameter> Parameters { get; }
 }

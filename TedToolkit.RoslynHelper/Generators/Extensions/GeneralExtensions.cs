@@ -42,7 +42,9 @@ internal static class GeneralExtensions
     private static class ArrayAccessor<T>
     {
         public static readonly FieldInfo ItemsField = typeof(List<T>)
-            .GetRuntimeField("_items")!;
+#pragma warning disable S3011
+            .GetField("_items", BindingFlags.Instance | BindingFlags.NonPublic)!;
+#pragma warning restore S3011
     }
 
     /// <summary>

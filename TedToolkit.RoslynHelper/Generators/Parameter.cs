@@ -16,11 +16,11 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <param name="Identifier">The Identifier</param>
 public record struct Parameter(MemberAccess Type, string Identifier) :
     IToCode,
-    IToDescription,
     IDescription
 {
     /// <inheritdoc />
-    public Description Description { get; }
+    public List<string> Description
+        => field ??= [];
 
     /// <summary>
     /// The default value.
@@ -32,8 +32,8 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     {
         using var builder = ZString.CreateStringBuilder();
 
-        builder.Append(Type.ToString());
-        builder.Append(' ');
+        builder.Append(Type.ToCode());
+        builder.Append(" @");
         builder.Append(Identifier);
         if (!string.IsNullOrEmpty(Default))
         {
@@ -41,18 +41,6 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
             builder.Append(Default);
         }
 
-        return builder.ToString();
-    }
-
-    /// <inheritdoc />
-    public readonly string ToDescription()
-    {
-        using var builder = ZString.CreateStringBuilder();
-        builder.Append("<param name=\"");
-        builder.Append(Identifier);
-        builder.Append("\">");
-        builder.Append(Description.ToDescription());
-        builder.Append("</param>");
         return builder.ToString();
     }
 }

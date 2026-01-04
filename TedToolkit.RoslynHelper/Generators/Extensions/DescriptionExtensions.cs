@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Cysharp.Text;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -23,8 +25,25 @@ public static class DescriptionExtensions
         /// <param name="description">description</param>
         public ref TItem AddDescription(string description)
         {
-            instance.Description.DescriptionItems.Add(description);
+            instance.Description.Add(description);
             return ref instance;
+        }
+
+        internal void AddSummary(ref Utf16ValueStringBuilder builder)
+        {
+            if (instance.Description.Count == 0)
+                return;
+
+            builder.AppendLine("/// <summary>");
+            instance.AddDescriptionItems(ref builder);
+
+            builder.AppendLine("/// </summary>");
+        }
+
+        internal void AddDescriptionItems(ref Utf16ValueStringBuilder builder)
+        {
+            foreach (var descriptionItem in instance.Description)
+                builder.AppendLine(descriptionItem.ToSummary());
         }
     }
 }

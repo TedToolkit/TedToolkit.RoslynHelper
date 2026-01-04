@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 using TedToolkit.RoslynHelper.Generators;
 
 namespace TedToolkit.RoslynHelper.Tests;
@@ -23,5 +21,25 @@ internal class TypeDeclarationTests
         var code = instance.ToCode();
 
         await Assert.That(code).EndsWith("global::System.IDisposable");
+    }
+
+    [Test]
+    public async Task ParametersTest()
+    {
+        var instance = SourceComposer.Class("FirstClass").Public
+            .AddParameter(SourceComposer.Parameter<int>("item").AddDefault(10));
+        var code = instance.ToCode();
+
+        await Assert.That(code).Contains("int @item = 10");
+    }
+
+    [Test]
+    public async Task SummaryTest()
+    {
+        var instance = SourceComposer.Class("FirstClass").Public
+            .AddDescription("Good");
+        var code = instance.ToCode();
+
+        await Assert.That(code).Contains("int @item = 10");
     }
 }
