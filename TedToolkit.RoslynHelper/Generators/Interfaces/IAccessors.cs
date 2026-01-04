@@ -1,20 +1,21 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ReturnType.cs" company="TedToolkit">
+// <copyright file="IAccessors.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Types;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The Return Type
+/// Get the accessors
 /// </summary>
-/// <param name="Type">return Type</param>
-public record struct ReturnType(MemberAccess Type)
-    : IDescription
+public interface IAccessors
 {
-    /// <inheritdoc />
-    public List<string> Description
-        => field ??= [];
+    /// <summary>
+    /// Accessors
+    /// </summary>
+    List<Accessor> Accessors { get; }
 }

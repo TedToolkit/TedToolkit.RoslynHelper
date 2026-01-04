@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
 /// Attribute

@@ -1,21 +1,20 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IParameters.cs" company="TedToolkit">
+// <copyright file="ReturnType.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
-
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
-/// For the items that has Parameters
+/// The Return Type
 /// </summary>
-public interface IParameters
+/// <param name="Type">return Type</param>
+public record struct ReturnType(MemberAccess Type)
+    : IDescription
 {
-    /// <summary>
-    /// The parameters
-    /// </summary>
-    List<Parameter> Parameters { get; }
+    /// <inheritdoc />
+    public List<string> Description
+        => field ??= [];
 }

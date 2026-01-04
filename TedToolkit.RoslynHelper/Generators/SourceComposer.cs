@@ -8,6 +8,7 @@
 using System.Runtime.CompilerServices;
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
+using TedToolkit.RoslynHelper.Generators.Types;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -157,6 +158,41 @@ public static class SourceComposer
         instance.Identifier = identifier;
         instance.Type = type;
         modifier?.Invoke(ref instance);
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the Accessor
+    /// </summary>
+    /// <param name="type">accessor type</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Accessor Accessor(
+        AccessorType type,
+        in Accessor result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = type;
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the property
+    /// </summary>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="type">return returnType</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Property Property(
+        string identifier,
+        scoped in MemberAccess type,
+        in Property result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        instance.Type = type;
         return ref instance;
     }
 

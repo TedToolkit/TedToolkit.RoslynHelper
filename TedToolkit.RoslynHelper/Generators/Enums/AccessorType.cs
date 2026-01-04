@@ -1,21 +1,39 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IParameters.cs" company="TedToolkit">
+// <copyright file="AccessorType.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the items that has Parameters
+/// The type of the accessor.
 /// </summary>
-public interface IParameters
+public enum AccessorType
 {
     /// <summary>
-    /// The parameters
+    /// get
     /// </summary>
-    List<Parameter> Parameters { get; }
+    GET = 0,
+
+    /// <summary>
+    /// set
+    /// </summary>
+    SET = 1,
+
+    /// <summary>
+    /// init
+    /// </summary>
+    INIT = 2,
+
+    /// <summary>
+    /// add
+    /// </summary>
+    ADD = 3,
+
+    /// <summary>
+    /// remove
+    /// </summary>
+    REMOVE = 4,
 }

@@ -1,20 +1,22 @@
-// -----------------------------------------------------------------------
-// <copyright file="AttributesExtensions.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="AccessorExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Types;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IAttributes"/>
+/// The extensions for the <see cref="IAccessors"/>
 /// </summary>
-public static class AttributesExtensions
+public static class AccessorExtensions
 {
 #pragma warning disable CA1034
     extension<TItem>(ref TItem instance)
-        where TItem : struct, IAttributes
+        where TItem : struct, IAccessors
 #pragma warning restore CA1034
     {
         /// <summary>
@@ -22,23 +24,21 @@ public static class AttributesExtensions
         /// </summary>
         /// <param name="attribute">attribute</param>
         /// <returns>the item</returns>
-        public ref TItem AddAttribute(TedToolkit.RoslynHelper.Generators.Types.Attribute attribute)
+        public ref TItem AddAccessor(Accessor attribute)
         {
-            instance.Attributes.Add(attribute);
+            instance.Accessors.Add(attribute);
             return ref instance;
         }
 
-        internal void AddAttributes(ref SourceBuilder builder)
+        internal void AddAccessors(ref SourceBuilder builder)
         {
-            if (instance.Attributes.Count == 0)
+            if (instance.Accessors.Count == 0)
                 return;
 
-            foreach (var attribute in instance.Attributes.AsSpan())
+            foreach (var attribute in instance.Accessors.AsSpan())
             {
                 builder.AppendLine();
-                builder.Append('[');
                 attribute.ToCode(ref builder);
-                builder.Append(']');
             }
         }
     }

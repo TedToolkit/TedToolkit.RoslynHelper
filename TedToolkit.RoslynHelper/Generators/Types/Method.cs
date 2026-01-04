@@ -7,7 +7,7 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
 /// The method
@@ -51,7 +51,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         else
             builder.Append("void");
 
-        builder.Append(" ");
+        builder.Append(' ');
 
         builder.Append(Identifier);
         this.AddParameters(ref builder);

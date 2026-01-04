@@ -12,6 +12,7 @@ using Cysharp.Text;
 using Microsoft.CodeAnalysis;
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
+using TedToolkit.RoslynHelper.Generators.Types;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -28,7 +29,7 @@ public record struct SourceFile(string FileName, MemberAccess NameSpace) :
     /// </summary>
     /// <param name="context">context</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Generate(SourceProductionContext context)
+    public void Generate(scoped in SourceProductionContext context)
         => context.AddSource(ZString.Concat(FileName, ".g.cs"), ToCode());
 
     /// <summary>
@@ -51,8 +52,10 @@ public record struct SourceFile(string FileName, MemberAccess NameSpace) :
                            //------------------------------------------------------------------------------
                            """);
             builder.AppendLine();
+            builder.AppendLine();
 
             builder.Append("#pragma warning disable");
+            builder.AppendLine();
             builder.AppendLine();
 
             builder.Append("namespace ");

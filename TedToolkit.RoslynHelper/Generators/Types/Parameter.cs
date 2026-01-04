@@ -7,7 +7,7 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
 /// The Parameter
@@ -16,11 +16,20 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <param name="Identifier">The Identifier</param>
 public record struct Parameter(MemberAccess Type, string Identifier) :
     IToCode,
-    IDescription
+    IDescription,
+    IVariables
 {
     /// <inheritdoc />
     public List<string> Description
         => field ??= [];
+
+    /// <inheritdoc />
+    public string Variable
+    {
+        readonly get => Identifier;
+
+        set => Identifier = value;
+    }
 
     /// <summary>
     /// The default value.

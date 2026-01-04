@@ -15,5 +15,5 @@ public interface IAttributes
     /// <summary>
     /// Attributes
     /// </summary>
-    List<Attribute> Attributes { get; }
+    List<TedToolkit.RoslynHelper.Generators.Types.Attribute> Attributes { get; }
 }

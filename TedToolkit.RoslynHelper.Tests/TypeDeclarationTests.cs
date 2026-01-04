@@ -72,4 +72,17 @@ internal class TypeDeclarationTests
 
         await Assert.That(code).Contains("void Method(");
     }
+
+    [Test]
+    public async Task PropertyTest()
+    {
+        var code = SourceComposer.File("File", "Space")
+            .AddMember(SourceComposer.Class("FirstClass").Public
+                .AddMember(SourceComposer.Property("Item", SourceComposer.Type<long>()).Internal
+                    .AddAccessor(SourceComposer.Accessor(AccessorType.GET))))
+            .ToCode();
+
+        await Assert.That(code).Contains("internal long Item");
+        await Assert.That(code).Contains("get");
+    }
 }

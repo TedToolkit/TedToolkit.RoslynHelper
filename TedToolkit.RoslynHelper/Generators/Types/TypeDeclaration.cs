@@ -7,7 +7,7 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
 /// The builder for class

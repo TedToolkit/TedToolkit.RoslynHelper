@@ -1,21 +1,19 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IParameters.cs" company="TedToolkit">
+// <copyright file="IVariables.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the items that has Parameters
+/// For the items that has Identifier for calling.
 /// </summary>
-public interface IParameters
+public interface IVariables
 {
     /// <summary>
-    /// The parameters
+    /// The identifier
     /// </summary>
-    List<Parameter> Parameters { get; }
+    string Variable { get; set; }
 }
