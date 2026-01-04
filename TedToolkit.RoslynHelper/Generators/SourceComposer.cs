@@ -10,10 +10,7 @@ using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
 using TedToolkit.RoslynHelper.Generators.Types;
-
-using Attribute = System.Attribute;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -107,7 +104,7 @@ public static class SourceComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Types.Attribute Attribute<T>(
         in Types.Attribute result = default)
-        where T : Attribute
+        where T : System.Attribute
     {
         return ref Attribute(Type<T>(), result);
     }

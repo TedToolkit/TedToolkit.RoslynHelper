@@ -48,7 +48,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
             return;
 
         builder.Append(" = ");
-        Default?.ToCode(ref builder);
+        Default.Value.ToCode(ref builder);
     }
 
     /// <inheritdoc />

@@ -89,6 +89,8 @@ public record struct SourceFile(string FileName)
     /// <summary>
     /// NameSpaces
     /// </summary>
+#pragma warning disable S2325
     public List<NameSpace> NameSpaces
+#pragma warning restore S2325
         => field ??= [];
 }

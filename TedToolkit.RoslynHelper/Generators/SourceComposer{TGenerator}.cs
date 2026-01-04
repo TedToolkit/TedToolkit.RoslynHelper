@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="SourceComposer{T}.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="SourceComposer{TGenerator}.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -99,6 +99,57 @@ public static class SourceComposer<TGenerator>
         instance.Type = type;
         AddGeneratorAttribute(ref instance);
         return ref instance;
+    }
+
+    /// <summary>
+    /// Create the Event
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Event Event(
+        MemberAccess type,
+        string identifier,
+        in Event result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = type;
+        instance.Identifier = identifier;
+        AddGeneratorAttribute(ref instance);
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the Event
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Event Event(
+        Type type,
+        string identifier,
+        in Event result = default)
+    {
+        return ref Event(SourceComposer.Type(type), identifier, result);
+    }
+
+    /// <summary>
+    /// Create the Event
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Event Event<T>(
+        string identifier,
+        in Event result = default)
+    {
+        return ref Event(SourceComposer.Type<T>(), identifier, result);
     }
 
     /// <summary>

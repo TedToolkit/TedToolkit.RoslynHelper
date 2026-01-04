@@ -107,4 +107,16 @@ internal class TypeDeclarationTests
 
         await Assert.That(code).Contains("internal readonly long Item;");
     }
+
+    [Test]
+    public async Task EventTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Event<Action<int>>("Item").Internal)))
+            .ToCode();
+
+        await Assert.That(code).Contains("internal event global::System.Action<int> Item;");
+    }
 }

@@ -33,13 +33,19 @@ public static class AccessorExtensions
         internal void AddAccessors(ref SourceBuilder builder)
         {
             if (instance.Accessors.Count == 0)
+            {
+                builder.Append(';');
                 return;
+            }
 
+            builder.BeginBlock();
             foreach (var attribute in instance.Accessors.AsSpan())
             {
                 builder.AppendLine();
                 attribute.ToCode(ref builder);
             }
+
+            builder.EndBlock();
         }
     }
 }

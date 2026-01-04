@@ -1,5 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Property.cs" company="TedToolkit">
+// -----------------------------------------------------------------------
+// <copyright file="Event.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,11 +8,11 @@
 namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
-/// The property
+/// Create an event
 /// </summary>
-/// <param name="Type">The type</param>
-/// <param name="Identifier">The identifier</param>
-public record struct Property(MemberAccess Type, string Identifier) :
+/// <param name="Type">event type</param>
+/// <param name="Identifier">identifier</param>
+public record struct Event(MemberAccess Type, string Identifier) :
     IMember,
     IVariables,
     IAccessibility,
@@ -23,18 +23,7 @@ public record struct Property(MemberAccess Type, string Identifier) :
     IAttributes,
     IAccessors
 {
-    /// <inheritdoc />
-    public string Variable
-    {
-        readonly get => Identifier;
-
-        set => Identifier = value;
-    }
-
-    /// <inheritdoc />
-    public Accessibility Accessibility { get; set; }
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddSummary(ref builder);
@@ -45,11 +34,23 @@ public record struct Property(MemberAccess Type, string Identifier) :
         this.AddPolymorphism(ref builder);
         this.AddPartial(ref builder);
 
+        builder.Append("event ");
         Type.ToCode(ref builder);
         builder.Append(' ');
         builder.Append(Identifier);
         this.AddAccessors(ref builder);
     }
+
+    /// <inheritdoc/>
+    public string Variable
+    {
+        readonly get => Identifier;
+
+        set => Identifier = value;
+    }
+
+    /// <inheritdoc/>
+    public Accessibility Accessibility { get; set; }
 
     /// <inheritdoc/>
     public bool IsPartial { get; set; }
@@ -64,11 +65,11 @@ public record struct Property(MemberAccess Type, string Identifier) :
     public List<string> Description
         => field ??= [];
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public List<Attribute> Attributes
         => field ??= [];
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public List<Accessor> Accessors
         => field ??= [];
 }
