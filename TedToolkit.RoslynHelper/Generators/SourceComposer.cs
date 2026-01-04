@@ -27,15 +27,27 @@ public static class SourceComposer
     /// Create a file
     /// </summary>
     /// <param name="fileName">file name</param>
-    /// <param name="nameSpace">nameSpace</param>
     /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref SourceFile File(string fileName, MemberAccess nameSpace, in SourceFile result = default)
+    public static ref SourceFile File(string fileName, in SourceFile result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.FileName = fileName;
-        instance.NameSpace = nameSpace;
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create a namespace
+    /// </summary>
+    /// <param name="nameSpace">the namespace</param>
+    /// <param name="result">result</param>
+    /// <returns>namespace</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref NameSpace NameSpace(MemberAccess nameSpace, in NameSpace result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Name = nameSpace;
         return ref instance;
     }
 

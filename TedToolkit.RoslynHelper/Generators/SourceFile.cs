@@ -21,9 +21,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// The source file
 /// </summary>
 /// <param name="FileName">file name</param>
-/// <param name="NameSpace">name space</param>
-public record struct SourceFile(string FileName, MemberAccess NameSpace) :
-    IMemberOwner
+public record struct SourceFile(string FileName)
 {
     /// <summary>
     /// Generate the code
@@ -57,12 +55,13 @@ public record struct SourceFile(string FileName, MemberAccess NameSpace) :
 
             builder.Append("#pragma warning disable");
             builder.AppendLine();
-            builder.AppendLine();
 
-            builder.Append("namespace ");
-            NameSpace.ToCode(ref builder);
+            foreach (var member in NameSpaces)
+            {
+                builder.AppendLine();
+                member.ToCode(ref builder);
+            }
 
-            this.AddMembers(ref builder);
             return builder.ToCode();
         }
 #pragma warning disable CA1031
@@ -87,7 +86,9 @@ public record struct SourceFile(string FileName, MemberAccess NameSpace) :
         }
     }
 
-    /// <inheritdoc />
-    public List<ToCodeHandler> Members
+    /// <summary>
+    /// NameSpaces
+    /// </summary>
+    public List<NameSpace> NameSpaces
         => field ??= [];
 }
