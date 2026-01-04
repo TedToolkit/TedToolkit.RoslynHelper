@@ -20,6 +20,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class SourceComposer<TGenerator>
 {
     private static readonly string _toolName = typeof(TGenerator).FullName ?? typeof(TGenerator).Name;
+
     private static readonly string _version = typeof(TGenerator).Assembly.GetName().Version.ToString();
 
     private static void AddGeneratorAttribute<T>(ref T item)
@@ -98,6 +99,57 @@ public static class SourceComposer<TGenerator>
         instance.Type = type;
         AddGeneratorAttribute(ref instance);
         return ref instance;
+    }
+
+    /// <summary>
+    /// Create the Field
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Field Field(
+        MemberAccess type,
+        string identifier,
+        in Field result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = type;
+        instance.Identifier = identifier;
+        AddGeneratorAttribute(ref instance);
+        return ref instance;
+    }
+
+    /// <summary>
+    /// Create the Field
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Field Field(
+        Type type,
+        string identifier,
+        in Field result = default)
+    {
+        return ref Field(SourceComposer.Type(type), identifier, result);
+    }
+
+    /// <summary>
+    /// Create the Field
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Field Field<T>(
+        string identifier,
+        in Field result = default)
+    {
+        return ref Field(SourceComposer.Type<T>(), identifier, result);
     }
 
     /// <summary>

@@ -35,6 +35,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
         this.AddStatic(ref builder);
+        this.AddReadonly(ref builder);
         this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);

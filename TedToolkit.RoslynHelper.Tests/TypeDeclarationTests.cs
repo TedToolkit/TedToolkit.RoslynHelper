@@ -88,11 +88,23 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddMember(Property("Item", SourceComposer.Type<long>()).Internal
+                    .AddMember(Property("Item", Type<long>()).Internal
                         .AddAccessor(Accessor(AccessorType.GET)))))
             .ToCode();
 
         await Assert.That(code).Contains("internal long Item");
         await Assert.That(code).Contains("get");
+    }
+
+    [Test]
+    public async Task FieldTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Field<long>("Item").Internal.Readonly)))
+            .ToCode();
+
+        await Assert.That(code).Contains("internal readonly long Item;");
     }
 }

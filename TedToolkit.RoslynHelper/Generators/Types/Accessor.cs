@@ -26,6 +26,7 @@ public record struct Accessor(AccessorType Type) :
     {
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
+        this.AddReadonly(ref builder);
         this.AddUnsafe(ref builder);
         builder.Append(Type switch
         {
