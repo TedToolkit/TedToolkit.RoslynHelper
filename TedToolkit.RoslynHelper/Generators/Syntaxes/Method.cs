@@ -54,7 +54,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         builder.Append(' ');
 
         builder.Append(Identifier);
-        this.AddParametersNoReturn(ref builder);
+        this.AddParametersNoSkip(ref builder);
         this.AddStatements(ref builder);
     }
 

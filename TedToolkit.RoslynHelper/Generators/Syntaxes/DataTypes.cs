@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
@@ -99,86 +97,4 @@ public static class DataTypes
     /// </summary>
     public static DataType Void { get; } = new(new SimpleNameExpression("void"));
 #pragma warning restore CA1720
-
-    /// <summary>
-    /// From Type
-    /// </summary>
-    /// <typeparam name="T">Type</typeparam>
-    /// <param name="result">result</param>
-    /// <returns>Expression</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref DataType FromType<T>(in DataType result = default)
-        => ref FromType(typeof(T), result);
-
-    /// <summary>
-    /// From the type
-    /// </summary>
-    /// <param name="type">type</param>
-    /// <param name="result">result</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    public static ref DataType FromType(Type type, in DataType result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        ref var instance = ref Unsafe.AsRef(in result);
-        if (_typeAlias.TryGetValue(type, out var s))
-        {
-            instance = s;
-            return ref instance;
-        }
-
-        if (type.IsArray)
-        {
-            _ = FromType(type.GetElementType()!, result).Array;
-            return ref instance;
-        }
-
-        if (type.IsGenericType)
-        {
-            if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                _ = FromType(Nullable.GetUnderlyingType(type)!).Null;
-                return ref instance;
-            }
-
-            instance.Type = SimpleType()
-                .Generic([.. type.GetGenericArguments().Select(i => FromType(i)),]);
-            return ref instance;
-        }
-
-        instance.Type = SimpleType();
-        return ref instance;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IExpression SimpleType()
-        {
-            var name = new SimpleNameExpression(type.Name.Split('`')[0]);
-            if (string.IsNullOrEmpty(type.Namespace))
-                return name;
-
-            return new MemberAccessExpression(new SimpleNameExpression(type.Namespace), name);
-        }
-    }
-
-    private static readonly Dictionary<Type, DataType> _typeAlias = new()
-    {
-        { typeof(bool), Bool },
-        { typeof(byte), Byte },
-        { typeof(char), Char },
-        { typeof(decimal), Decimal },
-        { typeof(double), Double },
-        { typeof(float), Float },
-        { typeof(int), Int },
-        { typeof(long), Long },
-        { typeof(object), Object },
-        { typeof(sbyte), Sbyte },
-        { typeof(short), Short },
-        { typeof(string), String },
-        { typeof(uint), Uint },
-        { typeof(ulong), Ulong },
-        { typeof(ushort), Ushort },
-        { typeof(void), Void },
-    };
 }

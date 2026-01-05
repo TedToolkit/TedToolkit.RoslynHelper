@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -27,6 +29,17 @@ public static class StatementOwnerReferenceExtensions
             where TStatement : class, IStatement
         {
             instance.Statements.Add(statement);
+            return instance;
+        }
+
+        /// <summary>
+        /// Add the statement
+        /// </summary>
+        /// <param name="expression">the statement</param>
+        /// <returns>the item</returns>
+        public TItem AddStatement(IExpression expression)
+        {
+            instance.Statements.Add(new Statement(expression));
             return instance;
         }
 

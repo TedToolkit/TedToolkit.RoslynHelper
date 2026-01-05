@@ -1,43 +1,28 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ForEachStatement.cs" company="TedToolkit">
+// <copyright file="IfStatement.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Cysharp.Text;
-
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Foreach Statement
+/// The if statement.
 /// </summary>
-/// <param name="type">type</param>
-/// <param name="identifier">identifier</param>
 /// <param name="expression">expression</param>
-public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
+public sealed class IfStatement(IExpression expression) :
     IStatement,
-    IVariables,
     IStatementOwner
 {
-    private DataType _type = type;
-
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
-        builder.Append("for (");
-        _type.ToCode(ref builder);
-        builder.Append(" @");
-        builder.Append(identifier);
-        builder.Append(" in ");
+        builder.Append("if (");
         expression.ToCode(ref builder);
         builder.Append(')');
         this.AddStatements(ref builder);
     }
-
-    /// <inheritdoc/>
-    public string Variable
-        => ZString.Concat('@', identifier);
 
     /// <inheritdoc/>
     public List<IStatement> Statements

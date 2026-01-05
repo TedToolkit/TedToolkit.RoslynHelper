@@ -41,6 +41,105 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Make Ref
+        /// </summary>
+        public RefExpression Ref
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// Make Ref
+        /// </summary>
+        public RefReadonlyExpression RefReadonly
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// Add ()
+        /// </summary>
+        public ParenthesizedExpression Wrap
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// Add ()
+        /// </summary>
+        public ParenthesizedExpression Parenthesized
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// Invoke
+        /// </summary>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public InvocationExpression Invoke()
+            => new(expression);
+
+        /// <summary>
+        /// Cast
+        /// </summary>
+        /// <param name="type">type</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CastExpression Cast(scoped in DataType type)
+            => new(type, expression);
+
+        /// <summary>
+        /// Cast
+        /// </summary>
+        /// <param name="type">type</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CastExpression Cast(Type type)
+            => new(DataType.FromType(type), expression);
+
+        /// <summary>
+        /// Cast
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CastExpression Cast<T>()
+            => new(DataType.FromType<T>(), expression);
+
+        /// <summary>
+        /// Postfix
+        /// </summary>
+        /// <param name="operator">postfix</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PostfixUnaryExpression Postfix(string @operator)
+            => new(expression, @operator);
+
+        /// <summary>
+        /// Prefix
+        /// </summary>
+        /// <param name="operator">prefix</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression Prefix(string @operator)
+            => new(@operator, expression);
+
+        /// <summary>
+        /// Prefix
+        /// </summary>
+        /// <param name="operator">prefix</param>
+        /// <param name="right">right</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Operator(string @operator, IExpression right)
+            => new(@operator, expression, right);
+
+        /// <summary>
         /// Create the sub items
         /// </summary>
         /// <param name="right">right</param>
@@ -214,6 +313,6 @@ public static class ExpressionExtensions
         /// <returns>result</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref DataType ToExpression(in DataType result = default)
-            => ref DataTypes.FromType(type, result);
+            => ref DataType.FromType(type, result);
     }
 }

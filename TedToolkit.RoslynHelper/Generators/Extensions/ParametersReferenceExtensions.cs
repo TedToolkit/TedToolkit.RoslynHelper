@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ParametersExtensions.cs" company="TedToolkit">
+// <copyright file="ParametersReferenceExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -12,21 +12,21 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <summary>
 /// The extensions for the <see cref="IParameters"/>
 /// </summary>
-public static class ParametersExtensions
+public static class ParametersReferenceExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IParameters
+    extension<TItem>(TItem instance)
+        where TItem : class, IParameters
 #pragma warning restore CA1034
     {
         /// <summary>
         /// Add parameters
         /// </summary>
         /// <param name="parameter">the parameter</param>
-        public ref TItem AddParameter(Parameter parameter)
+        public TItem AddParameter(Parameter parameter)
         {
             instance.Parameters.Add(parameter);
-            return ref instance;
+            return instance;
         }
 
         internal void AddParameters(ref SourceBuilder builder)
