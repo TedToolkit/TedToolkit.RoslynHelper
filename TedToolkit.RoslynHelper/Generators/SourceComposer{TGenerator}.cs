@@ -8,7 +8,9 @@
 using System.CodeDom.Compiler;
 using System.Runtime.CompilerServices;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+
+using Delegate = TedToolkit.RoslynHelper.Generators.Syntaxes.Delegate;
 
 namespace TedToolkit.RoslynHelper.Generators;
 #pragma warning disable CA1000
@@ -313,10 +315,10 @@ public static class SourceComposer<TGenerator>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Types.Delegate Delegate(
+    public static ref Delegate Delegate(
         string identifier,
         scoped in ReturnType? returnType = null,
-        in Types.Delegate result = default)
+        in Delegate result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Identifier = identifier;

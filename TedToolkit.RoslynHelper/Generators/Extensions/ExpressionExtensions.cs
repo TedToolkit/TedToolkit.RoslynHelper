@@ -7,7 +7,7 @@
 
 using System.Runtime.CompilerServices;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -222,53 +222,6 @@ public static class ExpressionExtensions
         /// <returns>result</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IExpression ToExpression()
-        {
-            if (_typeAlias.TryGetValue(type, out var s))
-                return s;
-
-            if (type.IsArray)
-                return type.GetElementType()!.ToExpression().Array;
-
-            if (type.IsGenericType)
-            {
-                if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    return Nullable.GetUnderlyingType(type)!.ToExpression().Null;
-
-                return SimpleType()
-                    .Generic([.. type.GetGenericArguments().Select(ToExpression),]);
-            }
-
-            return SimpleType();
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            IExpression SimpleType()
-            {
-                var name = new SimpleNameExpression(type.Name.Split('`')[0]);
-                if (string.IsNullOrEmpty(type.Namespace))
-                    return name;
-
-                return new MemberAccessExpression(new SimpleNameExpression(type.Namespace), name);
-            }
-        }
+            => Types.FromType(type);
     }
-
-    private static readonly Dictionary<Type, SimpleNameExpression> _typeAlias = new()
-    {
-        { typeof(bool), new("bool") },
-        { typeof(byte), new("byte") },
-        { typeof(char), new("char") },
-        { typeof(decimal), new("decimal") },
-        { typeof(double), new("double") },
-        { typeof(float), new("float") },
-        { typeof(int), new("int") },
-        { typeof(long), new("long") },
-        { typeof(object), new("object") },
-        { typeof(sbyte), new("sbyte") },
-        { typeof(short), new("short") },
-        { typeof(string), new("string") },
-        { typeof(uint), new("uint") },
-        { typeof(ulong), new("ulong") },
-        { typeof(ushort), new("ushort") },
-        { typeof(void), new("void") },
-    };
 }

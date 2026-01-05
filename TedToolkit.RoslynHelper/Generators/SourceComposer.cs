@@ -10,7 +10,9 @@ using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+
+using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -146,8 +148,8 @@ public static class SourceComposer
     /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Types.Attribute Attribute<T>(
-        in Types.Attribute result = default)
+    public static ref Attribute Attribute<T>(
+        in Attribute result = default)
         where T : System.Attribute
     {
         return ref Attribute(typeof(T), result);
@@ -161,9 +163,9 @@ public static class SourceComposer
     /// <returns>attribute</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Types.Attribute Attribute(
+    public static ref Attribute Attribute(
         Type type,
-        in Types.Attribute result = default)
+        in Attribute result = default)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
@@ -178,9 +180,9 @@ public static class SourceComposer
     /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Types.Attribute Attribute(
+    public static ref Attribute Attribute(
         IExpression type,
-        in Types.Attribute result = default)
+        in Attribute result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Type = type;

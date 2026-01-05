@@ -1,5 +1,6 @@
 using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+using TedToolkit.RoslynHelper.Generators.Syntaxes.Statements;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -130,5 +131,19 @@ internal class TypeDeclarationTests
             .ToCode();
 
         await Assert.That(code).Contains("public delegate void ADelegate();");
+    }
+
+    [Test]
+    public async Task ForeachTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())))
+                        .AddStatement(new ForEachStatement(Types.Var, "item", new SimpleNameExpression("source"))))))
+            .ToCode();
+
+        await Assert.That(code).Contains("for (var @item in source)");
     }
 }

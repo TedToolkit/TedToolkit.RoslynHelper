@@ -1,20 +1,22 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SimpleNameExpression.cs" company="TedToolkit">
+// <copyright file="NullExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Just a name Expression
+/// For the null expression
 /// </summary>
-/// <param name="name">name of the expression</param>
-public sealed class SimpleNameExpression(string name) :
-    IExpression
+/// <param name="expression">the null expression</param>
+public sealed class NullExpression(IExpression expression) : IExpression
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => builder.Append(name);
+    {
+        expression.ToCode(ref builder);
+        builder.Append('?');
+    }
 }

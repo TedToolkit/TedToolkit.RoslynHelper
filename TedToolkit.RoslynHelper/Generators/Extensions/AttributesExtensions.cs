@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -22,7 +24,7 @@ public static class AttributesExtensions
         /// </summary>
         /// <param name="attribute">attribute</param>
         /// <returns>the item</returns>
-        public ref TItem AddAttribute(TedToolkit.RoslynHelper.Generators.Types.Attribute attribute)
+        public ref TItem AddAttribute(Attribute attribute)
         {
             instance.Attributes.Add(attribute);
             return ref instance;

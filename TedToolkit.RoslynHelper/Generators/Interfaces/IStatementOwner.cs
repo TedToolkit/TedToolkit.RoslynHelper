@@ -17,5 +17,5 @@ public interface IStatementOwner
     /// <summary>
     /// The members
     /// </summary>
-    List<ToCodeHandler> Statements { get; }
+    List<IStatement> Statements { get; }
 }

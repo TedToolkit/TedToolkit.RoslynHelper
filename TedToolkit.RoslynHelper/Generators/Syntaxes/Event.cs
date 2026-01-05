@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// Create an event

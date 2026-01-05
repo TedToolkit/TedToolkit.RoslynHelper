@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 

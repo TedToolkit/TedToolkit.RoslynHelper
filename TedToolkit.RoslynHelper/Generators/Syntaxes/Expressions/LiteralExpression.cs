@@ -9,7 +9,7 @@ using System.Globalization;
 
 using Cysharp.Text;
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The literal Expression
@@ -92,6 +92,12 @@ public sealed class LiteralExpression : IExpression
     public LiteralExpression(ulong value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// Create from bool
+    /// </summary>
+    /// <param name="value">value</param>
+    public LiteralExpression(bool value)
+        => _value = value.ToString(CultureInfo.InvariantCulture);
 #pragma warning disable CA2225
 
     /// <inheritdoc cref="LiteralExpression(char)"/>
@@ -132,6 +138,10 @@ public sealed class LiteralExpression : IExpression
 
     /// <inheritdoc cref="LiteralExpression(ulong)"/>
     public static implicit operator LiteralExpression(ulong value)
+        => new(value);
+
+    /// <inheritdoc cref="LiteralExpression(bool)"/>
+    public static implicit operator LiteralExpression(bool value)
         => new(value);
 #pragma warning restore CA2225
 }

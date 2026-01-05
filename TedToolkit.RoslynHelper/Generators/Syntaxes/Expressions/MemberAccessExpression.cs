@@ -1,25 +1,25 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AliasExpression.cs" company="TedToolkit">
+// <copyright file="MemberAccessExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The alias expression
+/// The member access.
 /// </summary>
-/// <param name="alias">alias</param>
-/// <param name="expression">expression</param>
-public sealed class AliasExpression(string alias, IExpression expression) :
+/// <param name="left">left</param>
+/// <param name="right">right</param>
+public sealed class MemberAccessExpression(IExpression left, IExpression right) :
     IExpression
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        builder.Append(alias);
-        builder.Append("::");
-        expression.ToCode(ref builder);
+        left.ToCode(ref builder);
+        builder.Append('.');
+        right.ToCode(ref builder);
     }
 }

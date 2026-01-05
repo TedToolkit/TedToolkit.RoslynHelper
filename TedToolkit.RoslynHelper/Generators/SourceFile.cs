@@ -11,7 +11,9 @@ using Cysharp.Text;
 
 using Microsoft.CodeAnalysis;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+
+using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -102,7 +104,7 @@ public record struct SourceFile(string FileName)
     /// Attributes
     /// </summary>
 #pragma warning disable S2325
-    public List<Types.Attribute> Attributes
+    public List<Attribute> Attributes
 #pragma warning restore S2325
         => field ??= [];
 }

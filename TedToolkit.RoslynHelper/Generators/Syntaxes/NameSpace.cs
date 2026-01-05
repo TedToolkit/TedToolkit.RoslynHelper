@@ -7,7 +7,7 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// <see langword="namespace"/>

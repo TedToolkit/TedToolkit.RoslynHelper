@@ -7,7 +7,7 @@
 
 using Cysharp.Text;
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The Parameter
