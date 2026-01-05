@@ -97,6 +97,13 @@ public record struct SourceBuilder : IDisposable
         => _stringBuilder.Append(value, repeatCount);
 
     /// <summary>
+    /// AppendSpace
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AppendSpace()
+        => _stringBuilder.Append(' ');
+
+    /// <summary>
     /// Begin a block
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

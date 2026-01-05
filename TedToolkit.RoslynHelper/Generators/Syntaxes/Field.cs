@@ -18,7 +18,7 @@ public record struct Field(DataType Type, string Identifier) :
     IStatic,
     IAccessibility,
     IReadonly,
-    IVariables,
+    IVariable,
     IDescription
 {
     /// <inheritdoc/>

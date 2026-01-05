@@ -145,4 +145,19 @@ internal class TypeDeclarationTests
 
         await Assert.That(code).Contains("for (var @item in source)");
     }
+
+        [Test]
+        public async Task VariableTest()
+        {
+            var code = File("File")
+                .AddNameSpace(NameSpace("Space")
+                    .AddMember(Class("FirstClass").Public
+                        .AddMember(Method("Method")
+                            .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())))
+                            .AddStatement(new VariableStatement(DataTypes.Int, "item")
+                                .AddDefault(10.ToLiteral())))))
+                .ToCode();
+
+            await Assert.That(code).Contains("int @item = 10;");
+        }
 }

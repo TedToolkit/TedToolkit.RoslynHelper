@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// </summary>
 public static class UnsafeExtensions
 {
-    #pragma warning disable CA1034
+#pragma warning disable CA1034
     extension<TItem>(ref TItem instance)
         where TItem : struct, IUnsafe
 #pragma warning restore CA1034

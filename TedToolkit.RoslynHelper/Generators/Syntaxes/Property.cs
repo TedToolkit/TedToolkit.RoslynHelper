@@ -14,7 +14,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <param name="Identifier">The identifier</param>
 public record struct Property(DataType Type, string Identifier) :
     IMember,
-    IVariables,
+    IVariable,
     IAccessibility,
     IPartial,
     IStatic,

@@ -17,7 +17,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 public record struct Parameter(DataType Type, string Identifier) :
     IToCode,
     IDescription,
-    IVariables,
+    IVariable,
     IAttributes,
     IStorageKind
 {

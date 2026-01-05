@@ -77,6 +77,54 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Return
+        /// </summary>
+        public ReturnStatement Return
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// If
+        /// </summary>
+        public IfStatement If
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
+        /// For each
+        /// </summary>
+        /// <param name="type">type</param>
+        /// <param name="identifier">name</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ForEachStatement ForEach(scoped in DataType type, string identifier)
+            => new(type, identifier, expression);
+
+        /// <summary>
+        /// For each
+        /// </summary>
+        /// <param name="type">type</param>
+        /// <param name="identifier">name</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ForEachStatement ForEach(Type type, string identifier)
+            => new(DataType.FromType(type), identifier, expression);
+
+        /// <summary>
+        /// For each
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="identifier">name</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ForEachStatement ForEach<T>(string identifier)
+            => new(DataType.FromType<T>(), identifier, expression);
+
+        /// <summary>
         /// Invoke
         /// </summary>
         /// <returns>result</returns>
