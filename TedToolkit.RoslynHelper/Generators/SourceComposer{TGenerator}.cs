@@ -19,10 +19,10 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <typeparam name="TGenerator">Your generator</typeparam>
 public static class SourceComposer<TGenerator>
 {
-    private static readonly SimpleNameExpression
+    private static readonly LiteralExpression
         _toolName = new(typeof(TGenerator).FullName ?? typeof(TGenerator).Name);
 
-    private static readonly SimpleNameExpression _version =
+    private static readonly LiteralExpression _version =
         new(typeof(TGenerator).Assembly.GetName().Version.ToString());
 
     private static void AddGeneratorAttribute<T>(ref T item)

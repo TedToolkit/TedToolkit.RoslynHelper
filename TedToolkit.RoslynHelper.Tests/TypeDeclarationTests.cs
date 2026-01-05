@@ -16,6 +16,7 @@ internal class TypeDeclarationTests
                 .AddMember(Class("FirstClass").Public.Static.Unsafe.Partial))
             .ToCode();
 
+        await Assert.That(code).Contains("[System.CodeDom.Compiler.GeneratedCodeAttribute(\"TedToolkit.RoslynHelper.Tests.TypeDeclarationTests\", \"");
         await Assert.That(code).Contains("public static unsafe partial class FirstClass");
     }
 
