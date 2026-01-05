@@ -49,6 +49,32 @@ public static class SourceComposer
     }
 
     /// <summary>
+    /// Create a namespace
+    /// </summary>
+    /// <param name="nameSpace">the namespace</param>
+    /// <param name="result">result</param>
+    /// <returns>namespace</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref NameSpace NameSpace(in ReadOnlySpan<string> nameSpace, in NameSpace result = default)
+        => ref NameSpace(ZString.Join('.', nameSpace).ToSimpleName(), result);
+
+    /// <summary>
+    /// Create a namespace
+    /// </summary>
+    /// <param name="nameSpace">the namespace</param>
+    /// <param name="result">result</param>
+    /// <returns>namespace</returns>
+    /// <exception cref="ArgumentNullException">the namespace is null</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref NameSpace NameSpace(string nameSpace, in NameSpace result = default)
+    {
+        if (nameSpace is null)
+            throw new ArgumentNullException(nameof(nameSpace));
+
+        return ref NameSpace(nameSpace.ToSimpleName(), result);
+    }
+
+    /// <summary>
     /// Create an argument
     /// </summary>
     /// <param name="variable">the variable</param>

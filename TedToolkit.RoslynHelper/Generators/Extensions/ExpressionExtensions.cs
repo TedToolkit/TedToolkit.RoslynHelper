@@ -48,6 +48,30 @@ public static class ExpressionExtensions
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new(expression);
         }
+
+        /// <summary>
+        /// Create the sub items
+        /// </summary>
+        /// <param name="right">right</param>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MemberAccessExpression Sub(IExpression right)
+            => new(expression, right);
+
+        /// <summary>
+        /// Create the sub items
+        /// </summary>
+        /// <param name="right">right</param>
+        /// <returns>result</returns>
+        /// <exception cref="ArgumentNullException">right is null</exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MemberAccessExpression Sub(string right)
+        {
+            if (right is null)
+                throw new ArgumentNullException(nameof(right));
+
+            return new(expression, right.ToSimpleName());
+        }
     }
 
 #pragma warning disable CA1034

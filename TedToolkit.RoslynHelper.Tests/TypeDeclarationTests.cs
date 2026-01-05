@@ -12,7 +12,7 @@ internal class TypeDeclarationTests
     public async Task StaticClassTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public.Static.Unsafe.Partial))
             .ToCode();
 
@@ -23,7 +23,7 @@ internal class TypeDeclarationTests
     public async Task BaseTypeTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public.AddBaseType<IDisposable>()))
             .ToCode();
 
@@ -34,7 +34,7 @@ internal class TypeDeclarationTests
     public async Task ParametersTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10.ToLiteral())))))
             .ToCode();
@@ -46,7 +46,7 @@ internal class TypeDeclarationTests
     public async Task SummaryTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddDescription("Good")))
             .ToCode();
@@ -60,7 +60,7 @@ internal class TypeDeclarationTests
     public async Task ParameterSummaryTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())).AddDescription("Good"))))
             .ToCode();
@@ -74,7 +74,7 @@ internal class TypeDeclarationTests
     public async Task MethodTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
                         .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral()))))))
@@ -87,7 +87,7 @@ internal class TypeDeclarationTests
     public async Task PropertyTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Property<long>("Item").Internal
                         .AddAccessor(Accessor(AccessorType.GET)))))
@@ -101,7 +101,7 @@ internal class TypeDeclarationTests
     public async Task FieldTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Field<long>("Item").Internal.Readonly)))
             .ToCode();
@@ -113,7 +113,7 @@ internal class TypeDeclarationTests
     public async Task EventTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Event<Action<int>>("Item").Internal)))
             .ToCode();
@@ -125,7 +125,7 @@ internal class TypeDeclarationTests
     public async Task DelegateTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
+            .AddNameSpace(NameSpace("Space")
                 .AddMember(Delegate("ADelegate").Public))
             .ToCode();
 
