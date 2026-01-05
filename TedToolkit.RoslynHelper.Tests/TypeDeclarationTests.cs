@@ -1,4 +1,5 @@
 using TedToolkit.RoslynHelper.Generators;
+using TedToolkit.RoslynHelper.Generators.Types;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -11,7 +12,7 @@ internal class TypeDeclarationTests
     public async Task StaticClassTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public.Static.Unsafe.Partial))
             .ToCode();
 
@@ -22,20 +23,20 @@ internal class TypeDeclarationTests
     public async Task BaseTypeTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public.AddBaseType<IDisposable>()))
             .ToCode();
 
-        await Assert.That(code).Contains("global::System.IDisposable");
+        await Assert.That(code).Contains("System.IDisposable");
     }
 
     [Test]
     public async Task ParametersTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10)))))
+                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10.ToLiteral())))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int @item = 10");
@@ -45,7 +46,7 @@ internal class TypeDeclarationTests
     public async Task SummaryTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
                     .AddDescription("Good")))
             .ToCode();
@@ -59,9 +60,9 @@ internal class TypeDeclarationTests
     public async Task ParameterSummaryTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").AddDefault(Argument(10)).AddDescription("Good"))))
+                    .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())).AddDescription("Good"))))
             .ToCode();
 
         await Assert.That(code).Contains("/// <param name=\"@item\">");
@@ -73,10 +74,10 @@ internal class TypeDeclarationTests
     public async Task MethodTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
-                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10))))))
+                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral()))))))
             .ToCode();
 
         await Assert.That(code).Contains("void Method(");
@@ -86,9 +87,9 @@ internal class TypeDeclarationTests
     public async Task PropertyTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
-                    .AddMember(Property("Item", Type<long>()).Internal
+                    .AddMember(Property<long>("Item").Internal
                         .AddAccessor(Accessor(AccessorType.GET)))))
             .ToCode();
 
@@ -100,7 +101,7 @@ internal class TypeDeclarationTests
     public async Task FieldTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Field<long>("Item").Internal.Readonly)))
             .ToCode();
@@ -112,19 +113,19 @@ internal class TypeDeclarationTests
     public async Task EventTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Event<Action<int>>("Item").Internal)))
             .ToCode();
 
-        await Assert.That(code).Contains("internal event global::System.Action<int> Item;");
+        await Assert.That(code).Contains("internal event System.Action<int> Item;");
     }
 
     [Test]
     public async Task DelegateTest()
     {
         var code = File("File")
-            .AddNameSpace(NameSpace("Space")
+            .AddNameSpace(NameSpace(new SimpleNameExpression("Space"))
                 .AddMember(Delegate("ADelegate").Public))
             .ToCode();
 

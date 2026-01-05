@@ -11,7 +11,7 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// The argument
 /// </summary>
 /// <param name="Variable">variable name</param>
-public record struct Argument(MemberAccess Variable) :
+public record struct Argument(IExpression Variable) :
     IStorageKind,
     IToCode
 {

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ReturnType.cs" company="TedToolkit">
+// <copyright file="MemberAccessExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,25 +8,18 @@
 namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
-/// The Return Type
+/// The member access.
 /// </summary>
-/// <param name="Type">return Type</param>
-public record struct ReturnType(MemberAccessExpression Type) :
-    IDescription,
-    IStorageKind,
-    IToCode
+/// <param name="left">left</param>
+/// <param name="right">right</param>
+public sealed class MemberAccessExpression(IExpression left, IExpression right) :
+    IExpression
 {
-    /// <inheritdoc />
-    public List<string> Description
-        => field ??= [];
-
-    /// <inheritdoc />
-    public StorageKind StorageKind { get; set; }
-
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddStorageKind(ref builder);
-        Type.ToCode(ref builder);
+        left.ToCode(ref builder);
+        builder.Append('.');
+        right.ToCode(ref builder);
     }
 }

@@ -11,8 +11,8 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// The field
 /// </summary>
 /// <param name="Type">Field Type</param>
-/// <param name="Identifier">IDentifier</param>
-public record struct Field(MemberAccess Type, string Identifier) :
+/// <param name="Identifier">Identifier</param>
+public record struct Field(IExpression Type, string Identifier) :
     IMember,
     IAttributes,
     IStatic,

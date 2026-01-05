@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// </summary>
 /// <param name="Type">The type</param>
 /// <param name="Identifier">The identifier</param>
-public record struct Property(MemberAccess Type, string Identifier) :
+public record struct Property(IExpression Type, string Identifier) :
     IMember,
     IVariables,
     IAccessibility,

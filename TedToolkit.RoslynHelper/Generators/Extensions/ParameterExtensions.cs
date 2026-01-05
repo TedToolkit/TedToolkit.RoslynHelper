@@ -24,7 +24,7 @@ public static class ParameterExtensions
         /// </summary>
         public ref Parameter AddDefault()
         {
-            instance.Default = SourceComposer.Argument((MemberAccess)"default");
+            instance.Default = new Argument(new SimpleNameExpression("default"));
             return ref instance;
         }
 

@@ -14,7 +14,7 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// </summary>
 /// <param name="Type">The Parameter Type</param>
 /// <param name="Identifier">The Variable</param>
-public record struct Parameter(MemberAccess Type, string Identifier) :
+public record struct Parameter(IExpression Type, string Identifier) :
     IToCode,
     IDescription,
     IVariables,

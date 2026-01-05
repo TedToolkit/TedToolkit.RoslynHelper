@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ReturnType.cs" company="TedToolkit">
+// <copyright file="AliasExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,25 +8,18 @@
 namespace TedToolkit.RoslynHelper.Generators.Types;
 
 /// <summary>
-/// The Return Type
+/// The alias expression
 /// </summary>
-/// <param name="Type">return Type</param>
-public record struct ReturnType(MemberAccessExpression Type) :
-    IDescription,
-    IStorageKind,
-    IToCode
+/// <param name="alias">alias</param>
+/// <param name="expression">expression</param>
+public sealed class AliasExpression(string alias, IExpression expression) :
+    IExpression
 {
-    /// <inheritdoc />
-    public List<string> Description
-        => field ??= [];
-
-    /// <inheritdoc />
-    public StorageKind StorageKind { get; set; }
-
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddStorageKind(ref builder);
-        Type.ToCode(ref builder);
+        builder.Append(alias);
+        builder.Append("::");
+        expression.ToCode(ref builder);
     }
 }

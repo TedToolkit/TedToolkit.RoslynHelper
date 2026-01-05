@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators.Types;
 /// <see langword="namespace"/>
 /// </summary>
 /// <param name="Name">the name of the <see langword="namespace"/></param>
-public record struct NameSpace(MemberAccess Name) :
+public record struct NameSpace(IExpression Name) :
     IMemberOwner,
     IToCode
 {

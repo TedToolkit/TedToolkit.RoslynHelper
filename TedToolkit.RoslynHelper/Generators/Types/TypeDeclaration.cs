@@ -93,7 +93,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     /// The base Types
     /// </summary>
 #pragma warning disable S2325
-    public List<MemberAccess> BaseTypes
+    public List<IExpression> BaseTypes
 #pragma warning restore S2325
         => field ??= [];
 
