@@ -24,7 +24,8 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
     IPolymorphism,
     IDescription,
     IStatementOwner,
-    IStatement
+    IStatement,
+    ITypeParameters
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
@@ -54,7 +55,9 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         builder.Append(' ');
 
         builder.Append(Identifier);
+        this.AddTypeParameters(ref builder);
         this.AddParametersNoSkip(ref builder);
+        this.AddTypeParameterConstraints(ref builder);
         this.AddStatements(ref builder);
     }
 
@@ -91,4 +94,8 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }
+
+    /// <inheritdoc />
+    public List<TypeParameter> TypeParameters
+        => field ??= [];
 }

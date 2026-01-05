@@ -20,7 +20,7 @@ public static class ParametersExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add parameters
+        /// Add parameter
         /// </summary>
         /// <param name="parameter">the parameter</param>
         public ref TItem AddParameter(Parameter parameter)

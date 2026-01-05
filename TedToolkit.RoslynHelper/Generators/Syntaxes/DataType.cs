@@ -104,23 +104,109 @@ public record struct DataType(IExpression Type) :
         }
     }
 
+    /// <summary>
+    /// <see langword="var"/>
+    /// </summary>
+    public static DataType Var { get; } = new(new SimpleNameExpression("var"));
+#pragma warning disable CA1720
+    /// <summary>
+    /// <see langword="string"/>
+    /// </summary>
+    public static DataType String { get; } = new(new SimpleNameExpression("string"));
+
+    /// <summary>
+    /// <see langword="char"/>
+    /// </summary>
+    public static DataType Char { get; } = new(new SimpleNameExpression("char"));
+
+    /// <summary>
+    /// <see langword="byte"/>
+    /// </summary>
+    public static DataType Byte { get; } = new(new SimpleNameExpression("byte"));
+
+    /// <summary>
+    /// <see langword="sbyte"/>
+    /// </summary>
+    public static DataType Sbyte { get; } = new(new SimpleNameExpression("sbyte"));
+
+    /// <summary>
+    /// <see langword="short"/>
+    /// </summary>
+    public static DataType Short { get; } = new(new SimpleNameExpression("short"));
+
+    /// <summary>
+    /// <see langword="ushort"/>
+    /// </summary>
+    public static DataType Ushort { get; } = new(new SimpleNameExpression("ushort"));
+
+    /// <summary>
+    /// <see langword="int"/>
+    /// </summary>
+    public static DataType Int { get; } = new(new SimpleNameExpression("int"));
+
+    /// <summary>
+    /// <see langword="uint"/>
+    /// </summary>
+    public static DataType Uint { get; } = new(new SimpleNameExpression("uint"));
+
+    /// <summary>
+    /// <see langword="long"/>
+    /// </summary>
+    public static DataType Long { get; } = new(new SimpleNameExpression("long"));
+
+    /// <summary>
+    /// <see langword="ulong"/>
+    /// </summary>
+    public static DataType Ulong { get; } = new(new SimpleNameExpression("ulong"));
+
+    /// <summary>
+    /// <see langword="bool"/>
+    /// </summary>
+    public static DataType Bool { get; } = new(new SimpleNameExpression("bool"));
+
+    /// <summary>
+    /// <see langword="double"/>
+    /// </summary>
+    public static DataType Double { get; } = new(new SimpleNameExpression("double"));
+
+    /// <summary>
+    /// <see langword="float"/>
+    /// </summary>
+    public static DataType Float { get; } = new(new SimpleNameExpression("float"));
+
+    /// <summary>
+    /// <see langword="decimal"/>
+    /// </summary>
+    public static DataType Decimal { get; } = new(new SimpleNameExpression("decimal"));
+
+    /// <summary>
+    /// <see langword="object"/>
+    /// </summary>
+    public static DataType Object { get; } = new(new SimpleNameExpression("object"));
+
+    /// <summary>
+    /// <see langword="void"/>
+    /// </summary>
+    public static DataType Void { get; } = new(new SimpleNameExpression("void"));
+#pragma warning restore CA1720
+
     private static readonly Dictionary<Type, DataType> _typeAlias = new()
     {
-        { typeof(bool), DataTypes.Bool },
-        { typeof(byte), DataTypes.Byte },
-        { typeof(char), DataTypes.Char },
-        { typeof(decimal), DataTypes.Decimal },
-        { typeof(double), DataTypes.Double },
-        { typeof(float), DataTypes.Float },
-        { typeof(int), DataTypes.Int },
-        { typeof(long), DataTypes.Long },
-        { typeof(object), DataTypes.Object },
-        { typeof(sbyte), DataTypes.Sbyte },
-        { typeof(short), DataTypes.Short },
-        { typeof(string), DataTypes.String },
-        { typeof(uint), DataTypes.Uint },
-        { typeof(ulong), DataTypes.Ulong },
-        { typeof(ushort), DataTypes.Ushort },
-        { typeof(void), DataTypes.Void },
+        { typeof(bool), Bool },
+        { typeof(byte), Byte },
+        { typeof(char), Char },
+        { typeof(decimal), Decimal },
+        { typeof(double), Double },
+        { typeof(float), Float },
+        { typeof(int), Int },
+        { typeof(long), Long },
+        { typeof(object), Object },
+        { typeof(sbyte), Sbyte },
+        { typeof(short), Short },
+        { typeof(string), String },
+        { typeof(uint), Uint },
+        { typeof(ulong), Ulong },
+        { typeof(ushort), Ushort },
+        { typeof(void), Void },
     };
 }

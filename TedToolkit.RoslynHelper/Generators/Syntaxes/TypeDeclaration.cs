@@ -25,7 +25,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IReadonly,
     IDescription,
     IParameters,
-    IPolymorphism
+    IPolymorphism,
+    ITypeParameters
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -50,6 +51,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
             _ => throw new InvalidOperationException("The type is invalid."),
         });
         builder.Append(Identifier);
+        this.AddTypeParameters(ref builder);
         this.AddParameters(ref builder);
 
         if (BaseTypes.Count > 0)
@@ -70,6 +72,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
             }
         }
 
+        this.AddTypeParameterConstraints(ref builder);
         this.AddMembers(ref builder);
     }
 
@@ -114,4 +117,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
 
     /// <inheritdoc />
     public Polymorphism Polymorphism { get; set; }
+
+    /// <inheritdoc />
+    public List<TypeParameter> TypeParameters
+        => field ??= [];
 }

@@ -24,7 +24,7 @@ public static class ParameterExtensions
         /// </summary>
         public ref Parameter AddDefault()
         {
-            instance.Default = new Argument(new SimpleNameExpression("default"));
+            instance.Default = new SimpleNameExpression("default");
             return ref instance;
         }
 
@@ -32,7 +32,7 @@ public static class ParameterExtensions
         /// Add default
         /// </summary>
         /// <param name="value">defaultValue</param>
-        public ref Parameter AddDefault(Argument value)
+        public ref Parameter AddDefault(IExpression value)
         {
             instance.Default = value;
             return ref instance;

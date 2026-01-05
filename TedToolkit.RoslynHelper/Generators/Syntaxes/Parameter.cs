@@ -32,7 +32,7 @@ public record struct Parameter(DataType Type, string Identifier) :
     /// <summary>
     /// The default value.
     /// </summary>
-    public Argument? Default { get; internal set; }
+    public IExpression? Default { get; internal set; }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -46,7 +46,7 @@ public record struct Parameter(DataType Type, string Identifier) :
             return;
 
         builder.Append(" = ");
-        Default.Value.ToCode(ref builder);
+        Default.ToCode(ref builder);
     }
 
     /// <inheritdoc />

@@ -36,7 +36,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10.ToLiteral())))))
+                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int @item = 10");
@@ -62,7 +62,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())).AddDescription("Good"))))
+                    .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()).AddDescription("Good"))))
             .ToCode();
 
         await Assert.That(code).Contains("/// <param name=\"@item\">");
@@ -77,7 +77,7 @@ internal class TypeDeclarationTests
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
-                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral()))))))
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral())))))
             .ToCode();
 
         await Assert.That(code).Contains("void Method(");
@@ -139,25 +139,42 @@ internal class TypeDeclarationTests
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
-                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())))
-                        .AddStatement(new ForEachStatement(DataTypes.Var, "item", new SimpleNameExpression("source"))))))
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()))
+                        .AddStatement(new ForEachStatement(DataType.Var, "item",
+                            new SimpleNameExpression("source"))))))
             .ToCode();
 
         await Assert.That(code).Contains("for (var @item in source)");
     }
 
-        [Test]
-        public async Task VariableTest()
-        {
-            var code = File("File")
-                .AddNameSpace(NameSpace("Space")
-                    .AddMember(Class("FirstClass").Public
-                        .AddMember(Method("Method")
-                            .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())))
-                            .AddStatement(new VariableStatement(DataTypes.Int, "item")
-                                .AddDefault(10.ToLiteral())))))
-                .ToCode();
+    [Test]
+    public async Task VariableTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()))
+                        .AddStatement(new VariableStatement(DataType.Int, "item")
+                            .AddDefault(10.ToLiteral())))))
+            .ToCode();
 
-            await Assert.That(code).Contains("int @item = 10;");
-        }
+        await Assert.That(code).Contains("int @item = 10;");
+    }
+
+
+    [Test]
+    public async Task GenericTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddTypeParameter(TypeParameter("Good").In
+                        .AddNewConstraint()
+                        .AddConstraint<int>())
+                ))
+            .ToCode();
+
+        await Assert.That(code).Contains("int @item = 10;");
+    }
 }

@@ -202,5 +202,21 @@ public static class SourceComposer
         instance.Type = type;
         return ref instance;
     }
+
+    /// <summary>
+    /// Create a type parameter
+    /// </summary>
+    /// <param name="identifier">identifier</param>
+    /// <param name="result">result</param>
+    /// <returns>attribute</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref TypeParameter TypeParameter(
+        string identifier,
+        in TypeParameter result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Identifier = identifier;
+        return ref instance;
+    }
 }
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
