@@ -28,22 +28,13 @@ public static class ExpressionExtensions
         /// <param name="types">types</param>
         /// <returns>expression</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public TypeParameterExpression Generic(params IExpression[] types)
+        public TypeParameterExpression Generic(params DataType[] types)
             => new(expression, types);
 
         /// <summary>
         /// Make Null
         /// </summary>
         public NullExpression Null
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
-        }
-
-        /// <summary>
-        /// Make Null
-        /// </summary>
-        public ArrayExpression Array
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => new(expression);

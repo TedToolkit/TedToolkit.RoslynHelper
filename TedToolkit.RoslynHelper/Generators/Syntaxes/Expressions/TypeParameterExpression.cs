@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="expression">expression</param>
 /// <param name="types">the types</param>
-public sealed class TypeParameterExpression(IExpression expression, params IExpression[] types) :
+public sealed class TypeParameterExpression(IExpression expression, params DataType[] types) :
     IExpression
 {
     /// <inheritdoc />

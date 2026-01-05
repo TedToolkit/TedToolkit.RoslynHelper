@@ -73,6 +73,31 @@ public static class DataTypes
     /// <see langword="bool"/>
     /// </summary>
     public static DataType Bool { get; } = new(new SimpleNameExpression("bool"));
+
+    /// <summary>
+    /// <see langword="double"/>
+    /// </summary>
+    public static DataType Double { get; } = new(new SimpleNameExpression("double"));
+
+    /// <summary>
+    /// <see langword="float"/>
+    /// </summary>
+    public static DataType Float { get; } = new(new SimpleNameExpression("float"));
+
+    /// <summary>
+    /// <see langword="decimal"/>
+    /// </summary>
+    public static DataType Decimal { get; } = new(new SimpleNameExpression("decimal"));
+
+    /// <summary>
+    /// <see langword="object"/>
+    /// </summary>
+    public static DataType Object { get; } = new(new SimpleNameExpression("object"));
+
+    /// <summary>
+    /// <see langword="void"/>
+    /// </summary>
+    public static DataType Void { get; } = new(new SimpleNameExpression("void"));
 #pragma warning restore CA1720
 
     /// <summary>
@@ -91,40 +116,40 @@ public static class DataTypes
     /// <param name="type">type</param>
     /// <param name="result">result</param>
     /// <returns>result</returns>
-    public static ref DataType FromType(Type type, in DataType result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = FromTypePrivate(type);
-        return ref instance;
-    }
-
-    /// <summary>
-    /// From Type
-    /// </summary>
-    /// <param name="type">Type</param>
-    /// <returns>Expression</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
-    public static IExpression FromTypePrivate(Type type)
+    public static ref DataType FromType(Type type, in DataType result = default)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
+        ref var instance = ref Unsafe.AsRef(in result);
         if (_typeAlias.TryGetValue(type, out var s))
-            return s;
+        {
+            instance = s;
+            return ref instance;
+        }
 
         if (type.IsArray)
-            return FromTypePrivate(type.GetElementType()!).Array;
+        {
+            _ = FromType(type.GetElementType()!, result).Array;
+            return ref instance;
+        }
 
         if (type.IsGenericType)
         {
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return FromTypePrivate(Nullable.GetUnderlyingType(type)!).Null;
+            {
+                _ = FromType(Nullable.GetUnderlyingType(type)!).Null;
+                return ref instance;
+            }
 
-            return SimpleType()
-                .Generic([.. type.GetGenericArguments().Select(FromTypePrivate),]);
+            instance.Type = SimpleType()
+                .Generic([.. type.GetGenericArguments().Select(i => FromType(i)),]);
+            return ref instance;
         }
 
-        return SimpleType();
+        instance.Type = SimpleType();
+        return ref instance;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IExpression SimpleType()
@@ -137,23 +162,23 @@ public static class DataTypes
         }
     }
 
-    private static readonly Dictionary<Type, SimpleNameExpression> _typeAlias = new()
+    private static readonly Dictionary<Type, DataType> _typeAlias = new()
     {
-        { typeof(bool), new("bool") },
-        { typeof(byte), new("byte") },
-        { typeof(char), new("char") },
-        { typeof(decimal), new("decimal") },
-        { typeof(double), new("double") },
-        { typeof(float), new("float") },
-        { typeof(int), new("int") },
-        { typeof(long), new("long") },
-        { typeof(object), new("object") },
-        { typeof(sbyte), new("sbyte") },
-        { typeof(short), new("short") },
-        { typeof(string), new("string") },
-        { typeof(uint), new("uint") },
-        { typeof(ulong), new("ulong") },
-        { typeof(ushort), new("ushort") },
-        { typeof(void), new("void") },
+        { typeof(bool), Bool },
+        { typeof(byte), Byte },
+        { typeof(char), Char },
+        { typeof(decimal), Decimal },
+        { typeof(double), Double },
+        { typeof(float), Float },
+        { typeof(int), Int },
+        { typeof(long), Long },
+        { typeof(object), Object },
+        { typeof(sbyte), Sbyte },
+        { typeof(short), Short },
+        { typeof(string), String },
+        { typeof(uint), Uint },
+        { typeof(ulong), Ulong },
+        { typeof(ushort), Ushort },
+        { typeof(void), Void },
     };
 }

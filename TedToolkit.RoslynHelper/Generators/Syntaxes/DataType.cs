@@ -18,10 +18,25 @@ public record struct DataType(IExpression Type) :
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
 
+    /// <summary>
+    /// Is Array
+    /// </summary>
+    public bool IsArray { get; set; }
+
+    /// <summary>
+    /// The pointer counter
+    /// </summary>
+    public int PointCounter { get; set; }
+
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddStorageKind(ref builder);
         Type.ToCode(ref builder);
+        if (IsArray)
+            builder.Append("[]");
+
+        if (PointCounter > 0)
+            builder.Append('*', PointCounter);
     }
 }

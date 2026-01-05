@@ -21,14 +21,42 @@ public static class DataTypeExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Make Null
+        /// Make Array
         /// </summary>
         public ref DataType Array
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                type.Type = type.Type.Array;
+                type.IsArray = true;
+                return ref type;
+            }
+        }
+
+        /// <summary>
+        /// Make Null
+        /// </summary>
+        public ref DataType Null
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                type.Type = type.Type.Null;
+                return ref type;
+            }
+        }
+
+        /// <summary>
+        /// Pointer
+        /// </summary>
+#pragma warning disable CA1720
+        public ref DataType Pointer
+#pragma warning restore CA1720
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                type.PointCounter++;
                 return ref type;
             }
         }
