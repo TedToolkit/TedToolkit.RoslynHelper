@@ -6,7 +6,10 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="Build/Build.csproj">
-    <Build Solution="Debug|*" Project="false" />
+    <Build Project="false" />
+  </Project>
+  <Project Path="TedToolkit.RoslynHelper.Benchmarks/TedToolkit.RoslynHelper.Benchmarks.csproj">
+    <Build Project="false" />
   </Project>
   <Project Path="TedToolkit.RoslynHelper.Tests/TedToolkit.RoslynHelper.Tests.csproj" />
   <Project Path="TedToolkit.RoslynHelper/TedToolkit.RoslynHelper.csproj" />
