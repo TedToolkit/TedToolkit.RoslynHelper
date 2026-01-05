@@ -5,9 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The accessor
@@ -51,7 +49,7 @@ public record struct Accessor(AccessorType Type) :
     public bool IsUnsafe { get; set; }
 
     /// <inheritdoc/>
-    public List<ToCodeHandler> Statements
+    public List<IStatement> Statements
         => field ??= [];
 
     /// <inheritdoc />

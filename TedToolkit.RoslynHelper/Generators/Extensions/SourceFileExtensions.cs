@@ -7,7 +7,7 @@
 
 using System.Runtime.CompilerServices;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -38,7 +38,7 @@ public static class SourceFileExtensions
         /// <param name="attribute">the attribute</param>
         /// <returns>result</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ref SourceFile AddAttribute(Types.Attribute attribute)
+        public ref SourceFile AddAttribute(Syntaxes.Attribute attribute)
         {
             attribute.Modifier = AttributeModifier.ASSEMBLY;
             instance.Attributes.Add(attribute);

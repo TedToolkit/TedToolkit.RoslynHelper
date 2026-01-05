@@ -1,4 +1,5 @@
 using TedToolkit.RoslynHelper.Generators;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -26,7 +27,7 @@ internal class TypeDeclarationTests
                 .AddMember(Class("FirstClass").Public.AddBaseType<IDisposable>()))
             .ToCode();
 
-        await Assert.That(code).Contains("global::System.IDisposable");
+        await Assert.That(code).Contains("System.IDisposable");
     }
 
     [Test]
@@ -35,7 +36,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(Argument(10)))))
+                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int @item = 10");
@@ -61,7 +62,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").AddDefault(Argument(10)).AddDescription("Good"))))
+                    .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()).AddDescription("Good"))))
             .ToCode();
 
         await Assert.That(code).Contains("/// <param name=\"@item\">");
@@ -76,7 +77,7 @@ internal class TypeDeclarationTests
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
-                        .AddParameter(Parameter<int>("item").AddDefault(Argument(10))))))
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral())))))
             .ToCode();
 
         await Assert.That(code).Contains("void Method(");
@@ -88,7 +89,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddMember(Property("Item", Type<long>()).Internal
+                    .AddMember(Property<long>("Item").Internal
                         .AddAccessor(Accessor(AccessorType.GET)))))
             .ToCode();
 
@@ -117,7 +118,7 @@ internal class TypeDeclarationTests
                     .AddMember(Event<Action<int>>("Item").Internal)))
             .ToCode();
 
-        await Assert.That(code).Contains("internal event global::System.Action<int> Item;");
+        await Assert.That(code).Contains("internal event System.Action<int> Item;");
     }
 
     [Test]
@@ -129,5 +130,52 @@ internal class TypeDeclarationTests
             .ToCode();
 
         await Assert.That(code).Contains("public delegate void ADelegate();");
+    }
+
+    [Test]
+    public async Task ForeachTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()))
+                        .AddStatement(new ForEachStatement(DataType.Var, "item",
+                            new SimpleNameExpression("source"))))))
+            .ToCode();
+
+        await Assert.That(code).Contains("for (var @item in source)");
+    }
+
+    [Test]
+    public async Task VariableTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()))
+                        .AddStatement(new VariableStatement(DataType.Int, "item")
+                            .AddDefault(10.ToLiteral())))))
+            .ToCode();
+
+        await Assert.That(code).Contains("int @item = 10;");
+    }
+
+
+    [Test]
+    public async Task GenericTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddTypeParameter(TypeParameter("Good").In
+                        .AddNewConstraint()
+                        .AddConstraint<int>())
+                ))
+            .ToCode();
+
+        await Assert.That(code).Contains("in Good");
+        await Assert.That(code).Contains("where Good: new(), int");
     }
 }

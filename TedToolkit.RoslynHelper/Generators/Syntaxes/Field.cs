@@ -5,20 +5,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The field
 /// </summary>
 /// <param name="Type">Field Type</param>
-/// <param name="Identifier">IDentifier</param>
-public record struct Field(MemberAccess Type, string Identifier) :
+/// <param name="Identifier">Identifier</param>
+public record struct Field(DataType Type, string Identifier) :
     IMember,
     IAttributes,
     IStatic,
     IAccessibility,
     IReadonly,
-    IVariables,
+    IVariable,
     IDescription
 {
     /// <inheritdoc/>

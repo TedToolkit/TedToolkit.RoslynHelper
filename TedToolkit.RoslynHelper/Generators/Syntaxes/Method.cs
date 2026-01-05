@@ -1,26 +1,31 @@
-// -----------------------------------------------------------------------
-// <copyright file="Delegate.cs" company="TedToolkit">
+﻿// -----------------------------------------------------------------------
+// <copyright file="Method.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The delegate
+/// The method
 /// </summary>
-/// <param name="Identifier">the identifier</param>
-/// <param name="ReturnType">the return type</param>
-#pragma warning disable CA1711
-public record struct Delegate(string Identifier, ReturnType? ReturnType = null) :
-#pragma warning restore CA1711
+/// <param name="Identifier">name</param>
+/// <param name="ReturnType">ReturnType</param>
+public record struct Method(string Identifier, ReturnType? ReturnType = null) :
     IMember,
     IParameters,
     IAttributes,
     IAccessibility,
     IUnsafe,
-    IDescription
+    IPartial,
+    IStatic,
+    IReadonly,
+    IPolymorphism,
+    IDescription,
+    IStatementOwner,
+    IStatement,
+    ITypeParameters
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
@@ -36,9 +41,11 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
+        this.AddStatic(ref builder);
+        this.AddReadonly(ref builder);
+        this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
-
-        builder.Append("delegate ");
+        this.AddPartial(ref builder);
 
         if (ReturnType.HasValue)
             ReturnType.Value.ToCode(ref builder);
@@ -48,8 +55,10 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
         builder.Append(' ');
 
         builder.Append(Identifier);
-        this.AddParametersNoReturn(ref builder);
-        builder.Append(';');
+        this.AddTypeParameters(ref builder);
+        this.AddParametersNoSkip(ref builder);
+        this.AddTypeParameterConstraints(ref builder);
+        this.AddStatements(ref builder);
     }
 
     /// <inheritdoc/>
@@ -67,6 +76,26 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
     public bool IsUnsafe { get; set; }
 
     /// <inheritdoc/>
+    public bool IsPartial { get; set; }
+
+    /// <inheritdoc />
+    public bool IsStatic { get; set; }
+
+    /// <inheritdoc />
+    public Polymorphism Polymorphism { get; set; }
+
+    /// <inheritdoc />
     public List<string> Description
+        => field ??= [];
+
+    /// <inheritdoc />
+    public List<IStatement> Statements
+        => field ??= [];
+
+    /// <inheritdoc />
+    public bool IsReadonly { get; set; }
+
+    /// <inheritdoc />
+    public List<TypeParameter> TypeParameters
         => field ??= [];
 }

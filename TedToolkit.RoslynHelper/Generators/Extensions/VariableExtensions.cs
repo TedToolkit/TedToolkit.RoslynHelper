@@ -1,34 +1,33 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="MemberAccessItemExtensions.cs" company="TedToolkit">
+// <copyright file="VariableExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using System.Runtime.CompilerServices;
+
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The member access extensions.
+/// The extensions for the <see cref="IVariable"/>
 /// </summary>
-public static class MemberAccessItemExtensions
+public static class VariableExtensions
 {
 #pragma warning disable CA1034
-    extension(ref MemberAccessItem instance)
+    extension<TItem>(ref TItem instance)
+        where TItem : struct, IVariable
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// The sub access.
+        /// Get the name
         /// </summary>
-        /// <param name="type">item.</param>
-        /// <returns>access</returns>
-#pragma warning disable S2325
-        public ref MemberAccessItem AddType(MemberAccess type)
-#pragma warning restore S2325
+        public SimpleNameExpression Name
         {
-            instance.Types.Add(type);
-            return ref instance;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(instance.Variable);
         }
     }
 }
