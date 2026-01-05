@@ -175,6 +175,7 @@ internal class TypeDeclarationTests
                 ))
             .ToCode();
 
-        await Assert.That(code).Contains("int @item = 10;");
+        await Assert.That(code).Contains("in Good");
+        await Assert.That(code).Contains("where Good: new(), int");
     }
 }
