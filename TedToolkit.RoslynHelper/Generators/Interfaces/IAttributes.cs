@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -17,5 +15,5 @@ public interface IAttributes
     /// <summary>
     /// Attributes
     /// </summary>
-    List<Attribute> Attributes { get; }
+    List<Syntaxes.Attribute> Attributes { get; }
 }

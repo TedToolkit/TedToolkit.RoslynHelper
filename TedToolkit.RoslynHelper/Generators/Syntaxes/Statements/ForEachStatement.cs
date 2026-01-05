@@ -15,16 +15,18 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes.Statements;
 /// <param name="type">type</param>
 /// <param name="identifier">identifier</param>
 /// <param name="expression">expression</param>
-public sealed class ForEachStatement(IExpression type, string identifier, IExpression expression) :
+public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
     IStatement,
     IVariables,
     IStatementOwner
 {
+    private DataType _type = type;
+
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
         builder.Append("for (");
-        type.ToCode(ref builder);
+        _type.ToCode(ref builder);
         builder.Append(" @");
         builder.Append(identifier);
         builder.Append(" in ");

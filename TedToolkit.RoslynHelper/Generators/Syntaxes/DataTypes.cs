@@ -1,81 +1,102 @@
-﻿using System.Runtime.CompilerServices;
+﻿// -----------------------------------------------------------------------
+// <copyright file="DataTypes.cs" company="TedToolkit">
+// Copyright (c) TedToolkit. All rights reserved.
+// Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using System.Runtime.CompilerServices;
 
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// For the Types.
+/// For the DataTypes.
 /// </summary>
-public static class Types
+public static class DataTypes
 {
     /// <summary>
     /// <see langword="var"/>
     /// </summary>
-    public static SimpleNameExpression Var { get; } = new("var");
+    public static DataType Var { get; } = new(new SimpleNameExpression("var"));
 #pragma warning disable CA1720
     /// <summary>
     /// <see langword="string"/>
     /// </summary>
-    public static SimpleNameExpression String { get; } = new("string");
+    public static DataType String { get; } = new(new SimpleNameExpression("string"));
 
     /// <summary>
     /// <see langword="char"/>
     /// </summary>
-    public static SimpleNameExpression Char { get; } = new("char");
+    public static DataType Char { get; } = new(new SimpleNameExpression("char"));
 
     /// <summary>
     /// <see langword="byte"/>
     /// </summary>
-    public static SimpleNameExpression Byte { get; } = new("byte");
+    public static DataType Byte { get; } = new(new SimpleNameExpression("byte"));
 
     /// <summary>
     /// <see langword="sbyte"/>
     /// </summary>
-    public static SimpleNameExpression Sbyte { get; } = new("sbyte");
+    public static DataType Sbyte { get; } = new(new SimpleNameExpression("sbyte"));
 
     /// <summary>
     /// <see langword="short"/>
     /// </summary>
-    public static SimpleNameExpression Short { get; } = new("short");
+    public static DataType Short { get; } = new(new SimpleNameExpression("short"));
 
     /// <summary>
     /// <see langword="ushort"/>
     /// </summary>
-    public static SimpleNameExpression Ushort { get; } = new("ushort");
+    public static DataType Ushort { get; } = new(new SimpleNameExpression("ushort"));
 
     /// <summary>
     /// <see langword="int"/>
     /// </summary>
-    public static SimpleNameExpression Int { get; } = new("int");
+    public static DataType Int { get; } = new(new SimpleNameExpression("int"));
 
     /// <summary>
     /// <see langword="uint"/>
     /// </summary>
-    public static SimpleNameExpression Uint { get; } = new("uint");
+    public static DataType Uint { get; } = new(new SimpleNameExpression("uint"));
 
     /// <summary>
     /// <see langword="long"/>
     /// </summary>
-    public static SimpleNameExpression Long { get; } = new("long");
+    public static DataType Long { get; } = new(new SimpleNameExpression("long"));
 
     /// <summary>
     /// <see langword="ulong"/>
     /// </summary>
-    public static SimpleNameExpression Ulong { get; } = new("ulong");
+    public static DataType Ulong { get; } = new(new SimpleNameExpression("ulong"));
 
     /// <summary>
     /// <see langword="bool"/>
     /// </summary>
-    public static SimpleNameExpression Bool { get; } = new("bool");
+    public static DataType Bool { get; } = new(new SimpleNameExpression("bool"));
 #pragma warning restore CA1720
 
     /// <summary>
     /// From Type
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
+    /// <param name="result">result</param>
     /// <returns>Expression</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IExpression FromType<T>()
-        => FromType(typeof(T));
+    public static ref DataType FromType<T>(in DataType result = default)
+        => ref FromType(typeof(T), result);
+
+    /// <summary>
+    /// From the type
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="result">result</param>
+    /// <returns>result</returns>
+    public static ref DataType FromType(Type type, in DataType result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = FromTypePrivate(type);
+        return ref instance;
+    }
 
     /// <summary>
     /// From Type
@@ -83,7 +104,7 @@ public static class Types
     /// <param name="type">Type</param>
     /// <returns>Expression</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
-    public static IExpression FromType(Type type)
+    public static IExpression FromTypePrivate(Type type)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
@@ -92,15 +113,15 @@ public static class Types
             return s;
 
         if (type.IsArray)
-            return FromType(type.GetElementType()!).Array;
+            return FromTypePrivate(type.GetElementType()!).Array;
 
         if (type.IsGenericType)
         {
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return FromType(Nullable.GetUnderlyingType(type)!).Null;
+                return FromTypePrivate(Nullable.GetUnderlyingType(type)!).Null;
 
             return SimpleType()
-                .Generic([.. type.GetGenericArguments().Select(FromType),]);
+                .Generic([.. type.GetGenericArguments().Select(FromTypePrivate),]);
         }
 
         return SimpleType();

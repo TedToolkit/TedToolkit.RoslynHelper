@@ -219,9 +219,10 @@ public static class ExpressionExtensions
         /// <summary>
         /// To Expression
         /// </summary>
+        /// <param name="result">result</param>
         /// <returns>result</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IExpression ToExpression()
-            => Types.FromType(type);
+        public ref DataType ToExpression(in DataType result = default)
+            => ref DataTypes.FromType(type, result);
     }
 }

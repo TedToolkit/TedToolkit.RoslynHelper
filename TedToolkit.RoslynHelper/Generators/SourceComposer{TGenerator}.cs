@@ -10,8 +10,6 @@ using System.Runtime.CompilerServices;
 
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
-using Delegate = TedToolkit.RoslynHelper.Generators.Syntaxes.Delegate;
-
 namespace TedToolkit.RoslynHelper.Generators;
 #pragma warning disable CA1000
 
@@ -114,7 +112,7 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Event Event(
-        IExpression type,
+        scoped in DataType type,
         string identifier,
         in Event result = default)
     {
@@ -169,7 +167,7 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Field Field(
-        IExpression type,
+        scoped in DataType type,
         string identifier,
         in Field result = default)
     {
@@ -277,7 +275,7 @@ public static class SourceComposer<TGenerator>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Property Property(
         string identifier,
-        IExpression type,
+        scoped in DataType type,
         in Property result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
@@ -315,10 +313,10 @@ public static class SourceComposer<TGenerator>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Delegate Delegate(
+    public static ref Syntaxes.Delegate Delegate(
         string identifier,
         scoped in ReturnType? returnType = null,
-        in Delegate result = default)
+        in Syntaxes.Delegate result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Identifier = identifier;

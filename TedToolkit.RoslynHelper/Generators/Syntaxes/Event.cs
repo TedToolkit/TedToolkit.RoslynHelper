@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="Type">event type</param>
 /// <param name="Identifier">identifier</param>
-public record struct Event(IExpression Type, string Identifier) :
+public record struct Event(DataType Type, string Identifier) :
     IMember,
     IVariables,
     IAccessibility,

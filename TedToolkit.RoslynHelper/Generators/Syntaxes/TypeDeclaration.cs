@@ -90,10 +90,10 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         => field ??= [];
 
     /// <summary>
-    /// The base Types
+    /// The base DataTypes
     /// </summary>
 #pragma warning disable S2325
-    public List<IExpression> BaseTypes
+    public List<DataType> BaseTypes
 #pragma warning restore S2325
         => field ??= [];
 

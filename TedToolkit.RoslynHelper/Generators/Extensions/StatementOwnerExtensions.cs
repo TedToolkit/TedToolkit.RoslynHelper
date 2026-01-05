@@ -43,5 +43,4 @@ public static class StatementOwnerExtensions
             builder.EndBlock();
         }
     }
-
 }

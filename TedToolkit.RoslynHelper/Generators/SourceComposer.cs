@@ -12,8 +12,6 @@ using Cysharp.Text;
 
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
-using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -131,7 +129,7 @@ public static class SourceComposer
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Parameter Parameter(
-        IExpression type,
+        scoped in DataType type,
         string identifier,
         in Parameter result = default)
     {
@@ -148,8 +146,8 @@ public static class SourceComposer
     /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Attribute Attribute<T>(
-        in Attribute result = default)
+    public static ref Syntaxes.Attribute Attribute<T>(
+        in Syntaxes.Attribute result = default)
         where T : System.Attribute
     {
         return ref Attribute(typeof(T), result);
@@ -163,9 +161,9 @@ public static class SourceComposer
     /// <returns>attribute</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Attribute Attribute(
+    public static ref Syntaxes.Attribute Attribute(
         Type type,
-        in Attribute result = default)
+        in Syntaxes.Attribute result = default)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
@@ -180,9 +178,9 @@ public static class SourceComposer
     /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Attribute Attribute(
-        IExpression type,
-        in Attribute result = default)
+    public static ref Syntaxes.Attribute Attribute(
+        DataType type,
+        in Syntaxes.Attribute result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Type = type;
@@ -193,18 +191,15 @@ public static class SourceComposer
     /// Create the returnType
     /// </summary>
     /// <param name="type">the Type</param>
-    /// <param name="storageKind">ref type</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref ReturnType ReturnType(
-        scoped in MemberAccessExpression type,
-        StorageKind storageKind = StorageKind.NONE,
+        scoped in DataType type,
         in ReturnType result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Type = type;
-        instance.StorageKind = storageKind;
         return ref instance;
     }
 }

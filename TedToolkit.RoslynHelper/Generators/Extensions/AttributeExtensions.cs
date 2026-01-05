@@ -7,17 +7,15 @@
 
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
-using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="Attribute"/>
+/// The extensions for the <see cref="Syntaxes.Attribute"/>
 /// </summary>
 public static class AttributeExtensions
 {
 #pragma warning disable CA1034
-    extension(ref Attribute instance)
+    extension(ref Syntaxes.Attribute instance)
 #pragma warning restore CA1034
 #pragma warning disable S2325
     {
@@ -26,7 +24,7 @@ public static class AttributeExtensions
         /// </summary>
         /// <param name="modifier">modifier</param>
         /// <returns>the item</returns>
-        public ref Attribute AddModifier(AttributeModifier modifier)
+        public ref Syntaxes.Attribute AddModifier(AttributeModifier modifier)
         {
             instance.Modifier = modifier;
             return ref instance;

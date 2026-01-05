@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="Type">The Type</param>
 #pragma warning disable CA1711
-public record struct Attribute(IExpression Type) :
+public record struct Attribute(DataType Type) :
 #pragma warning restore CA1711
     IToCode,
     IArguments

@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="Type">Field Type</param>
 /// <param name="Identifier">Identifier</param>
-public record struct Field(IExpression Type, string Identifier) :
+public record struct Field(DataType Type, string Identifier) :
     IMember,
     IAttributes,
     IStatic,

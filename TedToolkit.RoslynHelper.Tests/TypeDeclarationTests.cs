@@ -141,7 +141,7 @@ internal class TypeDeclarationTests
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
                         .AddParameter(Parameter<int>("item").AddDefault(Argument(10.ToLiteral())))
-                        .AddStatement(new ForEachStatement(Types.Var, "item", new SimpleNameExpression("source"))))))
+                        .AddStatement(new ForEachStatement(DataTypes.Var, "item", new SimpleNameExpression("source"))))))
             .ToCode();
 
         await Assert.That(code).Contains("for (var @item in source)");

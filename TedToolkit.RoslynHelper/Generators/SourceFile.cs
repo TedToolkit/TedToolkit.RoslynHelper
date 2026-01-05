@@ -13,8 +13,6 @@ using Microsoft.CodeAnalysis;
 
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
-using Attribute = TedToolkit.RoslynHelper.Generators.Syntaxes.Attribute;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -104,7 +102,7 @@ public record struct SourceFile(string FileName)
     /// Attributes
     /// </summary>
 #pragma warning disable S2325
-    public List<Attribute> Attributes
+    public List<Syntaxes.Attribute> Attributes
 #pragma warning restore S2325
         => field ??= [];
 }

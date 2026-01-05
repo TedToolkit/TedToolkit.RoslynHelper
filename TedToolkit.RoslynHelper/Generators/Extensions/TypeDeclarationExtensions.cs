@@ -24,7 +24,7 @@ public static class TypeDeclarationExtensions
         /// </summary>
         /// <param name="baseType">the baseType</param>
         /// <returns>the item</returns>
-        public ref TypeDeclaration AddBaseType(IExpression baseType)
+        public ref TypeDeclaration AddBaseType(DataType baseType)
         {
             instance.BaseTypes.Add(baseType);
             return ref instance;
