@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// Attribute
 /// </summary>
 /// <param name="Type">The Type</param>
 #pragma warning disable CA1711
-public record struct Attribute(MemberAccess Type) :
+public record struct Attribute(DataType Type) :
 #pragma warning restore CA1711
     IToCode,
     IArguments

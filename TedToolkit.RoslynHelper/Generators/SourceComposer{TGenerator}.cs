@@ -8,7 +8,7 @@
 using System.CodeDom.Compiler;
 using System.Runtime.CompilerServices;
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 #pragma warning disable CA1000
@@ -19,9 +19,11 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <typeparam name="TGenerator">Your generator</typeparam>
 public static class SourceComposer<TGenerator>
 {
-    private static readonly string _toolName = typeof(TGenerator).FullName ?? typeof(TGenerator).Name;
+    private static readonly SimpleNameExpression
+        _toolName = new(typeof(TGenerator).FullName ?? typeof(TGenerator).Name);
 
-    private static readonly string _version = typeof(TGenerator).Assembly.GetName().Version.ToString();
+    private static readonly SimpleNameExpression _version =
+        new(typeof(TGenerator).Assembly.GetName().Version.ToString());
 
     private static void AddGeneratorAttribute<T>(ref T item)
         where T : struct, IAttributes
@@ -110,7 +112,7 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Event Event(
-        MemberAccess type,
+        scoped in DataType type,
         string identifier,
         in Event result = default)
     {
@@ -128,13 +130,17 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
+    /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Event Event(
         Type type,
         string identifier,
         in Event result = default)
     {
-        return ref Event(SourceComposer.Type(type), identifier, result);
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+
+        return ref Event(type.ToExpression(), identifier, result);
     }
 
     /// <summary>
@@ -149,7 +155,7 @@ public static class SourceComposer<TGenerator>
         string identifier,
         in Event result = default)
     {
-        return ref Event(SourceComposer.Type<T>(), identifier, result);
+        return ref Event(typeof(T), identifier, result);
     }
 
     /// <summary>
@@ -161,7 +167,7 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Field Field(
-        MemberAccess type,
+        scoped in DataType type,
         string identifier,
         in Field result = default)
     {
@@ -179,13 +185,17 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
+    /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Field Field(
         Type type,
         string identifier,
         in Field result = default)
     {
-        return ref Field(SourceComposer.Type(type), identifier, result);
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+
+        return ref Field(type.ToExpression(), identifier, result);
     }
 
     /// <summary>
@@ -200,7 +210,7 @@ public static class SourceComposer<TGenerator>
         string identifier,
         in Field result = default)
     {
-        return ref Field(SourceComposer.Type<T>(), identifier, result);
+        return ref Field(typeof(T), identifier, result);
     }
 
     /// <summary>
@@ -227,10 +237,45 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">return returnType</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
+    /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Property Property(
         string identifier,
-        scoped in MemberAccess type,
+        Type type,
+        in Property result = default)
+    {
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+
+        return ref Property(identifier, type.ToExpression(), in result);
+    }
+
+    /// <summary>
+    /// Create the property
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Property Property<T>(
+        string identifier,
+        in Property result = default)
+    {
+        return ref Property(identifier, typeof(T).ToExpression(), in result);
+    }
+
+    /// <summary>
+    /// Create the property
+    /// </summary>
+    /// <param name="identifier">parameter name</param>
+    /// <param name="type">return returnType</param>
+    /// <param name="result">result</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref Property Property(
+        string identifier,
+        scoped in DataType type,
         in Property result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
@@ -268,10 +313,10 @@ public static class SourceComposer<TGenerator>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Types.Delegate Delegate(
+    public static ref Syntaxes.Delegate Delegate(
         string identifier,
         scoped in ReturnType? returnType = null,
-        in Types.Delegate result = default)
+        in Syntaxes.Delegate result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);
         instance.Identifier = identifier;

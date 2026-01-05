@@ -7,17 +7,17 @@
 
 using Cysharp.Text;
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The Parameter
 /// </summary>
 /// <param name="Type">The Parameter Type</param>
 /// <param name="Identifier">The Variable</param>
-public record struct Parameter(MemberAccess Type, string Identifier) :
+public record struct Parameter(DataType Type, string Identifier) :
     IToCode,
     IDescription,
-    IVariables,
+    IVariable,
     IAttributes,
     IStorageKind
 {
@@ -32,7 +32,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
     /// <summary>
     /// The default value.
     /// </summary>
-    public Argument? Default { get; internal set; }
+    public IExpression? Default { get; internal set; }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -46,7 +46,7 @@ public record struct Parameter(MemberAccess Type, string Identifier) :
             return;
 
         builder.Append(" = ");
-        Default.Value.ToCode(ref builder);
+        Default.ToCode(ref builder);
     }
 
     /// <inheritdoc />

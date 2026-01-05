@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Types;
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
 
@@ -24,7 +24,7 @@ public static class TypeDeclarationExtensions
         /// </summary>
         /// <param name="baseType">the baseType</param>
         /// <returns>the item</returns>
-        public ref TypeDeclaration AddBaseType(MemberAccess baseType)
+        public ref TypeDeclaration AddBaseType(DataType baseType)
         {
             instance.BaseTypes.Add(baseType);
             return ref instance;
@@ -37,7 +37,7 @@ public static class TypeDeclarationExtensions
         /// <returns>the item</returns>
         public ref TypeDeclaration AddBaseType<T>()
         {
-            instance.BaseTypes.Add(SourceComposer.Type<T>());
+            instance.BaseTypes.Add(typeof(T).ToExpression());
             return ref instance;
         }
 
@@ -46,9 +46,13 @@ public static class TypeDeclarationExtensions
         /// </summary>
         /// <param name="type">type</param>
         /// <returns>the item</returns>
+        /// <exception cref="ArgumentNullException">type is null</exception>
         public ref TypeDeclaration AddBaseType(Type type)
         {
-            instance.BaseTypes.Add(SourceComposer.Type(type));
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+
+            instance.BaseTypes.Add(type.ToExpression());
             return ref instance;
         }
     }

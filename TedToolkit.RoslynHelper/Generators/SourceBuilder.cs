@@ -91,6 +91,18 @@ public record struct SourceBuilder : IDisposable
     public void Append(char value)
         => _stringBuilder.Append(value);
 
+    /// <inheritdoc cref="Utf16ValueStringBuilder.Append(char, int)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(char value, int repeatCount)
+        => _stringBuilder.Append(value, repeatCount);
+
+    /// <summary>
+    /// AppendSpace
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AppendSpace()
+        => _stringBuilder.Append(' ');
+
     /// <summary>
     /// Begin a block
     /// </summary>

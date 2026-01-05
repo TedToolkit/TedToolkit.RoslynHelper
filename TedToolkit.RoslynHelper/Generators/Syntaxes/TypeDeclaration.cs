@@ -7,7 +7,7 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators.Types;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The builder for class
@@ -25,7 +25,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IReadonly,
     IDescription,
     IParameters,
-    IPolymorphism
+    IPolymorphism,
+    ITypeParameters
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -50,6 +51,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
             _ => throw new InvalidOperationException("The type is invalid."),
         });
         builder.Append(Identifier);
+        this.AddTypeParameters(ref builder);
         this.AddParameters(ref builder);
 
         if (BaseTypes.Count > 0)
@@ -70,6 +72,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
             }
         }
 
+        this.AddTypeParameterConstraints(ref builder);
         this.AddMembers(ref builder);
     }
 
@@ -90,10 +93,10 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         => field ??= [];
 
     /// <summary>
-    /// The base Types
+    /// The base DataTypes
     /// </summary>
 #pragma warning disable S2325
-    public List<MemberAccess> BaseTypes
+    public List<DataType> BaseTypes
 #pragma warning restore S2325
         => field ??= [];
 
@@ -114,4 +117,8 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
 
     /// <inheritdoc />
     public Polymorphism Polymorphism { get; set; }
+
+    /// <inheritdoc />
+    public List<TypeParameter> TypeParameters
+        => field ??= [];
 }
