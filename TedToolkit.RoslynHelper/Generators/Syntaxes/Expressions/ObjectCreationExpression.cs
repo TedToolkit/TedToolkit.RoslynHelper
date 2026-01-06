@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="InvocationExpression.cs" company="TedToolkit">
+// <copyright file="ObjectCreationExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Invocation expression
+/// Creation expression
 /// </summary>
-/// <param name="member">the member</param>
-public sealed class InvocationExpression(IExpression member) :
+/// <param name="dataType">data type</param>
+public sealed class ObjectCreationExpression(DataType? dataType = null) :
     IArguments,
     IExpression
 {
@@ -22,7 +22,8 @@ public sealed class InvocationExpression(IExpression member) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        member.ToCode(ref builder);
-        this.AddArguments(ref builder);
+        builder.Append("new ");
+        dataType?.ToCode(ref builder);
+        this.AddArgumentsNoSkip(ref builder);
     }
 }

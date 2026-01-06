@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IMemberOwner.cs" company="TedToolkit">
+// <copyright file="DescriptionCustom.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -7,15 +7,17 @@
 
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
-namespace TedToolkit.RoslynHelper.Generators;
+namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The owner of the member.
+/// The custom description.
 /// </summary>
-public interface IMemberOwner
+/// <param name="handler">handler</param>
+public class DescriptionCustom(SourceBuilderHandler handler) :
+    IDescriptionItem,
+    IRootDescriptionItem
 {
-    /// <summary>
-    /// The members
-    /// </summary>
-    List<SourceBuilderHandler> Members { get; }
+    /// <inheritdoc />
+    public void ToDescription(ref SourceBuilder builder)
+        => handler(ref builder);
 }
