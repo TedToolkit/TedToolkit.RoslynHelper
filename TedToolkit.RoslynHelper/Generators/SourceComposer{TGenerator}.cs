@@ -140,7 +140,7 @@ public static class SourceComposer<TGenerator>
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Event(type.ToExpression(), identifier, result);
+        return ref Event(DataType.FromType(type), identifier, result);
     }
 
     /// <summary>
@@ -195,7 +195,7 @@ public static class SourceComposer<TGenerator>
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Field(type.ToExpression(), identifier, result);
+        return ref Field(DataType.FromType(type), identifier, result);
     }
 
     /// <summary>
@@ -247,7 +247,7 @@ public static class SourceComposer<TGenerator>
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Property(type.ToExpression(), identifier, in result);
+        return ref Property(DataType.FromType(type), identifier, in result);
     }
 
     /// <summary>
@@ -262,7 +262,7 @@ public static class SourceComposer<TGenerator>
         string identifier,
         in Property result = default)
     {
-        return ref Property(typeof(T).ToExpression(), identifier, in result);
+        return ref Property(DataType.FromType<T>(), identifier, in result);
     }
 
     /// <summary>

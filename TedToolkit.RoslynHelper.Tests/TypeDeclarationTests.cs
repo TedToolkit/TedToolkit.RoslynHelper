@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 using TedToolkit.RoslynHelper.Generators;
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
@@ -88,6 +90,33 @@ internal class TypeDeclarationTests
             .ToCode();
 
         await Assert.That(code).Contains("void Method(");
+    }
+
+
+    [Test]
+    public async Task MethodPartialTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method").Partial)))
+            .ToCode();
+
+        await Assert.That(code).Contains("void Method();");
+    }
+
+    [Test]
+    public async Task MethodAttributeTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddAttribute(Attribute<MethodImplAttribute>()
+                            .AddArgument(Argument(MethodImplOptions.AggressiveInlining.ToExpression()))))))
+            .ToCode();
+
+        await Assert.That(code).Contains("[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]");
     }
 
     [Test]

@@ -351,16 +351,29 @@ public static class ExpressionExtensions
     }
 
 #pragma warning disable CA1034
+    extension<TEnum>(TEnum value)
+        where TEnum : struct, Enum
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// To Expression
+        /// </summary>
+        /// <returns>result</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MemberAccessExpression ToExpression()
+            => new(DataType.FromType<TEnum>().Type, value.ToString().ToSimpleName());
+    }
+
+#pragma warning disable CA1034
     extension(Type type)
 #pragma warning restore CA1034
     {
         /// <summary>
         /// To Expression
         /// </summary>
-        /// <param name="result">result</param>
         /// <returns>result</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ref DataType ToExpression(in DataType result = default)
-            => ref DataType.FromType(type, result);
+        public IExpression ToExpression()
+            => DataType.FromType(type).Type;
     }
 }

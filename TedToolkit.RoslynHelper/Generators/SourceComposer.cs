@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Globalization;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
@@ -117,7 +116,7 @@ public static class SourceComposer
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Parameter(type.ToExpression(), identifier, result);
+        return ref Parameter(DataType.FromType(type), identifier, result);
     }
 
     /// <summary>
@@ -168,7 +167,7 @@ public static class SourceComposer
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Attribute(type.ToExpression(), result);
+        return ref Attribute(DataType.FromType(type), result);
     }
 
     /// <summary>
