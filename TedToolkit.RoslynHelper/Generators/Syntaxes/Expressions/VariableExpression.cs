@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="VariableStatement.cs" company="TedToolkit">
+// <copyright file="VariableExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -14,8 +14,8 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="type">type</param>
 /// <param name="identifier">identifier</param>
-public sealed class VariableStatement(DataType type, string identifier) :
-    IStatement,
+public sealed class VariableExpression(DataType type, string identifier) :
+    IExpression,
     IVariable
 {
     private DataType _type = type;
@@ -30,7 +30,7 @@ public sealed class VariableStatement(DataType type, string identifier) :
     /// </summary>
     /// <param name="expression">expression</param>
     /// <returns>result</returns>
-    public VariableStatement AddDefault(IExpression expression)
+    public VariableExpression AddDefault(IExpression expression)
     {
         Default = expression;
         return this;
@@ -50,7 +50,6 @@ public sealed class VariableStatement(DataType type, string identifier) :
 
         builder.Append(" = ");
         Default.ToCode(ref builder);
-        builder.Append(';');
     }
 
     /// <inheritdoc/>

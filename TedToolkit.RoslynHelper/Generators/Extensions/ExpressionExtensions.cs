@@ -95,6 +95,15 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Using
+        /// </summary>
+        public UsingStatement Using
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
         /// For each
         /// </summary>
         /// <param name="type">type</param>
