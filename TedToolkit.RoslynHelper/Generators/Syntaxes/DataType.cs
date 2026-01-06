@@ -117,7 +117,7 @@ public record struct DataType(IExpression Type) :
         {
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                _ = FromType(Nullable.GetUnderlyingType(type)!).Null;
+                _ = FromType(Nullable.GetUnderlyingType(type)!, result).Null;
                 return ref instance;
             }
 
@@ -137,6 +137,10 @@ public record struct DataType(IExpression Type) :
         IExpression SimpleType()
         {
             var name = new SimpleNameExpression(type.Name.Split('`')[0]);
+
+            if (type.DeclaringType is not null)
+                return new MemberAccessExpression(FromType(type.DeclaringType).Type, name);
+
             if (string.IsNullOrEmpty(type.Namespace))
                 return name;
 

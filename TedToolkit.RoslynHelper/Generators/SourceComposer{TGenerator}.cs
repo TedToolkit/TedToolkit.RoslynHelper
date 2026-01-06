@@ -20,10 +20,27 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class SourceComposer<TGenerator>
 {
     private static readonly LiteralExpression
-        _toolName = new(typeof(TGenerator).FullName ?? typeof(TGenerator).Name);
+#pragma warning disable S2743
+        _toolName = GetToolName();
+#pragma warning restore S2743
+
+    private static LiteralExpression GetToolName()
+    {
+        var builder = new SourceBuilder();
+
+        try
+        {
+            typeof(TGenerator).ToExpression().ToCode(ref builder);
+            return builder.ToCode();
+        }
+        finally
+        {
+            builder.Dispose();
+        }
+    }
 
     private static readonly LiteralExpression _version =
-        new(typeof(TGenerator).Assembly.GetName().Version.ToString());
+        typeof(TGenerator).Assembly.GetName().Version.ToString();
 
     private static void AddGeneratorAttribute<T>(ref T item)
         where T : struct, IAttributes

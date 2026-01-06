@@ -40,10 +40,15 @@ public static class MemberOwnerExtensions
 
             builder.BeginBlock();
 
+            var isNotStart = false;
             foreach (var member in instance.Members)
             {
                 builder.AppendLine();
+                if (isNotStart)
+                    builder.AppendLine();
+
                 member(ref builder);
+                isNotStart = true;
             }
 
             builder.EndBlock();
