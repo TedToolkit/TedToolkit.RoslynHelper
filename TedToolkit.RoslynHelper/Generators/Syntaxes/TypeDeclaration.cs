@@ -23,7 +23,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IMemberOwner,
     IAttributes,
     IReadonly,
-    IDescription,
+    IRootDescription,
     IParameters,
     IPolymorphism,
     ITypeParameters
@@ -31,8 +31,13 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddSummary(ref builder);
-        this.AddParametersSummary(ref builder);
+        this.AddDescriptions(ref builder);
+        foreach (var parameter in Parameters)
+            parameter.ToRoot().ToDescription(ref builder);
+
+        foreach (var typeParameter in TypeParameters)
+            typeParameter.ToRoot().ToDescription(ref builder);
+
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
         this.AddStatic(ref builder);
@@ -108,7 +113,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     public bool IsReadonly { get; set; }
 
     /// <inheritdoc />
-    public List<string> Description
+    public List<IRootDescriptionItem> RootDescriptions
         => field ??= [];
 
     /// <inheritdoc />

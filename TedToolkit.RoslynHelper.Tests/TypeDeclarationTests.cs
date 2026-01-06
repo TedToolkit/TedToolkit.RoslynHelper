@@ -16,7 +16,9 @@ internal class TypeDeclarationTests
                 .AddMember(Class("FirstClass").Public.Static.Unsafe.Partial))
             .ToCode();
 
-        await Assert.That(code).Contains("[System.CodeDom.Compiler.GeneratedCodeAttribute(\"TedToolkit.RoslynHelper.Tests.TypeDeclarationTests\", \"");
+        await Assert.That(code)
+            .Contains(
+                "[System.CodeDom.Compiler.GeneratedCodeAttribute(\"TedToolkit.RoslynHelper.Tests.TypeDeclarationTests\", \"");
         await Assert.That(code).Contains("public static unsafe partial class FirstClass");
     }
 
@@ -49,7 +51,9 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddDescription("Good")))
+                    .AddRootDescription(new DescriptionSummary(
+                        new DescriptionText("Good")
+                    ))))
             .ToCode();
 
         await Assert.That(code).Contains("/// <summary>");
@@ -63,7 +67,9 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()).AddDescription("Good"))))
+                    .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()).AddDescription(
+                        new DescriptionText("Good")
+                    ))))
             .ToCode();
 
         await Assert.That(code).Contains("/// <param name=\"@item\">");

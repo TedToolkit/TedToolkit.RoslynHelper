@@ -20,7 +20,7 @@ public record struct Property(DataType Type, string Identifier) :
     IStatic,
     IReadonly,
     IPolymorphism,
-    IDescription,
+    IRootDescription,
     IAttributes,
     IAccessors
 {
@@ -34,7 +34,7 @@ public record struct Property(DataType Type, string Identifier) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddSummary(ref builder);
+        this.AddDescriptions(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -59,7 +59,7 @@ public record struct Property(DataType Type, string Identifier) :
     public Polymorphism Polymorphism { get; set; }
 
     /// <inheritdoc/>
-    public List<string> Description
+    public List<IRootDescriptionItem> RootDescriptions
         => field ??= [];
 
     /// <inheritdoc />

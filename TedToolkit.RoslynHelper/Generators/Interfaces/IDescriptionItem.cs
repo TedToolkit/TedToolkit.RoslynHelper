@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IDescription.cs" company="TedToolkit">
+// <copyright file="IDescriptionItem.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -8,18 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The item that has description.
+/// The description item
 /// </summary>
-public interface IDescription
-{
-    /// <summary>
-    /// The Description
-    /// </summary>
-    List<IDescriptionItem> Descriptions { get; }
-
-    /// <summary>
-    /// Change to the root
-    /// </summary>
-    /// <returns>root item</returns>
-    IRootDescriptionItem ToRoot();
-}
+public interface IDescriptionItem :
+    IToDescription;

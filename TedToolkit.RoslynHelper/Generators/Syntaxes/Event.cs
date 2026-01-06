@@ -19,14 +19,14 @@ public record struct Event(DataType Type, string Identifier) :
     IPartial,
     IStatic,
     IPolymorphism,
-    IDescription,
+    IRootDescription,
     IAttributes,
     IAccessors
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddSummary(ref builder);
+        this.AddDescriptions(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -58,7 +58,7 @@ public record struct Event(DataType Type, string Identifier) :
     public Polymorphism Polymorphism { get; set; }
 
     /// <inheritdoc/>
-    public List<string> Description
+    public List<IRootDescriptionItem> RootDescriptions
         => field ??= [];
 
     /// <inheritdoc/>
