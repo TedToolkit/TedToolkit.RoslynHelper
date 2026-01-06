@@ -19,4 +19,8 @@ public sealed class RefReadonlyExpression(IExpression expression) : IExpression
         builder.Append("ref readonly ");
         expression.ToCode(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

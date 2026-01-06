@@ -13,19 +13,19 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class ReadonlyExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IReadonly
+    extension<TItem>(TItem instance)
+        where TItem : class, IReadonly
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see langword="partial"/>
         /// </summary>
-        public ref TItem Readonly
+        public TItem Readonly
         {
             get
             {
                 instance.IsReadonly = true;
-                return ref instance;
+                return instance;
             }
         }
 

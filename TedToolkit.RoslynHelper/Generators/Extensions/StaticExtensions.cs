@@ -13,19 +13,19 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class StaticExtensions
 {
     #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IStatic
+    extension<TItem>(TItem instance)
+        where TItem : class, IStatic
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see langword="static"/>
         /// </summary>
-        public ref TItem Static
+        public TItem Static
         {
             get
             {
                 instance.IsStatic = true;
-                return ref instance;
+                return instance;
             }
         }
 

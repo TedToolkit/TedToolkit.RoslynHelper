@@ -13,20 +13,20 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class PolymorphismExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IPolymorphism
+    extension<TItem>(TItem instance)
+        where TItem : class, IPolymorphism
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see cref="Polymorphism.ABSTRACT"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Abstract
+        public TItem Abstract
         {
             get
             {
                 instance.Polymorphism = Polymorphism.ABSTRACT;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -34,12 +34,12 @@ public static class PolymorphismExtensions
         /// <see cref="Polymorphism.VIRTUAL"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Virtual
+        public TItem Virtual
         {
             get
             {
                 instance.Polymorphism = Polymorphism.VIRTUAL;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -47,12 +47,12 @@ public static class PolymorphismExtensions
         /// <see cref="Polymorphism.OVERRIDE"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Override
+        public TItem Override
         {
             get
             {
                 instance.Polymorphism = Polymorphism.OVERRIDE;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -60,12 +60,12 @@ public static class PolymorphismExtensions
         /// <see cref="Polymorphism.SEALED"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Sealed
+        public TItem Sealed
         {
             get
             {
                 instance.Polymorphism = Polymorphism.SEALED;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -73,12 +73,12 @@ public static class PolymorphismExtensions
         /// <see cref="Polymorphism.NEW"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem New
+        public TItem New
         {
             get
             {
                 instance.Polymorphism = Polymorphism.NEW;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -86,12 +86,12 @@ public static class PolymorphismExtensions
         /// <see cref="Polymorphism.SEALED_OVERRIDE"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem SealedOverride
+        public TItem SealedOverride
         {
             get
             {
                 instance.Polymorphism = Polymorphism.SEALED_OVERRIDE;
-                return ref instance;
+                return instance;
             }
         }
 

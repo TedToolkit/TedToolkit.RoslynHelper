@@ -37,9 +37,13 @@ public static class SourceFileExtensions
         /// </summary>
         /// <param name="attribute">the attribute</param>
         /// <returns>result</returns>
+        /// <exception cref="ArgumentNullException">attribute is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref SourceFile AddAttribute(Syntaxes.Attribute attribute)
         {
+            if (attribute is null)
+                throw new ArgumentNullException(nameof(attribute));
+
             attribute.Modifier = AttributeModifier.ASSEMBLY;
             instance.Attributes.Add(attribute);
             return ref instance;

@@ -37,185 +37,106 @@ public static class SourceComposer
     /// Create a namespace
     /// </summary>
     /// <param name="nameSpace">the namespace</param>
-    /// <param name="result">result</param>
     /// <returns>namespace</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref NameSpace NameSpace(IExpression nameSpace, in NameSpace result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Name = nameSpace;
-        return ref instance;
-    }
+    public static NameSpace NameSpace(IExpression nameSpace)
+        => new(nameSpace);
 
     /// <summary>
     /// Create a namespace
     /// </summary>
     /// <param name="nameSpace">the namespace</param>
-    /// <param name="result">result</param>
     /// <returns>namespace</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref NameSpace NameSpace(in ReadOnlySpan<string> nameSpace, in NameSpace result = default)
-        => ref NameSpace(ZString.Join('.', nameSpace).ToSimpleName(), result);
+    public static NameSpace NameSpace(in ReadOnlySpan<string> nameSpace)
+        => new(nameSpace);
 
     /// <summary>
     /// Create a namespace
     /// </summary>
     /// <param name="nameSpace">the namespace</param>
-    /// <param name="result">result</param>
     /// <returns>namespace</returns>
     /// <exception cref="ArgumentNullException">the namespace is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref NameSpace NameSpace(string nameSpace, in NameSpace result = default)
-    {
-        if (nameSpace is null)
-            throw new ArgumentNullException(nameof(nameSpace));
-
-        return ref NameSpace(nameSpace.ToSimpleName(), result);
-    }
+    public static NameSpace NameSpace(string nameSpace)
+        => new(nameSpace);
 
     /// <summary>
     /// Create an argument
     /// </summary>
     /// <param name="variable">the variable</param>
-    /// <param name="result">result</param>
     /// <returns>namespace</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Argument Argument(IExpression variable, in Argument result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Variable = variable;
-        return ref instance;
-    }
+    public static Argument Argument(IExpression variable)
+        => new(variable);
 
     /// <summary>
     /// Create the parameter
     /// </summary>
     /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
     /// <typeparam name="T">type of the parameter</typeparam>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Parameter Parameter<T>(string identifier,
-        in Parameter result = default)
-    {
-        return ref Parameter(typeof(T), identifier, result);
-    }
+    public static Parameter Parameter<T>(string identifier)
+        => Parameter(typeof(T), identifier);
 
     /// <summary>
     /// Create the parameter
     /// </summary>
     /// <param name="type">the type</param>
     /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Parameter Parameter(Type type, string identifier,
-        in Parameter result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        return ref Parameter(DataType.FromType(type), identifier, result);
-    }
+    public static Parameter Parameter(Type type, string identifier)
+        => new(type, identifier);
 
     /// <summary>
     /// Create the parameter
     /// </summary>
     /// <param name="type">the type</param>
     /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Parameter Parameter(
-        scoped in DataType type,
-        string identifier,
-        in Parameter result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = type;
-        return ref instance;
-    }
+    public static Parameter Parameter(DataType type, string identifier)
+        => new(type, identifier);
 
     /// <summary>
     /// Create an attribute.
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
-    /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Syntaxes.Attribute Attribute<T>(
-        in Syntaxes.Attribute result = default)
+    public static Syntaxes.Attribute Attribute<T>()
         where T : System.Attribute
     {
-        return ref Attribute(typeof(T), result);
+        return new(typeof(T));
     }
 
     /// <summary>
     /// Create an attribute.
     /// </summary>
     /// <param name="type">Type</param>
-    /// <param name="result">result</param>
-    /// <returns>attribute</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Syntaxes.Attribute Attribute(
-        Type type,
-        in Syntaxes.Attribute result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        return ref Attribute(DataType.FromType(type), result);
-    }
-
-    /// <summary>
-    /// Create an attribute.
-    /// </summary>
-    /// <param name="type">Type</param>
-    /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Syntaxes.Attribute Attribute(
-        DataType type,
-        in Syntaxes.Attribute result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
-        return ref instance;
-    }
+    public static Syntaxes.Attribute Attribute(DataType type)
+        => new(type);
 
     /// <summary>
     /// Create the returnType
     /// </summary>
     /// <param name="type">the Type</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref ReturnType ReturnType(
-        scoped in DataType type,
-        in ReturnType result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
-        return ref instance;
-    }
+    public static ReturnType ReturnType(DataType type)
+        => new(type);
 
     /// <summary>
     /// Create a type parameter
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>attribute</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeParameter TypeParameter(
-        string identifier,
-        in TypeParameter result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        return ref instance;
-    }
+    public static TypeParameter TypeParameter(string identifier)
+        => new(identifier);
 }
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type

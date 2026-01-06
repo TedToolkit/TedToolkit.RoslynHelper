@@ -25,4 +25,8 @@ public sealed class InvocationExpression(IExpression member) :
         member.ToCode(ref builder);
         this.AddArguments(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

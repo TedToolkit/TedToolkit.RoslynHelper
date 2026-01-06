@@ -1,26 +1,32 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="PostfixUnaryExpression.cs" company="TedToolkit">
+// <copyright file="CustomExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Delegates;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Postfix unary expression
+/// Custom expression
 /// </summary>
-/// <param name="expression">expression</param>
-/// <param name="operator">operator</param>
-public sealed class PostfixUnaryExpression(IExpression expression, string @operator) :
+/// <param name="action">action</param>
+public sealed class CustomExpression(SourceBuilderHandler action) :
     IExpression
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
+        => action(ref builder);
+
+    /// <summary>
+    /// Create by string
+    /// </summary>
+    /// <param name="value">the string</param>
+    public CustomExpression(string value)
+        : this((ref b) => b.Append(value))
     {
-        expression.ToCode(ref builder);
-        builder.Append(' ');
-        builder.Append(@operator);
     }
 
     /// <inheritdoc />

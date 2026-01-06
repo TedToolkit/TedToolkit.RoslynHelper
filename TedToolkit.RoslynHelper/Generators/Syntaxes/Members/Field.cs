@@ -10,9 +10,9 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The field
 /// </summary>
-/// <param name="Type">Field Type</param>
-/// <param name="Identifier">Identifier</param>
-public record struct Field(DataType Type, string Identifier) :
+/// <param name="type">Field Type</param>
+/// <param name="identifier">Identifier</param>
+public sealed class Field(DataType type, string identifier) :
     IMember,
     IAttributes,
     IStatic,
@@ -31,10 +31,10 @@ public record struct Field(DataType Type, string Identifier) :
         this.AddStatic(ref builder);
         this.AddReadonly(ref builder);
 
-        Type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(' ');
 
-        builder.Append(Identifier);
+        builder.Append(identifier);
         builder.Append(';');
     }
 
@@ -56,6 +56,6 @@ public record struct Field(DataType Type, string Identifier) :
         => field ??= [];
 
     /// <inheritdoc/>
-    public readonly string Variable
-        => Identifier;
+    public string Variable
+        => identifier;
 }

@@ -5,18 +5,38 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// Attribute
 /// </summary>
-/// <param name="Type">The Type</param>
+/// <param name="type">The Type</param>
 #pragma warning disable CA1711
-public record struct Attribute(DataType Type) :
+public sealed class Attribute(DataType type) :
 #pragma warning restore CA1711
     IToCode,
     IArguments
 {
+    /// <summary>
+    /// Create from a symbol
+    /// </summary>
+    /// <param name="type">symbol</param>
+    public Attribute(ITypeSymbol type)
+        : this(new DataType(type))
+    {
+    }
+
+    /// <summary>
+    /// Create from a type
+    /// </summary>
+    /// <param name="type">type</param>
+    public Attribute(Type type)
+        : this(DataType.FromType(type))
+    {
+    }
+
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
@@ -34,7 +54,7 @@ public record struct Attribute(DataType Type) :
             _ => throw new InvalidOperationException(nameof(Modifier)),
         });
 
-        Type.ToCode(ref builder);
+        type.ToCode(ref builder);
         this.AddArguments(ref builder);
     }
 
@@ -42,6 +62,17 @@ public record struct Attribute(DataType Type) :
     /// The modifier of the attribute.
     /// </summary>
     public AttributeModifier Modifier { get; set; }
+
+    /// <summary>
+    /// Add modifier
+    /// </summary>
+    /// <param name="modifier">modifier</param>
+    /// <returns>the item</returns>
+    public Attribute AddModifier(AttributeModifier modifier)
+    {
+        Modifier = modifier;
+        return this;
+    }
 
     /// <inheritdoc />
     public List<Argument> Arguments

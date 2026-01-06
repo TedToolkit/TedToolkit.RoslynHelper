@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Generators.Syntaxes;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -13,8 +15,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class MemberOwnerExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IMemberOwner
+    extension<TItem>(TItem instance)
+        where TItem : class, IMemberOwner
 #pragma warning restore CA1034
     {
         /// <summary>
@@ -23,11 +25,14 @@ public static class MemberOwnerExtensions
         /// <param name="member">the member</param>
         /// <typeparam name="TMember">member type</typeparam>
         /// <returns>the item</returns>
-        public ref TItem AddMember<TMember>(TMember member)
-            where TMember : struct, IMember, IAttributes
+        public TItem AddMember<TMember>(TMember member)
+            where TMember : class, IMember
         {
-            instance.Members.Add(member.ToCode);
-            return ref instance;
+            if (member is IOwner owner && instance is TypeDeclaration type)
+                owner.Owner = type.Identifier;
+
+            instance.Members.Add(member);
+            return instance;
         }
 
         internal void AddMembers(ref SourceBuilder builder)
@@ -47,7 +52,7 @@ public static class MemberOwnerExtensions
                 if (isNotStart)
                     builder.AppendLine();
 
-                member(ref builder);
+                member.ToCode(ref builder);
                 isNotStart = true;
             }
 

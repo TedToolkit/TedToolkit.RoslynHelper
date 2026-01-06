@@ -10,9 +10,9 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// Create an event
 /// </summary>
-/// <param name="Type">event type</param>
-/// <param name="Identifier">identifier</param>
-public record struct Event(DataType Type, string Identifier) :
+/// <param name="type">event type</param>
+/// <param name="identifier">identifier</param>
+public sealed class Event(DataType type, string identifier) :
     IMember,
     IVariable,
     IAccessibility,
@@ -35,15 +35,15 @@ public record struct Event(DataType Type, string Identifier) :
         this.AddPartial(ref builder);
 
         builder.Append("event ");
-        Type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(' ');
-        builder.Append(Identifier);
+        builder.Append(identifier);
         this.AddAccessors(ref builder);
     }
 
     /// <inheritdoc/>
-    public readonly string Variable
-        => Identifier;
+    public string Variable
+        => identifier;
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }

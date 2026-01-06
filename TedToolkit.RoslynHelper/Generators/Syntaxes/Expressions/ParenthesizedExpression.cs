@@ -21,4 +21,8 @@ public class ParenthesizedExpression(IExpression expression) :
         expression.ToCode(ref builder);
         builder.Append(')');
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

@@ -7,20 +7,42 @@
 
 using Cysharp.Text;
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The Parameter
 /// </summary>
-/// <param name="Type">The Parameter Type</param>
-/// <param name="Identifier">The Variable</param>
-public record struct Parameter(DataType Type, string Identifier) :
+/// <param name="type">The Parameter Type</param>
+/// <param name="identifier">The Variable</param>
+public sealed class Parameter(DataType type, string identifier) :
     IToCode,
     IDescription,
     IVariable,
     IAttributes,
     IStorageKind
 {
+    /// <summary>
+    /// Create from a type
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    public Parameter(Type type, string identifier)
+        : this(DataType.FromType(type), identifier)
+    {
+    }
+
+    /// <summary>
+    /// Create from a type
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="identifier">identifier</param>
+    public Parameter(ITypeSymbol type, string identifier)
+        : this(new DataType(type), identifier)
+    {
+    }
+
     /// <inheritdoc />
     public List<IDescriptionItem> Descriptions
         => field ??= [];
@@ -30,22 +52,53 @@ public record struct Parameter(DataType Type, string Identifier) :
         => new DescriptionParam(Variable, Descriptions);
 
     /// <inheritdoc/>
-    public readonly string Variable
-        => ZString.Concat('@', Identifier);
+    public string Variable
+        => identifier.ToArgumentName();
 
     /// <summary>
     /// The default value.
     /// </summary>
     public IExpression? Default { get; internal set; }
 
+    /// <summary>
+    /// Add null
+    /// </summary>
+    /// <returns>self</returns>
+    public Parameter AddNull()
+    {
+        Default = SimpleNameExpression.Null;
+        return this;
+    }
+
+    /// <summary>
+    /// Add default
+    /// </summary>
+    /// <returns>self</returns>
+    public Parameter AddDefault()
+    {
+        Default = SimpleNameExpression.Default;
+        return this;
+    }
+
+    /// <summary>
+    /// Add default
+    /// </summary>
+    /// <param name="value">defaultValue</param>
+    /// <returns>self</returns>
+    public Parameter AddDefault(IExpression value)
+    {
+        Default = value;
+        return this;
+    }
+
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddAttributes(ref builder);
         this.AddStorageKind(ref builder);
-        Type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(" @");
-        builder.Append(Identifier);
+        builder.Append(identifier);
         if (Default is null)
             return;
 

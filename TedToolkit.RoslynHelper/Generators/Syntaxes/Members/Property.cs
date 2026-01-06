@@ -10,9 +10,9 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The property
 /// </summary>
-/// <param name="Type">The type</param>
-/// <param name="Identifier">The identifier</param>
-public record struct Property(DataType Type, string Identifier) :
+/// <param name="type">The type</param>
+/// <param name="identifier">The identifier</param>
+public sealed class Property(DataType type, string identifier) :
     IMember,
     IVariable,
     IAccessibility,
@@ -25,8 +25,8 @@ public record struct Property(DataType Type, string Identifier) :
     IAccessors
 {
     /// <inheritdoc/>
-    public readonly string Variable
-        => Identifier;
+    public string Variable
+        => identifier;
 
     /// <inheritdoc />
     public Accessibility Accessibility { get; set; }
@@ -43,9 +43,9 @@ public record struct Property(DataType Type, string Identifier) :
         this.AddPolymorphism(ref builder);
         this.AddPartial(ref builder);
 
-        Type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(' ');
-        builder.Append(Identifier);
+        builder.Append(identifier);
         this.AddAccessors(ref builder);
     }
 

@@ -25,4 +25,8 @@ public sealed class BinaryExpression(string @operator, IExpression left, IExpres
         builder.Append(' ');
         right.ToCode(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

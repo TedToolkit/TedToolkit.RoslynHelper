@@ -15,8 +15,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class StatementOwnerExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IStatementOwner
+    extension<TItem>(TItem instance)
+        where TItem : class, IStatementOwner
 #pragma warning restore CA1034
     {
         /// <summary>
@@ -25,11 +25,11 @@ public static class StatementOwnerExtensions
         /// <param name="statement">the statement</param>
         /// <typeparam name="TStatement">statement type</typeparam>
         /// <returns>the item</returns>
-        public ref TItem AddStatement<TStatement>(TStatement statement)
+        public TItem AddStatement<TStatement>(TStatement statement)
             where TStatement : class, IStatement
         {
             instance.Statements.Add(statement);
-            return ref instance;
+            return instance;
         }
 
         /// <summary>
@@ -37,10 +37,10 @@ public static class StatementOwnerExtensions
         /// </summary>
         /// <param name="expression">the statement</param>
         /// <returns>the item</returns>
-        public ref TItem AddStatement(IExpression expression)
+        public TItem AddStatement(IExpression expression)
         {
             instance.Statements.Add(new Statement(expression));
-            return ref instance;
+            return instance;
         }
 
         internal void AddStatements(ref SourceBuilder builder)

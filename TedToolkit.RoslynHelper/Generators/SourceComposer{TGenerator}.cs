@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.CodeDom.Compiler;
 using System.Runtime.CompilerServices;
 
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
@@ -20,104 +19,76 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class SourceComposer<TGenerator>
 {
     private static readonly LiteralExpression
-#pragma warning disable S2743
-        _toolName = GetToolName();
-#pragma warning restore S2743
-
-    private static LiteralExpression GetToolName()
-    {
-        var builder = new SourceBuilder();
-
-        try
-        {
-            typeof(TGenerator).ToExpression().ToCode(ref builder);
-            return builder.ToCode();
-        }
-        finally
-        {
-            builder.Dispose();
-        }
-    }
+        _toolName = typeof(TGenerator).GetToolName();
 
     private static readonly LiteralExpression _version =
-        typeof(TGenerator).Assembly.GetName().Version.ToString();
+        typeof(TGenerator).GetVersion();
 
     private static void AddGeneratorAttribute<T>(ref T item)
-        where T : struct, IAttributes
+        where T : class, IAttributes
     {
-        item.AddAttribute(SourceComposer.Attribute<GeneratedCodeAttribute>()
-            .AddArgument(SourceComposer.Argument(_toolName))
-            .AddArgument(SourceComposer.Argument(_version)));
+        item.AddGeneratorAttribute(_toolName, _version);
     }
 
     /// <summary>
     /// Create a <see langword="class"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Class(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.CLASS, result);
+    public static TypeDeclaration Class(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.CLASS);
 
     /// <summary>
     /// Create a <see langword="struct"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Struct(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.STRUCT, result);
+    public static TypeDeclaration Struct(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.STRUCT);
 
     /// <summary>
     /// Create a <see langword="ref"/> <see langword="struct"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration RefStruct(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.REF_STRUCT, result);
+    public static TypeDeclaration RefStruct(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.REF_STRUCT);
 
     /// <summary>
     /// Create a <see langword="record"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Record(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.RECORD, result);
+    public static TypeDeclaration Record(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.RECORD);
 
     /// <summary>
     /// Create a <see langword="record"/> <see langword="struct"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration RecordStruct(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.RECORD_STRUCT, result);
+    public static TypeDeclaration RecordStruct(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.RECORD_STRUCT);
 
     /// <summary>
     /// Create a <see langword="interface"/>
     /// </summary>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref TypeDeclaration Interface(string identifier, in TypeDeclaration result = default)
-        => ref TypeDeclaration(identifier, TypeDeclarationType.INTERFACE, result);
+    public static TypeDeclaration Interface(string identifier)
+        => TypeDeclaration(identifier, TypeDeclarationType.INTERFACE);
 
-    private static ref TypeDeclaration TypeDeclaration(string identifier, TypeDeclarationType type,
-        in TypeDeclaration result)
+    private static TypeDeclaration TypeDeclaration(string identifier, TypeDeclarationType type)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = type;
+        var instance = new TypeDeclaration(identifier, type);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
+        return instance;
     }
 
     /// <summary>
@@ -125,39 +96,15 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="type">type</param>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Event Event(
-        scoped in DataType type,
-        string identifier,
-        in Event result = default)
+    public static Event Event(
+        DataType type,
+        string identifier)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
-        instance.Identifier = identifier;
+        var instance = new Event(type, identifier);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create the Event
-    /// </summary>
-    /// <param name="type">type</param>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Event Event(
-        Type type,
-        string identifier,
-        in Event result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        return ref Event(DataType.FromType(type), identifier, result);
+        return instance;
     }
 
     /// <summary>
@@ -165,14 +112,12 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Event Event<T>(
-        string identifier,
-        in Event result = default)
+    public static Event Event<T>(
+        string identifier)
     {
-        return ref Event(typeof(T), identifier, result);
+        return Event(typeof(T), identifier);
     }
 
     /// <summary>
@@ -180,39 +125,15 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="type">type</param>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Field Field(
-        scoped in DataType type,
-        string identifier,
-        in Field result = default)
+    public static Field Field(
+        DataType type,
+        string identifier)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
-        instance.Identifier = identifier;
+        var instance = new Field(type, identifier);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create the Field
-    /// </summary>
-    /// <param name="type">type</param>
-    /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
-    /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Field Field(
-        Type type,
-        string identifier,
-        in Field result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        return ref Field(DataType.FromType(type), identifier, result);
+        return instance;
     }
 
     /// <summary>
@@ -220,51 +141,26 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     /// <param name="identifier">identifier</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Field Field<T>(
-        string identifier,
-        in Field result = default)
+    public static Field Field<T>(
+        string identifier)
     {
-        return ref Field(typeof(T), identifier, result);
+        return Field(typeof(T), identifier);
     }
 
     /// <summary>
     /// Create the Accessor
     /// </summary>
     /// <param name="type">accessor type</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Accessor Accessor(
-        AccessorType type,
-        in Accessor result = default)
+    public static Accessor Accessor(
+        AccessorType type)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = type;
+        var instance = new Accessor(type);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
-    }
-
-    /// <summary>
-    /// Create the property
-    /// </summary>
-    /// <param name="type">return returnType</param>
-    /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
-    /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Property Property(
-        Type type,
-        string identifier,
-        in Property result = default)
-    {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        return ref Property(DataType.FromType(type), identifier, in result);
+        return instance;
     }
 
     /// <summary>
@@ -272,14 +168,12 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
     /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Property Property<T>(
-        string identifier,
-        in Property result = default)
+    public static Property Property<T>(
+        string identifier)
     {
-        return ref Property(DataType.FromType<T>(), identifier, in result);
+        return Property(DataType.FromType<T>(), identifier);
     }
 
     /// <summary>
@@ -287,19 +181,71 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="type">return returnType</param>
     /// <param name="identifier">parameter name</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Property Property(
-        scoped in DataType type,
-        string identifier,
-        in Property result = default)
+    public static Property Property(
+        DataType type,
+        string identifier)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.Type = type;
+        var instance = new Property(type, identifier);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
+        return instance;
+    }
+
+    /// <summary>
+    /// Create the conversion
+    /// </summary>
+    /// <param name="type">return returnType</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Conversion ImplicitConversionTo(
+        DataType type)
+    {
+        var instance = new Conversion(type, false, true);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
+
+    /// <summary>
+    /// Create the conversion
+    /// </summary>
+    /// <param name="type">return returnType</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Conversion ImplicitConversionFrom(
+        DataType type)
+    {
+        var instance = new Conversion(type, true, true);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
+
+    /// <summary>
+    /// Create the conversion
+    /// </summary>
+    /// <param name="type">return returnType</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Conversion ExplicitConversionTo(
+        DataType type)
+    {
+        var instance = new Conversion(type, false, false);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
+
+    /// <summary>
+    /// Create the conversion
+    /// </summary>
+    /// <param name="type">return returnType</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Conversion ExplicitConversionFrom(
+        DataType type)
+    {
+        var instance = new Conversion(type, true, false);
+        AddGeneratorAttribute(ref instance);
+        return instance;
     }
 
     /// <summary>
@@ -307,19 +253,15 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="identifier">parameter name</param>
     /// <param name="returnType">return returnType</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Method Method(
+    public static Method Method(
         string identifier,
-        scoped in ReturnType? returnType = null,
-        in Method result = default)
+        ReturnType? returnType = null)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.ReturnType = returnType;
+        var instance = new Method(identifier, returnType);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
+        return instance;
     }
 
     /// <summary>
@@ -327,18 +269,14 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="identifier">parameter name</param>
     /// <param name="returnType">return returnType</param>
-    /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref Syntaxes.Delegate Delegate(
+    public static Syntaxes.Delegate Delegate(
         string identifier,
-        scoped in ReturnType? returnType = null,
-        in Syntaxes.Delegate result = default)
+        ReturnType? returnType = null)
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Identifier = identifier;
-        instance.ReturnType = returnType;
+        var instance = new Syntaxes.Delegate(identifier, returnType);
         AddGeneratorAttribute(ref instance);
-        return ref instance;
+        return instance;
     }
 }

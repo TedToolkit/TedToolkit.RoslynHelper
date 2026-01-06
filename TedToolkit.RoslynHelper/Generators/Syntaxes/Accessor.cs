@@ -10,8 +10,8 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The accessor
 /// </summary>
-/// <param name="Type">Type of the accessor</param>
-public record struct Accessor(AccessorType Type) :
+/// <param name="type">Type of the accessor</param>
+public sealed class Accessor(AccessorType type) :
     IToCode,
     IAttributes,
     IAccessibility,
@@ -26,7 +26,7 @@ public record struct Accessor(AccessorType Type) :
         this.AddAccessibility(ref builder);
         this.AddReadonly(ref builder);
         this.AddUnsafe(ref builder);
-        builder.Append(Type switch
+        builder.Append(type switch
         {
             AccessorType.GET => "get",
             AccessorType.SET => "set",

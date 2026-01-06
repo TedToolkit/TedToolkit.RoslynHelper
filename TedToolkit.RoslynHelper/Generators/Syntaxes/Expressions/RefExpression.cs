@@ -19,4 +19,8 @@ public sealed class RefExpression(IExpression expression) : IExpression
         builder.Append("ref ");
         expression.ToCode(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

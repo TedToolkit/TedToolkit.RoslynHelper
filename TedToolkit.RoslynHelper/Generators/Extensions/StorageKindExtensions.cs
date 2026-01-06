@@ -13,20 +13,20 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class StorageKindExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IStorageKind
+    extension<TItem>(TItem instance)
+        where TItem : class, IStorageKind
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see cref="StorageKind.IN"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem In
+        public TItem In
         {
             get
             {
                 instance.StorageKind = StorageKind.IN;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -34,12 +34,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.OUT"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Out
+        public TItem Out
         {
             get
             {
                 instance.StorageKind = StorageKind.OUT;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -47,12 +47,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.REF"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Ref
+        public TItem Ref
         {
             get
             {
                 instance.StorageKind = StorageKind.REF;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -60,12 +60,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.REF_READONLY"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem RefReadonly
+        public TItem RefReadonly
         {
             get
             {
                 instance.StorageKind = StorageKind.REF_READONLY;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -73,12 +73,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.SCOPED_IN"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem ScopedIn
+        public TItem ScopedIn
         {
             get
             {
                 instance.StorageKind = StorageKind.SCOPED_IN;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -86,12 +86,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.SCOPED_REF"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem ScopedRef
+        public TItem ScopedRef
         {
             get
             {
                 instance.StorageKind = StorageKind.SCOPED_REF;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -99,12 +99,12 @@ public static class StorageKindExtensions
         /// <see cref="StorageKind.SCOPED_REF_READONLY"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem ScopedRefReadonly
+        public TItem ScopedRefReadonly
         {
             get
             {
                 instance.StorageKind = StorageKind.SCOPED_REF_READONLY;
-                return ref instance;
+                return instance;
             }
         }
 

@@ -10,8 +10,8 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The argument
 /// </summary>
-/// <param name="Variable">variable name</param>
-public record struct Argument(IExpression Variable) :
+/// <param name="variable">variable name</param>
+public sealed class Argument(IExpression variable) :
     IStorageKind,
     IToCode
 {
@@ -33,6 +33,6 @@ public record struct Argument(IExpression Variable) :
         }
 
         this.AddStorageKind(ref builder);
-        Variable.ToCode(ref builder);
+        variable.ToCode(ref builder);
     }
 }

@@ -20,4 +20,13 @@ public class DescriptionCustom(SourceBuilderHandler handler) :
     /// <inheritdoc />
     public void ToDescription(ref SourceBuilder builder)
         => handler(ref builder);
+
+    /// <summary>
+    /// Create by string
+    /// </summary>
+    /// <param name="value">the string</param>
+    public DescriptionCustom(string value)
+        : this((ref b) => b.Append(value))
+    {
+    }
 }

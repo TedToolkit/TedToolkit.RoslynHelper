@@ -18,8 +18,6 @@ public sealed class VariableExpression(DataType type, string identifier) :
     IExpression,
     IVariable
 {
-    private DataType _type = type;
-
     /// <summary>
     /// Default Value
     /// </summary>
@@ -39,20 +37,21 @@ public sealed class VariableExpression(DataType type, string identifier) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        _type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(" @");
         builder.Append(identifier);
         if (Default is null)
-        {
-            builder.Append(';');
             return;
-        }
 
         builder.Append(" = ");
         Default.ToCode(ref builder);
     }
 
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
+
     /// <inheritdoc/>
     public string Variable
-        => ZString.Concat('@', identifier);
+        => identifier.ToArgumentName();
 }
