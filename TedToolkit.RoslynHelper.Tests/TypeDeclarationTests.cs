@@ -48,6 +48,31 @@ internal class TypeDeclarationTests
     }
 
     [Test]
+    public async Task ParametersNullTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddParameter(Parameter<int?>("item").ScopedIn.AddDefault(10.ToLiteral()))))
+            .ToCode();
+
+        await Assert.That(code).Contains("scoped in int? @item = 10");
+    }
+
+
+    [Test]
+    public async Task ParametersNestTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddParameter(Parameter<NestType.NestClass>("item").ScopedIn.AddDefault(10.ToLiteral()))))
+            .ToCode();
+
+        await Assert.That(code).Contains("scoped in TedToolkit.RoslynHelper.Tests.NestType.NestClass @item = 10");
+    }
+
+    [Test]
     public async Task SummaryTest()
     {
         var code = File("File")

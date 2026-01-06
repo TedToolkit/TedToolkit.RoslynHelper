@@ -14,6 +14,16 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 public sealed class SimpleNameExpression(string name) :
     IExpression
 {
+    /// <summary>
+    /// <see langword="null"/>
+    /// </summary>
+    public static SimpleNameExpression Null { get; } = new("null");
+
+    /// <summary>
+    /// <see langword="default"/>
+    /// </summary>
+    public static SimpleNameExpression Default { get; } = new("default");
+
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
         => builder.Append(name);

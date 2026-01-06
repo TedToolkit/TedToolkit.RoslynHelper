@@ -24,7 +24,16 @@ public static class ParameterExtensions
         /// </summary>
         public ref Parameter AddDefault()
         {
-            instance.Default = new SimpleNameExpression("default");
+            instance.Default = SimpleNameExpression.Default;
+            return ref instance;
+        }
+
+        /// <summary>
+        /// Add null
+        /// </summary>
+        public ref Parameter AddNull()
+        {
+            instance.Default = SimpleNameExpression.Null;
             return ref instance;
         }
 
