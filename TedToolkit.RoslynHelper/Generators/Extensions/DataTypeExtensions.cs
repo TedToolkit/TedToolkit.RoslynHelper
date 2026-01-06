@@ -60,5 +60,17 @@ public static class DataTypeExtensions
                 return ref type;
             }
         }
+
+        /// <summary>
+        /// Generic the items.
+        /// </summary>
+        /// <param name="types">types</param>
+        /// <returns>expression</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref DataType Generic(params DataType[] types)
+        {
+            type.Type = type.Type.Generic(types);
+            return ref type;
+        }
     }
 }
