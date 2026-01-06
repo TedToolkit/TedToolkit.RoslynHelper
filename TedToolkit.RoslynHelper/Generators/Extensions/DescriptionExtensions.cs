@@ -21,30 +21,27 @@ public static class DescriptionExtensions
         /// Add description
         /// </summary>
         /// <param name="description">description</param>
-        public ref TItem AddDescription(string description)
+        public ref TItem AddDescription(IDescriptionItem description)
         {
-            instance.Description.Add(description);
+            instance.Descriptions.Add(description);
             return ref instance;
         }
+    }
 
-        internal void AddSummary(ref SourceBuilder builder)
+#pragma warning disable CA1034
+    extension(IEnumerable<IToDescription> descriptions)
+#pragma warning restore CA1034
+#pragma warning disable S2325
+    {
+        /// <summary>
+        /// 转为描述
+        /// </summary>
+        /// <param name="builder">builder</param>
+        internal void ToDescription(ref SourceBuilder builder)
         {
-            if (instance.Description.Count == 0)
-                return;
-
-            builder.AppendLine("/// <summary>");
-            instance.AddDescriptionItems(ref builder);
-
-            builder.AppendLine("/// </summary>");
-        }
-
-        internal void AddDescriptionItems(ref SourceBuilder builder)
-        {
-            builder.Append("/// ");
-            foreach (var descriptionItem in instance.Description)
-                builder.Append(descriptionItem);
-
-            builder.AppendLine();
+            foreach (var descriptionItem in descriptions)
+                descriptionItem.ToDescription(ref builder);
         }
     }
+#pragma warning restore S2325
 }

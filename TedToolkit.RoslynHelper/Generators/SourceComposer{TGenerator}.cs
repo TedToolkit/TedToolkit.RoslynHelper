@@ -233,21 +233,21 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the property
     /// </summary>
-    /// <param name="identifier">parameter name</param>
     /// <param name="type">return returnType</param>
+    /// <param name="identifier">parameter name</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Property Property(
-        string identifier,
         Type type,
+        string identifier,
         in Property result = default)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        return ref Property(identifier, type.ToExpression(), in result);
+        return ref Property(type.ToExpression(), identifier, in result);
     }
 
     /// <summary>
@@ -262,20 +262,20 @@ public static class SourceComposer<TGenerator>
         string identifier,
         in Property result = default)
     {
-        return ref Property(identifier, typeof(T).ToExpression(), in result);
+        return ref Property(typeof(T).ToExpression(), identifier, in result);
     }
 
     /// <summary>
     /// Create the property
     /// </summary>
-    /// <param name="identifier">parameter name</param>
     /// <param name="type">return returnType</param>
+    /// <param name="identifier">parameter name</param>
     /// <param name="result">result</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ref Property Property(
-        string identifier,
         scoped in DataType type,
+        string identifier,
         in Property result = default)
     {
         ref var instance = ref Unsafe.AsRef(in result);

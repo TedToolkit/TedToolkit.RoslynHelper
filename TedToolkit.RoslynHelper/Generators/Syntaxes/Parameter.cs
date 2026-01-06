@@ -22,8 +22,12 @@ public record struct Parameter(DataType Type, string Identifier) :
     IStorageKind
 {
     /// <inheritdoc />
-    public List<string> Description
+    public List<IDescriptionItem> Descriptions
         => field ??= [];
+
+    /// <inheritdoc />
+    public IRootDescriptionItem ToRoot()
+        => new DescriptionParam(Variable, Descriptions);
 
     /// <inheritdoc/>
     public readonly string Variable

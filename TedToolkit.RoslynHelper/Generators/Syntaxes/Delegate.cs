@@ -20,19 +20,16 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
     IAttributes,
     IAccessibility,
     IUnsafe,
-    IDescription
+    IRootDescription
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddSummary(ref builder);
-        this.AddParametersSummary(ref builder);
-        if (ReturnType is { Description.Count: > 0, } returnType)
-        {
-            builder.AppendLine("/// <result>");
-            returnType.AddDescriptionItems(ref builder);
-            builder.AppendLine("/// </result>");
-        }
+        this.AddDescriptions(ref builder);
+        foreach (var parameter in Parameters)
+            parameter.ToRoot().ToDescription(ref builder);
+
+        ReturnType?.ToRoot().ToDescription(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -67,6 +64,6 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
     public bool IsUnsafe { get; set; }
 
     /// <inheritdoc/>
-    public List<string> Description
+    public List<IRootDescriptionItem> RootDescriptions
         => field ??= [];
 }

@@ -56,25 +56,5 @@ public static class ParametersReferenceExtensions
 
             builder.Append(')');
         }
-
-        internal void AddParametersSummary(ref SourceBuilder builder)
-        {
-            if (instance.Parameters.Count is 0)
-                return;
-
-#pragma warning disable RCS1264
-            foreach (ref var instanceParameter in instance.Parameters.AsSpan())
-#pragma warning restore RCS1264
-            {
-                if (instanceParameter.Description.Count is 0)
-                    continue;
-
-                builder.Append("/// <param name=\"@");
-                builder.Append(instanceParameter.Identifier);
-                builder.AppendLine("\">");
-                instanceParameter.AddDescriptionItems(ref builder);
-                builder.AppendLine("/// </param>");
-            }
-        }
     }
 }

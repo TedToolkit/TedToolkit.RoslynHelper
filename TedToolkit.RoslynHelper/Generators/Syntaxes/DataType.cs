@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
@@ -40,6 +42,40 @@ public record struct DataType(IExpression Type) :
 
         if (PointCounter > 0)
             builder.Append('*', PointCounter);
+    }
+
+    /// <summary>
+    /// Create from a symbol
+    /// </summary>
+    /// <param name="type">symbol type</param>
+    /// <param name="result">result</param>
+    /// <returns>result</returns>
+    /// <exception cref="ArgumentNullException">type is null</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref DataType FromSymbol(ITypeSymbol type, in DataType result = default)
+    {
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+
+        var name = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+            .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
+            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+
+        return ref FromName(name, in result);
+    }
+
+    /// <summary>
+    /// Create from name
+    /// </summary>
+    /// <param name="name">name</param>
+    /// <param name="result">result</param>
+    /// <returns>result</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref DataType FromName(string name, in DataType result = default)
+    {
+        ref var instance = ref Unsafe.AsRef(in result);
+        instance.Type = new SimpleNameExpression(name);
+        return ref instance;
     }
 
     /// <summary>
@@ -86,7 +122,11 @@ public record struct DataType(IExpression Type) :
             }
 
             instance.Type = SimpleType()
-                .Generic([.. type.GetGenericArguments().Select(i => FromType(i)),]);
+                .Generic([
+                    .. type.GetGenericArguments()
+                        .Where(i => !i.IsGenericParameter)
+                        .Select(i => FromType(i)),
+                ]);
             return ref instance;
         }
 

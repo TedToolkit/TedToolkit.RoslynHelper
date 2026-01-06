@@ -16,8 +16,12 @@ public record struct ReturnType(DataType Type) :
     IToCode
 {
     /// <inheritdoc />
-    public List<string> Description
+    public List<IDescriptionItem> Descriptions
         => field ??= [];
+
+    /// <inheritdoc />
+    public IRootDescriptionItem ToRoot()
+        => new DescriptionReturns(Descriptions);
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

@@ -19,12 +19,12 @@ public record struct Field(DataType Type, string Identifier) :
     IAccessibility,
     IReadonly,
     IVariable,
-    IDescription
+    IRootDescription
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
-        this.AddSummary(ref builder);
+        this.AddDescriptions(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -52,7 +52,7 @@ public record struct Field(DataType Type, string Identifier) :
     public bool IsReadonly { get; set; }
 
     /// <inheritdoc/>
-    public List<string> Description
+    public List<IRootDescriptionItem> RootDescriptions
         => field ??= [];
 
     /// <inheritdoc/>
