@@ -37,7 +37,7 @@ public static class TypeDeclarationExtensions
         /// <returns>the item</returns>
         public ref TypeDeclaration AddBaseType<T>()
         {
-            instance.BaseTypes.Add(typeof(T).ToExpression());
+            instance.BaseTypes.Add(DataType.FromType<T>());
             return ref instance;
         }
 
@@ -52,7 +52,7 @@ public static class TypeDeclarationExtensions
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            instance.BaseTypes.Add(type.ToExpression());
+            instance.BaseTypes.Add(DataType.FromType(type));
             return ref instance;
         }
     }

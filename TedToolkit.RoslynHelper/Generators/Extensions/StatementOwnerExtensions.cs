@@ -45,6 +45,17 @@ public static class StatementOwnerExtensions
 
         internal void AddStatements(ref SourceBuilder builder)
         {
+            if (instance.Statements.Count == 0)
+            {
+                builder.Append(';');
+                return;
+            }
+
+            instance.AddStatementsNoSkip(ref builder);
+        }
+
+        internal void AddStatementsNoSkip(ref SourceBuilder builder)
+        {
             builder.BeginBlock();
 
             foreach (var statement in instance.Statements)

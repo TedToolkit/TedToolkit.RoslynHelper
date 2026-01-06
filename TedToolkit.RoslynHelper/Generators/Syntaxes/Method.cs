@@ -58,7 +58,11 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         this.AddTypeParameters(ref builder);
         this.AddParametersNoSkip(ref builder);
         this.AddTypeParameterConstraints(ref builder);
-        this.AddStatements(ref builder);
+
+        if (IsPartial)
+            this.AddStatements(ref builder);
+        else
+            this.AddStatementsNoSkip(ref builder);
     }
 
     /// <inheritdoc/>
