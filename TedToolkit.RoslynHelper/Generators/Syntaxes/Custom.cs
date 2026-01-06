@@ -14,7 +14,6 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="Action">your action</param>
 public record struct Custom(SourceBuilderHandler Action) :
-    IExpression,
     IStatement,
     IMember
 {

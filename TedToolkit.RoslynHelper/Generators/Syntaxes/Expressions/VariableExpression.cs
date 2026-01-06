@@ -43,14 +43,15 @@ public sealed class VariableExpression(DataType type, string identifier) :
         builder.Append(" @");
         builder.Append(identifier);
         if (Default is null)
-        {
-            builder.Append(';');
             return;
-        }
 
         builder.Append(" = ");
         Default.ToCode(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 
     /// <inheritdoc/>
     public string Variable

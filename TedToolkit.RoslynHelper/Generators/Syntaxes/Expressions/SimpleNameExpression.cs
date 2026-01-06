@@ -27,4 +27,8 @@ public sealed class SimpleNameExpression(string name) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
         => builder.Append(name);
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

@@ -10,4 +10,4 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <summary>
 /// The expression
 /// </summary>
-public interface IExpression : IToCode;
+public interface IExpression : IToCode, ICref;

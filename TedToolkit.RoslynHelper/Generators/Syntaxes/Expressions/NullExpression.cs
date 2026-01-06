@@ -19,4 +19,8 @@ public sealed class NullExpression(IExpression expression) : IExpression
         expression.ToCode(ref builder);
         builder.Append('?');
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

@@ -35,4 +35,25 @@ public sealed class TypeParameterExpression(IExpression expression, params DataT
 
         builder.Append('>');
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+    {
+        expression.ToCode(ref builder);
+        if (types.Length is 0)
+            return;
+
+        builder.Append('{');
+        var isNotStart = false;
+        foreach (var type in types)
+        {
+            if (isNotStart)
+                builder.Append(", ");
+
+            type.ToCode(ref builder);
+            isNotStart = true;
+        }
+
+        builder.Append('}');
+    }
 }

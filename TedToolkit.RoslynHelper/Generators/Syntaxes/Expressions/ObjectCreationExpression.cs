@@ -26,4 +26,8 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
         dataType?.ToCode(ref builder);
         this.AddArgumentsNoSkip(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

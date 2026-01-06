@@ -22,6 +22,10 @@ public sealed class LiteralExpression : IExpression
     public void ToCode(ref SourceBuilder builder)
         => builder.Append(_value);
 
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
+
     /// <summary>
     /// Create from string
     /// </summary>

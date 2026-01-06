@@ -25,4 +25,8 @@ public sealed class CastExpression(DataType type, IExpression expression) :
         builder.Append(')');
         expression.ToCode(ref builder);
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }

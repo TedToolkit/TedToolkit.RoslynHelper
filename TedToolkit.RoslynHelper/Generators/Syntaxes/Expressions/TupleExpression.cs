@@ -49,4 +49,8 @@ public sealed class TupleExpression : IExpression
 
         builder.Append(')');
     }
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => ToCode(ref builder);
 }
