@@ -18,7 +18,7 @@ public record struct NameSpace(IExpression Name) :
     IToCode
 {
     /// <inheritdoc />
-    public List<ToCodeHandler> Members
+    public List<SourceBuilderHandler> Members
         => field ??= [];
 
     /// <inheritdoc />

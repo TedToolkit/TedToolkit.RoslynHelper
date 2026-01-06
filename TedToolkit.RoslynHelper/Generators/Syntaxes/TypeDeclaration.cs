@@ -106,7 +106,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         => field ??= [];
 
     /// <inheritdoc />
-    public List<ToCodeHandler> Members
+    public List<SourceBuilderHandler> Members
         => field ??= [];
 
     /// <inheritdoc />

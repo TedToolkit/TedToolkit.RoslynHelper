@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// The custom codes
 /// </summary>
 /// <param name="Action">your action</param>
-public record struct Custom(ToCodeHandler Action) :
+public record struct Custom(SourceBuilderHandler Action) :
     IExpression,
     IStatement,
     IMember
