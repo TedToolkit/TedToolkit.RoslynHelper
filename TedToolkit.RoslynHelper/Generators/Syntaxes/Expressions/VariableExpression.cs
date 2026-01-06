@@ -54,5 +54,5 @@ public sealed class VariableExpression(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public string Variable
-        => ZString.Concat('@', identifier);
+        => identifier.ToArgumentName();
 }

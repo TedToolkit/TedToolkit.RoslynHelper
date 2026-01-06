@@ -7,6 +7,8 @@
 
 using System.Reflection;
 
+using Cysharp.Text;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -33,4 +35,16 @@ internal static class GeneralExtensions
         var items = (T[])ArrayAccessor<T>.ItemsField.GetValue(list);
         return new(items, 0, list.Count);
     }
+
+    extension(string value)
+#pragma warning disable S2325
+    {
+        /// <summary>
+        /// To the argument name
+        /// </summary>
+        /// <returns>argument Name</returns>
+        public string ToArgumentName()
+            => ZString.Concat('@', value);
+    }
+#pragma warning restore S2325
 }

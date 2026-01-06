@@ -37,7 +37,7 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
 
     /// <inheritdoc/>
     public string Variable
-        => ZString.Concat('@', identifier);
+        => identifier.ToArgumentName();
 
     /// <inheritdoc/>
     public List<IStatement> Statements

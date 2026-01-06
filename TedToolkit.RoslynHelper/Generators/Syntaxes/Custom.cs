@@ -21,4 +21,13 @@ public record struct Custom(SourceBuilderHandler Action) :
     /// <inheritdoc />
     public readonly void ToCode(ref SourceBuilder builder)
         => Action(ref builder);
+
+    /// <summary>
+    /// Create by string
+    /// </summary>
+    /// <param name="value">the string</param>
+    public Custom(string value)
+        : this((ref b) => b.Append(value))
+    {
+    }
 }

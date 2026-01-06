@@ -31,7 +31,7 @@ public record struct Parameter(DataType Type, string Identifier) :
 
     /// <inheritdoc/>
     public readonly string Variable
-        => ZString.Concat('@', Identifier);
+        => Identifier.ToArgumentName();
 
     /// <summary>
     /// The default value.
