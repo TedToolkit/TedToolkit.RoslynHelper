@@ -216,7 +216,7 @@ internal class TypeDeclarationTests
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
                         .AddParameter(Parameter<int>("item").AddDefault(10.ToLiteral()))
-                        .AddStatement(new VariableStatement(DataType.Int, "item")
+                        .AddStatement(new VariableExpression(DataType.Int, "item")
                             .AddDefault(10.ToLiteral())))))
             .ToCode();
 
