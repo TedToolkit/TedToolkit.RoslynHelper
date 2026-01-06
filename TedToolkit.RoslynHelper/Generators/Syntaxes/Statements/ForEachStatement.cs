@@ -20,13 +20,11 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
     IVariable,
     IStatementOwner
 {
-    private DataType _type = type;
-
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
         builder.Append("for (");
-        _type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(" @");
         builder.Append(identifier);
         builder.Append(" in ");

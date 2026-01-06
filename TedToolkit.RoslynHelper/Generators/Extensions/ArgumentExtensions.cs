@@ -15,8 +15,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class ArgumentExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IArguments
+    extension<TItem>(TItem instance)
+        where TItem : class, IArguments
 #pragma warning restore CA1034
     {
         /// <summary>
@@ -24,10 +24,10 @@ public static class ArgumentExtensions
         /// </summary>
         /// <param name="argument">argument</param>
         /// <returns>the item</returns>
-        public ref TItem AddArgument(Argument argument)
+        public TItem AddArgument(Argument argument)
         {
             instance.Arguments.Add(argument);
-            return ref instance;
+            return instance;
         }
 
         internal void AddArguments(ref SourceBuilder builder)
@@ -35,9 +35,13 @@ public static class ArgumentExtensions
             if (instance.Arguments.Count == 0)
                 return;
 
+            instance.AddArgumentsNoSkip(ref builder);
+        }
+
+        internal void AddArgumentsNoSkip(ref SourceBuilder builder)
+        {
             builder.Append('(');
             instance.AddArgumentList(ref builder);
-
             builder.Append(')');
         }
 

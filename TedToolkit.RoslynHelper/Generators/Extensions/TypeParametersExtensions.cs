@@ -15,18 +15,18 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class TypeParametersExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, ITypeParameters
+    extension<TItem>(TItem instance)
+        where TItem : class, ITypeParameters
 #pragma warning restore CA1034
     {
         /// <summary>
         /// Add type parameter
         /// </summary>
         /// <param name="typeParameter">the type parameter</param>
-        public ref TItem AddTypeParameter(TypeParameter typeParameter)
+        public TItem AddTypeParameter(TypeParameter typeParameter)
         {
             instance.TypeParameters.Add(typeParameter);
-            return ref instance;
+            return instance;
         }
 
         internal void AddTypeParameterConstraints(ref SourceBuilder builder)

@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The builder for class
 /// </summary>
-/// <param name="Identifier">identifier</param>
-/// <param name="Type">Type of the class</param>
-public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type) :
+/// <param name="identifier">identifier</param>
+/// <param name="type">Type of the class</param>
+public sealed class TypeDeclaration(string identifier, TypeDeclarationType type) :
     IAccessibility,
     IUnsafe,
     IStatic,
@@ -28,6 +26,11 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
     IPolymorphism,
     ITypeParameters
 {
+    /// <summary>
+    ///  The identifier
+    /// </summary>
+    public string Identifier { get; } = identifier;
+
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
@@ -45,7 +48,7 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
         this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);
-        builder.Append(Type switch
+        builder.Append(type switch
         {
             TypeDeclarationType.CLASS => "class ",
             TypeDeclarationType.STRUCT => "struct ",
@@ -105,8 +108,45 @@ public record struct TypeDeclaration(string Identifier, TypeDeclarationType Type
 #pragma warning restore S2325
         => field ??= [];
 
+    /// <summary>
+    /// Add the baseType.
+    /// </summary>
+    /// <param name="baseType">the baseType</param>
+    /// <returns>the item</returns>
+    public TypeDeclaration AddBaseType(DataType baseType)
+    {
+        BaseTypes.Add(baseType);
+        return this;
+    }
+
+    /// <summary>
+    /// Add the baseType.
+    /// </summary>
+    /// <typeparam name="T">BaseType</typeparam>
+    /// <returns>the item</returns>
+    public TypeDeclaration AddBaseType<T>()
+    {
+        BaseTypes.Add(DataType.FromType<T>());
+        return this;
+    }
+
+    /// <summary>
+    /// Add the baseType.
+    /// </summary>
+    /// <param name="baseType">type</param>
+    /// <returns>the item</returns>
+    /// <exception cref="ArgumentNullException">type is null</exception>
+    public TypeDeclaration AddBaseType(Type baseType)
+    {
+        if (baseType is null)
+            throw new ArgumentNullException(nameof(baseType));
+
+        BaseTypes.Add(DataType.FromType(baseType));
+        return this;
+    }
+
     /// <inheritdoc />
-    public List<SourceBuilderHandler> Members
+    public List<IMember> Members
         => field ??= [];
 
     /// <inheritdoc />

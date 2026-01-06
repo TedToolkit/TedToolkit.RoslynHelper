@@ -12,14 +12,14 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The custom codes
 /// </summary>
-/// <param name="Action">your action</param>
-public record struct Custom(SourceBuilderHandler Action) :
+/// <param name="action">your action</param>
+public sealed class Custom(SourceBuilderHandler action) :
     IStatement,
     IMember
 {
     /// <inheritdoc />
-    public readonly void ToCode(ref SourceBuilder builder)
-        => Action(ref builder);
+    public void ToCode(ref SourceBuilder builder)
+        => action(ref builder);
 
     /// <summary>
     /// Create by string

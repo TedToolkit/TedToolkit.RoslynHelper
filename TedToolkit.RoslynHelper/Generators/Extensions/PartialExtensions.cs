@@ -13,19 +13,19 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class PartialExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IPartial
+    extension<TItem>(TItem instance)
+        where TItem : class, IPartial
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see langword="partial"/>
         /// </summary>
-        public ref TItem Partial
+        public TItem Partial
         {
             get
             {
                 instance.IsPartial = true;
-                return ref instance;
+                return instance;
             }
         }
 

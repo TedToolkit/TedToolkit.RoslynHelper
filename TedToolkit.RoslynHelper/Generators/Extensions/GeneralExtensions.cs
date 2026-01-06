@@ -47,4 +47,35 @@ internal static class GeneralExtensions
             => ZString.Concat('@', value);
     }
 #pragma warning restore S2325
+
+    extension(Type value)
+#pragma warning disable S2325
+    {
+        /// <summary>
+        /// Get the tool name
+        /// </summary>
+        /// <returns>tool name</returns>
+        public string GetToolName()
+        {
+            var builder = new SourceBuilder();
+
+            try
+            {
+                value.ToExpression().ToCode(ref builder);
+                return builder.ToCode();
+            }
+            finally
+            {
+                builder.Dispose();
+            }
+        }
+
+        /// <summary>
+        ///  Get the version
+        /// </summary>
+        /// <returns>version</returns>
+        public string GetVersion()
+            => value.Assembly.GetName().Version.ToString();
+    }
+#pragma warning restore S2325
 }

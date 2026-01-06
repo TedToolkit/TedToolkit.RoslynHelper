@@ -13,18 +13,18 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class RootDescriptionExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IRootDescription
+    extension<TItem>(TItem instance)
+        where TItem : class, IRootDescription
 #pragma warning restore CA1034
     {
         /// <summary>
         /// Add description
         /// </summary>
         /// <param name="description">description</param>
-        public ref TItem AddRootDescription(IRootDescriptionItem description)
+        public TItem AddRootDescription(IRootDescriptionItem description)
         {
             instance.RootDescriptions.Add(description);
-            return ref instance;
+            return instance;
         }
 
         internal void AddDescriptions(ref SourceBuilder builder)

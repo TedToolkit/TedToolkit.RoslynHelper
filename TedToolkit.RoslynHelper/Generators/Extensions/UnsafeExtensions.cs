@@ -13,19 +13,19 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class UnsafeExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IUnsafe
+    extension<TItem>(TItem instance)
+        where TItem : class, IUnsafe
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see langword="unsafe"/>
         /// </summary>
-        public ref TItem Unsafe
+        public TItem Unsafe
         {
             get
             {
                 instance.IsUnsafe = true;
-                return ref instance;
+                return instance;
             }
         }
 

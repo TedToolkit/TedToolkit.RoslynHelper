@@ -13,20 +13,20 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class AccessibilityExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IAccessibility
+    extension<TItem>(TItem instance)
+        where TItem : class, IAccessibility
 #pragma warning restore CA1034
     {
         /// <summary>
         /// <see cref="Accessibility.PUBLIC"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Public
+        public TItem Public
         {
             get
             {
                 instance.Accessibility = Accessibility.PUBLIC;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -34,12 +34,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.INTERNAL"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Internal
+        public TItem Internal
         {
             get
             {
                 instance.Accessibility = Accessibility.INTERNAL;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -47,12 +47,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.PRIVATE"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Private
+        public TItem Private
         {
             get
             {
                 instance.Accessibility = Accessibility.PRIVATE;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -60,12 +60,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.FILE"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem File
+        public TItem File
         {
             get
             {
                 instance.Accessibility = Accessibility.FILE;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -73,12 +73,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.PRIVATE_PROTECTED"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem PrivateProtected
+        public TItem PrivateProtected
         {
             get
             {
                 instance.Accessibility = Accessibility.PRIVATE_PROTECTED;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -86,12 +86,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.PROTECTED"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem Protected
+        public TItem Protected
         {
             get
             {
                 instance.Accessibility = Accessibility.PROTECTED;
-                return ref instance;
+                return instance;
             }
         }
 
@@ -99,12 +99,12 @@ public static class AccessibilityExtensions
         /// <see cref="Accessibility.PROTECTED_INTERNAL"/>
         /// </summary>
         /// <returns>item</returns>
-        public ref TItem ProtectedInternal
+        public TItem ProtectedInternal
         {
             get
             {
                 instance.Accessibility = Accessibility.PROTECTED_INTERNAL;
-                return ref instance;
+                return instance;
             }
         }
 

@@ -10,10 +10,10 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The delegate
 /// </summary>
-/// <param name="Identifier">the identifier</param>
-/// <param name="ReturnType">the return type</param>
+/// <param name="identifier">the identifier</param>
+/// <param name="returnType">the return type</param>
 #pragma warning disable CA1711
-public record struct Delegate(string Identifier, ReturnType? ReturnType = null) :
+public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 #pragma warning restore CA1711
     IMember,
     IParameters,
@@ -29,7 +29,7 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
         foreach (var parameter in Parameters)
             parameter.ToRoot().ToDescription(ref builder);
 
-        ReturnType?.ToRoot().ToDescription(ref builder);
+        returnType?.ToRoot().ToDescription(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -37,14 +37,14 @@ public record struct Delegate(string Identifier, ReturnType? ReturnType = null) 
 
         builder.Append("delegate ");
 
-        if (ReturnType.HasValue)
-            ReturnType.Value.ToCode(ref builder);
+        if (returnType is not null)
+            returnType.ToCode(ref builder);
         else
             builder.Append("void");
 
         builder.Append(' ');
 
-        builder.Append(Identifier);
+        builder.Append(identifier);
         this.AddParametersNoSkip(ref builder);
         builder.Append(';');
     }

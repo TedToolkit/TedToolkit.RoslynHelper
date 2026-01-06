@@ -15,8 +15,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class AccessorExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IAccessors
+    extension<TItem>(TItem instance)
+        where TItem : class, IAccessors
 #pragma warning restore CA1034
     {
         /// <summary>
@@ -24,10 +24,10 @@ public static class AccessorExtensions
         /// </summary>
         /// <param name="attribute">attribute</param>
         /// <returns>the item</returns>
-        public ref TItem AddAccessor(Accessor attribute)
+        public TItem AddAccessor(Accessor attribute)
         {
             instance.Accessors.Add(attribute);
-            return ref instance;
+            return instance;
         }
 
         internal void AddAccessors(ref SourceBuilder builder)

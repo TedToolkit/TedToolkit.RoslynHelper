@@ -5,16 +5,36 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The Return Type
 /// </summary>
-/// <param name="Type">return Type</param>
-public record struct ReturnType(DataType Type) :
+/// <param name="type">return Type</param>
+public sealed class ReturnType(DataType type) :
     IDescription,
     IToCode
 {
+    /// <summary>
+    /// Create from a symbol
+    /// </summary>
+    /// <param name="type">symbol</param>
+    public ReturnType(ITypeSymbol type)
+        : this(new DataType(type))
+    {
+    }
+
+    /// <summary>
+    /// Create from a type
+    /// </summary>
+    /// <param name="type">type</param>
+    public ReturnType(Type type)
+        : this(DataType.FromType(type))
+    {
+    }
+
     /// <inheritdoc />
     public List<IDescriptionItem> Descriptions
         => field ??= [];
@@ -25,5 +45,5 @@ public record struct ReturnType(DataType Type) :
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => Type.ToCode(ref builder);
+        => type.ToCode(ref builder);
 }

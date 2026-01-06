@@ -14,11 +14,16 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The data Type
 /// </summary>
-/// <param name="Type">expression to the type</param>
-public record struct DataType(IExpression Type) :
+/// <param name="type">expression to the type</param>
+public sealed class DataType(IExpression type) :
     IStorageKind,
     IToCode
 {
+    /// <summary>
+    /// The Type
+    /// </summary>
+    public IExpression Type { get; set; } = type;
+
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
 
@@ -28,9 +33,62 @@ public record struct DataType(IExpression Type) :
     public bool IsArray { get; set; }
 
     /// <summary>
+    /// Make Array
+    /// </summary>
+    public DataType Array
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            IsArray = true;
+            return this;
+        }
+    }
+
+    /// <summary>
+    /// Make Null
+    /// </summary>
+    public DataType Null
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            Type = Type.Null;
+            return this;
+        }
+    }
+
+    /// <summary>
     /// The pointer counter
     /// </summary>
     public int PointCounter { get; set; }
+
+    /// <summary>
+    /// Pointer
+    /// </summary>
+#pragma warning disable CA1720
+    public DataType Pointer
+#pragma warning restore CA1720
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            PointCounter++;
+            return this;
+        }
+    }
+
+    /// <summary>
+    /// Generic the items.
+    /// </summary>
+    /// <param name="types">types</param>
+    /// <returns>expression</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DataType Generic(params DataType[] types)
+    {
+        Type = Type.Generic(types);
+        return this;
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -45,93 +103,74 @@ public record struct DataType(IExpression Type) :
     }
 
     /// <summary>
-    /// Create from a symbol
+    /// Create from the symbol
     /// </summary>
-    /// <param name="type">symbol type</param>
-    /// <param name="result">result</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref DataType FromSymbol(ITypeSymbol type, in DataType result = default)
+    /// <param name="type">type symbol</param>
+    public DataType(ITypeSymbol type)
+        : this(type?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+                   .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
+                   .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted))
+               ?? throw new ArgumentNullException(nameof(type)))
     {
-        if (type is null)
-            throw new ArgumentNullException(nameof(type));
-
-        var name = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
-            .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
-            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
-
-        return ref FromName(name, in result);
     }
 
     /// <summary>
     /// Create from name
     /// </summary>
     /// <param name="name">name</param>
-    /// <param name="result">result</param>
-    /// <returns>result</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref DataType FromName(string name, in DataType result = default)
+    public DataType(string name)
+        : this(new SimpleNameExpression(name))
     {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.Type = new SimpleNameExpression(name);
-        return ref instance;
     }
+
+    /// <summary>
+    /// Implicit convert
+    /// </summary>
+    /// <param name="value">value</param>
+    /// <returns>result</returns>
+    public static implicit operator DataType(Type value)
+        => FromType(value);
 
     /// <summary>
     /// From Type
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
-    /// <param name="result">result</param>
     /// <returns>Expression</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref DataType FromType<T>(in DataType result = default)
-        => ref FromType(typeof(T), result);
+    public static DataType FromType<T>()
+        => FromType(typeof(T));
 
     /// <summary>
     /// From the type
     /// </summary>
     /// <param name="type">type</param>
-    /// <param name="result">result</param>
     /// <returns>result</returns>
     /// <exception cref="ArgumentNullException">type is null</exception>
-    public static ref DataType FromType(Type type, in DataType result = default)
+    public static DataType FromType(Type type)
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
 
-        ref var instance = ref Unsafe.AsRef(in result);
         if (_typeAlias.TryGetValue(type, out var s))
-        {
-            instance = s;
-            return ref instance;
-        }
+            return s();
 
         if (type.IsArray)
-        {
-            _ = FromType(type.GetElementType()!, result).Array;
-            return ref instance;
-        }
+            return FromType(type.GetElementType()!).Array;
 
         if (type.IsGenericType)
         {
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                _ = FromType(Nullable.GetUnderlyingType(type)!, result).Null;
-                return ref instance;
-            }
+                return FromType(Nullable.GetUnderlyingType(type)!).Null;
 
-            instance.Type = SimpleType()
+            return new(SimpleType()
                 .Generic([
                     .. type.GetGenericArguments()
                         .Where(i => !i.IsGenericParameter)
-                        .Select(i => FromType(i)),
-                ]);
-            return ref instance;
+                        .Select(FromType),
+                ]));
         }
 
-        instance.Type = SimpleType();
-        return ref instance;
+        return new(SimpleType());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IExpression SimpleType()
@@ -151,106 +190,123 @@ public record struct DataType(IExpression Type) :
     /// <summary>
     /// <see langword="var"/>
     /// </summary>
-    public static DataType Var { get; } = new(new SimpleNameExpression("var"));
+    public static DataType Var
+        => new(new SimpleNameExpression("var"));
 #pragma warning disable CA1720
     /// <summary>
     /// <see langword="string"/>
     /// </summary>
-    public static DataType String { get; } = new(new SimpleNameExpression("string"));
+    public static DataType String
+        => new(new SimpleNameExpression("string"));
 
     /// <summary>
     /// <see langword="char"/>
     /// </summary>
-    public static DataType Char { get; } = new(new SimpleNameExpression("char"));
+    public static DataType Char
+        => new(new SimpleNameExpression("char"));
 
     /// <summary>
     /// <see langword="byte"/>
     /// </summary>
-    public static DataType Byte { get; } = new(new SimpleNameExpression("byte"));
+    public static DataType Byte
+        => new(new SimpleNameExpression("byte"));
 
     /// <summary>
     /// <see langword="sbyte"/>
     /// </summary>
-    public static DataType Sbyte { get; } = new(new SimpleNameExpression("sbyte"));
+    public static DataType Sbyte
+        => new(new SimpleNameExpression("sbyte"));
 
     /// <summary>
     /// <see langword="short"/>
     /// </summary>
-    public static DataType Short { get; } = new(new SimpleNameExpression("short"));
+    public static DataType Short
+        => new(new SimpleNameExpression("short"));
 
     /// <summary>
     /// <see langword="ushort"/>
     /// </summary>
-    public static DataType Ushort { get; } = new(new SimpleNameExpression("ushort"));
+    public static DataType Ushort
+        => new(new SimpleNameExpression("ushort"));
 
     /// <summary>
     /// <see langword="int"/>
     /// </summary>
-    public static DataType Int { get; } = new(new SimpleNameExpression("int"));
+    public static DataType Int
+        => new(new SimpleNameExpression("int"));
 
     /// <summary>
     /// <see langword="uint"/>
     /// </summary>
-    public static DataType Uint { get; } = new(new SimpleNameExpression("uint"));
+    public static DataType Uint
+        => new(new SimpleNameExpression("uint"));
 
     /// <summary>
     /// <see langword="long"/>
     /// </summary>
-    public static DataType Long { get; } = new(new SimpleNameExpression("long"));
+    public static DataType Long
+        => new(new SimpleNameExpression("long"));
 
     /// <summary>
     /// <see langword="ulong"/>
     /// </summary>
-    public static DataType Ulong { get; } = new(new SimpleNameExpression("ulong"));
+    public static DataType Ulong
+        => new(new SimpleNameExpression("ulong"));
 
     /// <summary>
     /// <see langword="bool"/>
     /// </summary>
-    public static DataType Bool { get; } = new(new SimpleNameExpression("bool"));
+    public static DataType Bool
+        => new(new SimpleNameExpression("bool"));
 
     /// <summary>
     /// <see langword="double"/>
     /// </summary>
-    public static DataType Double { get; } = new(new SimpleNameExpression("double"));
+    public static DataType Double
+        => new(new SimpleNameExpression("double"));
 
     /// <summary>
     /// <see langword="float"/>
     /// </summary>
-    public static DataType Float { get; } = new(new SimpleNameExpression("float"));
+    public static DataType Float
+        => new(new SimpleNameExpression("float"));
 
     /// <summary>
     /// <see langword="decimal"/>
     /// </summary>
-    public static DataType Decimal { get; } = new(new SimpleNameExpression("decimal"));
+    public static DataType Decimal
+        => new(new SimpleNameExpression("decimal"));
 
     /// <summary>
     /// <see langword="object"/>
     /// </summary>
-    public static DataType Object { get; } = new(new SimpleNameExpression("object"));
+    public static DataType Object
+        => new(new SimpleNameExpression("object"));
 
     /// <summary>
     /// <see langword="void"/>
     /// </summary>
-    public static DataType Void { get; } = new(new SimpleNameExpression("void"));
+    public static DataType Void
+        => new(new SimpleNameExpression("void"));
 #pragma warning restore CA1720
 
-    private static readonly Dictionary<Type, DataType> _typeAlias = new()
+    private static readonly Dictionary<Type, Func<DataType>> _typeAlias = new()
     {
-        { typeof(bool), Bool },
-        { typeof(byte), Byte },
-        { typeof(char), Char },
-        { typeof(decimal), Decimal },
-        { typeof(double), Double },
-        { typeof(float), Float },
-        { typeof(int), Int },
-        { typeof(long), Long },
-        { typeof(object), Object },
-        { typeof(sbyte), Sbyte },
-        { typeof(short), Short },
-        { typeof(string), String },
-        { typeof(uint), Uint },
-        { typeof(ulong), Ulong },
-        { typeof(ushort), Ushort },
-        { typeof(void), Void },
+        { typeof(bool), () => Bool },
+        { typeof(byte), () => Byte },
+        { typeof(char), () => Char },
+        { typeof(decimal), () => Decimal },
+        { typeof(double), () => Double },
+        { typeof(float), () => Float },
+        { typeof(int), () => Int },
+        { typeof(long), () => Long },
+        { typeof(object), () => Object },
+        { typeof(sbyte), () => Sbyte },
+        { typeof(short), () => Short },
+        { typeof(string), () => String },
+        { typeof(uint), () => Uint },
+        { typeof(ulong), () => Ulong },
+        { typeof(ushort), () => Ushort },
+        { typeof(void), () => Void },
     };
 }

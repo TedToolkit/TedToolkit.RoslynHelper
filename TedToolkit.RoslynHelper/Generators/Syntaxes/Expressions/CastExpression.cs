@@ -15,13 +15,11 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 public sealed class CastExpression(DataType type, IExpression expression) :
     IExpression
 {
-    private DataType _type = type;
-
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
         builder.Append('(');
-        _type.ToCode(ref builder);
+        type.ToCode(ref builder);
         builder.Append(')');
         expression.ToCode(ref builder);
     }

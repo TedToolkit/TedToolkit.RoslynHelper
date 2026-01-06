@@ -17,8 +17,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public static class VariableExtensions
 {
 #pragma warning disable CA1034
-    extension<TItem>(ref TItem instance)
-        where TItem : struct, IVariable
+    extension<TItem>(TItem instance)
+        where TItem : class, IVariable
 #pragma warning restore CA1034
     {
         /// <summary>

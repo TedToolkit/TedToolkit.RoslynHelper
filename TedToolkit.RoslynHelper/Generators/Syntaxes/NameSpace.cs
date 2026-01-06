@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Cysharp.Text;
+
 using TedToolkit.RoslynHelper.Generators.Delegates;
 
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
@@ -12,20 +14,39 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// <see langword="namespace"/>
 /// </summary>
-/// <param name="Name">the name of the <see langword="namespace"/></param>
-public record struct NameSpace(IExpression Name) :
+/// <param name="name">the name of the <see langword="namespace"/></param>
+public sealed class NameSpace(IExpression name) :
     IMemberOwner,
     IToCode
 {
     /// <inheritdoc />
-    public List<SourceBuilderHandler> Members
+    public List<IMember> Members
         => field ??= [];
+
+    /// <summary>
+    /// Create the namespace based on strings
+    /// </summary>
+    /// <param name="nameSpace">strings</param>
+    public NameSpace(in ReadOnlySpan<string> nameSpace)
+        : this(ZString.Join('.', nameSpace))
+    {
+    }
+
+    /// <summary>
+    /// Create the namespace based on string
+    /// </summary>
+    /// <param name="nameSpace">string</param>
+    public NameSpace(string nameSpace)
+        : this(nameSpace?.ToSimpleName()
+               ?? throw new ArgumentNullException(nameof(nameSpace)))
+    {
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
         builder.Append("namespace ");
-        Name.ToCode(ref builder);
+        name.ToCode(ref builder);
 
         this.AddMembers(ref builder);
     }

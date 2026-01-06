@@ -1,21 +1,19 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IMemberOwner.cs" company="TedToolkit">
+// <copyright file="IOwner.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The owner of the member.
+/// Something that has an owner.
 /// </summary>
-public interface IMemberOwner
+public interface IOwner
 {
     /// <summary>
-    /// The members
+    /// The owner
     /// </summary>
-    List<IMember> Members { get; }
+    string Owner { get; set; }
 }

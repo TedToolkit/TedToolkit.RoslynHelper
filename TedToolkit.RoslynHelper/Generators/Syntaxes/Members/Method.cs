@@ -10,9 +10,9 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The method
 /// </summary>
-/// <param name="Identifier">name</param>
-/// <param name="ReturnType">ReturnType</param>
-public record struct Method(string Identifier, ReturnType? ReturnType = null) :
+/// <param name="identifier">name</param>
+/// <param name="returnType">ReturnType</param>
+public sealed class Method(string identifier, ReturnType? returnType = null) :
     IMember,
     IParameters,
     IAttributes,
@@ -37,7 +37,7 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         foreach (var typeParameter in TypeParameters)
             typeParameter.ToRoot().ToDescription(ref builder);
 
-        ReturnType?.ToRoot().ToDescription(ref builder);
+        returnType?.ToRoot().ToDescription(ref builder);
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -47,14 +47,14 @@ public record struct Method(string Identifier, ReturnType? ReturnType = null) :
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);
 
-        if (ReturnType.HasValue)
-            ReturnType.Value.ToCode(ref builder);
+        if (returnType is not null)
+            returnType.ToCode(ref builder);
         else
             builder.Append("void");
 
         builder.Append(' ');
 
-        builder.Append(Identifier);
+        builder.Append(identifier);
         this.AddTypeParameters(ref builder);
         this.AddParametersNoSkip(ref builder);
         this.AddTypeParameterConstraints(ref builder);

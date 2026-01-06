@@ -5,13 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
 /// The TypeParameters
 /// </summary>
-/// <param name="Identifier">identifier</param>
-public record struct TypeParameter(string Identifier) :
+/// <param name="identifier">identifier</param>
+public sealed class TypeParameter(string identifier) :
     IToCode,
     IDescription,
     IVariable,
@@ -27,8 +29,8 @@ public record struct TypeParameter(string Identifier) :
         => new DescriptionTypeParam(Variable, Descriptions);
 
     /// <inheritdoc/>
-    public readonly string Variable
-        => Identifier;
+    public string Variable
+        => identifier;
 
     /// <inheritdoc />
     public List<Attribute> Attributes
@@ -50,7 +52,7 @@ public record struct TypeParameter(string Identifier) :
     {
         this.AddAttributes(ref builder);
         this.AddStorageKind(ref builder);
-        builder.Append(Identifier);
+        builder.Append(identifier);
     }
 
     /// <summary>
@@ -64,7 +66,7 @@ public record struct TypeParameter(string Identifier) :
 
         builder.AppendLine();
         builder.Append("\twhere ");
-        builder.Append(Identifier);
+        builder.Append(identifier);
         builder.Append(": ");
 
         var isNotStart = false;
@@ -77,5 +79,134 @@ public record struct TypeParameter(string Identifier) :
 
             isNotStart = true;
         }
+    }
+
+    /// <summary>
+    /// Add constraint
+    /// </summary>
+    /// <param name="constraint">the constraint</param>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddConstraint(IExpression constraint)
+    {
+        Constraints.Add(constraint);
+        return this;
+    }
+
+    /// <summary>
+    /// Add constraint
+    /// </summary>
+    /// <param name="constraint">the constraint</param>
+    /// <returns>self</returns>
+    /// <exception cref="ArgumentNullException">constraint is null</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddConstraint(DataType constraint)
+    {
+        if (constraint is null)
+            throw new ArgumentNullException(nameof(constraint));
+
+        Constraints.Add(constraint.Type);
+        return this;
+    }
+
+    /// <summary>
+    /// Add constraint
+    /// </summary>
+    /// <param name="constraint">the constraint</param>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddConstraint(Type constraint)
+    {
+        Constraints.Add(DataType.FromType(constraint).Type);
+        return this;
+    }
+
+    /// <summary>
+    /// Add constraint
+    /// </summary>
+    /// <typeparam name="T">constraint type</typeparam>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddConstraint<T>()
+    {
+        Constraints.Add(DataType.FromType<T>().Type);
+        return this;
+    }
+
+    /// <summary>
+    /// Add struct constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddStructConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("struct"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add class constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddClassConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("class"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add class null constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddClassNullConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("class?"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add not null constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddNotNullConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("notnull"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add new constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddNewConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("new()"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add unmanaged constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddUnmanagedConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("unmanaged"));
+        return this;
+    }
+
+    /// <summary>
+    /// Add allows ref struct constraint
+    /// </summary>
+    /// <returns>self</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TypeParameter AddRefStructConstraint()
+    {
+        Constraints.Add(new SimpleNameExpression("allows ref struct"));
+        return this;
     }
 }
