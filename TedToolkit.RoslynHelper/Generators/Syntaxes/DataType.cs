@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
 
+using TedToolkit.RoslynHelper.Extensions;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
@@ -116,10 +118,7 @@ public sealed class DataType(IExpression type) :
     /// </summary>
     /// <param name="type">type symbol</param>
     public DataType(ITypeSymbol type)
-        : this(type?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
-                   .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
-                   .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted))
-               ?? throw new ArgumentNullException(nameof(type)))
+        : this(type?.FullName ?? throw new ArgumentNullException(nameof(type)))
     {
     }
 

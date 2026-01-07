@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;

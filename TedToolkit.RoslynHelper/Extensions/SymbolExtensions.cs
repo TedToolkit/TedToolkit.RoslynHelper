@@ -16,6 +16,26 @@ namespace TedToolkit.RoslynHelper.Extensions;
 /// </summary>
 public static class SymbolExtensions
 {
+#pragma warning disable CA1034
+    extension(ISymbol symbol)
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// Full name of the symbol
+        /// </summary>
+#pragma warning disable S2325
+        public string FullName
+#pragma warning restore S2325
+        {
+            get
+            {
+                return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+                    .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
+                    .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+            }
+        }
+    }
+
     /// <summary>
     ///     Get the type name.
     /// </summary>

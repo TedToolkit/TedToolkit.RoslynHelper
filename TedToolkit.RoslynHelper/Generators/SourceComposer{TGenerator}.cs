@@ -269,4 +269,32 @@ public static class SourceComposer<TGenerator>
         AddGeneratorAttribute(ref instance);
         return instance;
     }
+
+    /// <summary>
+    /// Create the Enum
+    /// </summary>
+    /// <param name="identifier">enum name</param>
+    /// <param name="dataType">return type</param>
+    /// <returns>enum</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Syntaxes.Enum Enum(string identifier, DataType? dataType = null)
+    {
+        var instance = new Syntaxes.Enum(identifier, dataType);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
+
+    /// <summary>
+    /// Create an enum member
+    /// </summary>
+    /// <param name="identifier">enum name</param>
+    /// <param name="value">default value</param>
+    /// <returns>enum member</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Syntaxes.EnumMember EnumMember(string identifier, IExpression? value = null)
+    {
+        var instance = new Syntaxes.EnumMember(identifier, value);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
 }
