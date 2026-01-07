@@ -47,7 +47,7 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
         else
             builder.Append(Owner);
 
-        builder.Append(" @value)");
+        builder.Append(" value)");
 
         this.AddStatements(ref builder);
     }

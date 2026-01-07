@@ -255,4 +255,18 @@ public static class SourceComposer<TGenerator>
         AddGeneratorAttribute(ref instance);
         return instance;
     }
+
+    /// <summary>
+    /// Create an operator
+    /// </summary>
+    /// <param name="returnType">return type</param>
+    /// <param name="identifier">parameter name</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Operator Operator(ReturnType returnType, string identifier)
+    {
+        var instance = new Operator(returnType, identifier);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
 }
