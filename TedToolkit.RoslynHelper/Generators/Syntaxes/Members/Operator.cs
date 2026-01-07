@@ -33,8 +33,6 @@ public sealed class Operator(ReturnType returnType, string operatorName) :
 
         builder.Append(operatorName);
 
-        builder.Append('(');
-
         this.AddParametersNoSkip(ref builder);
 
         this.AddStatementsNoSkip(ref builder);

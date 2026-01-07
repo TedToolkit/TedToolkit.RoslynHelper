@@ -59,6 +59,15 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
+    /// Create an instance
+    /// </summary>
+    public ObjectCreationExpression New
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new(this);
+    }
+
+    /// <summary>
     /// The pointer counter
     /// </summary>
     public int PointCounter { get; set; }
