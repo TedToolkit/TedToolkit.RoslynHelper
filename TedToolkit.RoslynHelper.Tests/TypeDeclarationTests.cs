@@ -44,7 +44,7 @@ internal class TypeDeclarationTests
                     .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(10.ToLiteral()))))
             .ToCode();
 
-        await Assert.That(code).Contains("scoped in int @item = 10");
+        await Assert.That(code).Contains("scoped in int item = 10");
     }
 
     [Test]
@@ -56,7 +56,7 @@ internal class TypeDeclarationTests
                     .AddParameter(Parameter<int?>("item").ScopedIn.AddDefault(10.ToLiteral()))))
             .ToCode();
 
-        await Assert.That(code).Contains("scoped in int? @item = 10");
+        await Assert.That(code).Contains("scoped in int? item = 10");
     }
 
 
@@ -69,7 +69,7 @@ internal class TypeDeclarationTests
                     .AddParameter(Parameter<NestType.NestClass>("item").ScopedIn.AddDefault(10.ToLiteral()))))
             .ToCode();
 
-        await Assert.That(code).Contains("scoped in TedToolkit.RoslynHelper.Tests.NestType.NestClass @item = 10");
+        await Assert.That(code).Contains("scoped in TedToolkit.RoslynHelper.Tests.NestType.NestClass item = 10");
     }
 
     [Test]
@@ -99,7 +99,7 @@ internal class TypeDeclarationTests
                     ))))
             .ToCode();
 
-        await Assert.That(code).Contains("/// <param name=\"@item\">");
+        await Assert.That(code).Contains("/// <param name=\"item\">");
         await Assert.That(code).Contains("/// Good");
         await Assert.That(code).Contains("/// </param>");
     }
@@ -205,7 +205,7 @@ internal class TypeDeclarationTests
                             new SimpleNameExpression("source"))))))
             .ToCode();
 
-        await Assert.That(code).Contains("for (var @item in source)");
+        await Assert.That(code).Contains("for (var item in source)");
     }
 
     [Test]
@@ -220,7 +220,7 @@ internal class TypeDeclarationTests
                             .AddDefault(10.ToLiteral())))))
             .ToCode();
 
-        await Assert.That(code).Contains("int @item = 10;");
+        await Assert.That(code).Contains("int item = 10;");
     }
 
 

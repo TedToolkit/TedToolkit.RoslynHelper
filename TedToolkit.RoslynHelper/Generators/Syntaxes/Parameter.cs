@@ -51,7 +51,7 @@ public sealed class Parameter(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToArgumentName();
+        => identifier.ToValidIdentifier();
 
     /// <summary>
     /// The default value.
@@ -95,8 +95,8 @@ public sealed class Parameter(DataType type, string identifier) :
         this.AddAttributes(ref builder);
         this.AddStorageKind(ref builder);
         type.ToCode(ref builder);
-        builder.Append(" @");
-        builder.Append(identifier);
+        builder.Append(' ');
+        builder.Append(identifier.ToValidIdentifier());
         if (Default is null)
             return;
 

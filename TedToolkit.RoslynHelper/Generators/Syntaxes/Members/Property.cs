@@ -26,7 +26,7 @@ public sealed class Property(DataType type, string identifier) :
 {
     /// <inheritdoc/>
     public string Variable
-        => identifier;
+        => identifier.ToValidIdentifier();
 
     /// <inheritdoc />
     public Accessibility Accessibility { get; set; }
@@ -45,7 +45,7 @@ public sealed class Property(DataType type, string identifier) :
 
         type.ToCode(ref builder);
         builder.Append(' ');
-        builder.Append(identifier);
+        builder.Append(identifier.ToValidIdentifier());
         this.AddAccessors(ref builder);
     }
 
