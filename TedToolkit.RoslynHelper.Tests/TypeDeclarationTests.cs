@@ -205,7 +205,7 @@ internal class TypeDeclarationTests
                             new SimpleNameExpression("source"))))))
             .ToCode();
 
-        await Assert.That(code).Contains("for (var item in source)");
+        await Assert.That(code).Contains("foreach (var item in source)");
     }
 
     [Test]

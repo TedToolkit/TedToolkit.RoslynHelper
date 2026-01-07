@@ -95,6 +95,15 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// New
+        /// </summary>
+        public ObjectCreationExpression New
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(new DataType(expression));
+        }
+
+        /// <summary>
         /// Throw
         /// </summary>
         public ThrowExpression Throw
@@ -370,7 +379,7 @@ public static class ExpressionExtensions
 
 #pragma warning disable CA1034
     extension<TEnum>(TEnum value)
-        where TEnum : struct, Enum
+        where TEnum : struct, System.Enum
 #pragma warning restore CA1034
     {
         /// <summary>
