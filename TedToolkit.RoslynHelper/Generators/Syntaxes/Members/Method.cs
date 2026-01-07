@@ -54,7 +54,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
         builder.Append(' ');
 
-        builder.Append(identifier);
+        builder.Append(identifier.ToValidIdentifier());
         this.AddTypeParameters(ref builder);
         this.AddParametersNoSkip(ref builder);
         this.AddTypeParameterConstraints(ref builder);

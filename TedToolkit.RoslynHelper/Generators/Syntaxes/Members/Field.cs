@@ -34,7 +34,7 @@ public sealed class Field(DataType type, string identifier) :
         type.ToCode(ref builder);
         builder.Append(' ');
 
-        builder.Append(identifier);
+        builder.Append(identifier.ToValidIdentifier());
         builder.Append(';');
     }
 
@@ -57,5 +57,5 @@ public sealed class Field(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public string Variable
-        => identifier;
+        => identifier.ToValidIdentifier();
 }

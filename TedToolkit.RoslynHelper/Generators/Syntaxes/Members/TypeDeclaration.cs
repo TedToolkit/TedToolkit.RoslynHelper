@@ -29,7 +29,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <summary>
     ///  The identifier
     /// </summary>
-    public string Identifier { get; } = identifier;
+    public string Identifier { get; } = identifier.ToValidIdentifier();
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

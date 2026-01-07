@@ -36,8 +36,8 @@ public sealed class VariableExpression(DataType type, string identifier) :
     public void ToCode(ref SourceBuilder builder)
     {
         type.ToCode(ref builder);
-        builder.Append(" @");
-        builder.Append(identifier);
+        builder.Append(' ');
+        builder.Append(identifier.ToValidIdentifier());
         if (Default is null)
             return;
 
@@ -51,5 +51,5 @@ public sealed class VariableExpression(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToArgumentName();
+        => identifier.ToValidIdentifier();
 }

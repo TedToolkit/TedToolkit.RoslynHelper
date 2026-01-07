@@ -44,7 +44,7 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 
         builder.Append(' ');
 
-        builder.Append(identifier);
+        builder.Append(identifier.ToValidIdentifier());
         this.AddParametersNoSkip(ref builder);
         builder.Append(';');
     }

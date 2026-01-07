@@ -23,8 +23,8 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
     {
         builder.Append("for (");
         type.ToCode(ref builder);
-        builder.Append(" @");
-        builder.Append(identifier);
+        builder.Append(' ');
+        builder.Append(identifier.ToValidIdentifier());
         builder.Append(" in ");
         expression.ToCode(ref builder);
         builder.Append(')');
@@ -33,7 +33,7 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToArgumentName();
+        => identifier.ToValidIdentifier();
 
     /// <inheritdoc/>
     public List<IStatement> Statements

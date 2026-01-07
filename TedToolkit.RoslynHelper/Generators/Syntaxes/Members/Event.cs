@@ -37,13 +37,13 @@ public sealed class Event(DataType type, string identifier) :
         builder.Append("event ");
         type.ToCode(ref builder);
         builder.Append(' ');
-        builder.Append(identifier);
+        builder.Append(identifier.ToValidIdentifier());
         this.AddAccessors(ref builder);
     }
 
     /// <inheritdoc/>
     public string Variable
-        => identifier;
+        => identifier.ToValidIdentifier();
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
