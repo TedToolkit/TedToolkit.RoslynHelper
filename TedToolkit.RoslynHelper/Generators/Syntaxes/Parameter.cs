@@ -18,8 +18,7 @@ public sealed class Parameter(DataType type, string identifier) :
     IToCode,
     IDescription,
     IVariable,
-    IAttributes,
-    IStorageKind
+    IAttributes
 {
     /// <summary>
     /// Create from a type
@@ -39,6 +38,77 @@ public sealed class Parameter(DataType type, string identifier) :
     public Parameter(ITypeSymbol type, string identifier)
         : this(new DataType(type), identifier)
     {
+    }
+
+    /// <summary>
+    /// Create from a symbol
+    /// </summary>
+    /// <param name="parameterSymbol">parameter symbol</param>
+    /// <returns>parameter</returns>
+    /// <exception cref="ArgumentNullException">parameterSymbol is null</exception>
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol)
+    {
+        if (parameterSymbol is null)
+            throw new ArgumentNullException(nameof(parameterSymbol));
+
+        var type = new DataType(parameterSymbol.Type);
+
+        if (parameterSymbol.IsParams)
+        {
+            type = type.Params;
+        }
+        else if (parameterSymbol.ScopedKind is ScopedKind.None)
+        {
+            switch (parameterSymbol.RefKind)
+            {
+                case RefKind.Ref:
+                    type = type.Ref;
+                    break;
+
+                case RefKind.Out:
+                    type = type.Out;
+                    break;
+
+                case RefKind.In:
+                    type = type.In;
+                    break;
+
+                case RefKind.RefReadOnlyParameter:
+                    type = type.RefReadonly;
+                    break;
+            }
+        }
+        else
+        {
+            switch (parameterSymbol.RefKind)
+            {
+                case RefKind.Ref:
+                    type = type.ScopedRef;
+                    break;
+
+                case RefKind.In:
+                    type = type.ScopedIn;
+                    break;
+
+                case RefKind.RefReadOnlyParameter:
+                    type = type.ScopedRefReadonly;
+                    break;
+            }
+        }
+
+        var parameter = new Parameter(type, parameterSymbol.Name);
+
+        if (parameterSymbol.HasExplicitDefaultValue)
+        {
+            if (parameterSymbol.ExplicitDefaultValue is not { } defaultValue)
+                parameter.AddDefault();
+            else if (parameterSymbol.Type.SpecialType is SpecialType.System_String)
+                parameter.AddDefault(defaultValue.ToString().ToLiteral());
+            else
+                parameter.AddDefault(defaultValue.ToString().ToSimpleName());
+        }
+
+        return parameter;
     }
 
     /// <inheritdoc />
@@ -93,7 +163,6 @@ public sealed class Parameter(DataType type, string identifier) :
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddAttributes(ref builder);
-        this.AddStorageKind(ref builder);
         type.ToCode(ref builder);
         builder.Append(' ');
         builder.Append(identifier.ToValidIdentifier());
@@ -103,9 +172,6 @@ public sealed class Parameter(DataType type, string identifier) :
         builder.Append(" = ");
         Default.ToCode(ref builder);
     }
-
-    /// <inheritdoc />
-    public StorageKind StorageKind { get; set; }
 
     /// <inheritdoc />
     public List<Attribute> Attributes

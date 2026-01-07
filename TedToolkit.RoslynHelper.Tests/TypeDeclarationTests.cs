@@ -41,7 +41,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int>("item").ScopedIn.AddDefault(10.ToLiteral()))))
+                    .AddParameter(Parameter(DataType.Int.ScopedIn, "item").AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int item = 10");
@@ -53,7 +53,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<int?>("item").ScopedIn.AddDefault(10.ToLiteral()))))
+                    .AddParameter(Parameter(DataType.Int.Null.ScopedIn,"item").AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in int? item = 10");
@@ -66,7 +66,7 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter<NestType.NestClass>("item").ScopedIn.AddDefault(10.ToLiteral()))))
+                    .AddParameter(Parameter(DataType.FromType<NestType.NestClass>().ScopedIn, "item").AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("scoped in TedToolkit.RoslynHelper.Tests.NestType.NestClass item = 10");
