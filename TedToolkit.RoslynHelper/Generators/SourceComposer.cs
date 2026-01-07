@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using Microsoft.CodeAnalysis;
+
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
@@ -97,6 +99,15 @@ public static class SourceComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(DataType type, string identifier)
         => new(type, identifier);
+
+    /// <summary>
+    /// Create the parameter
+    /// </summary>
+    /// <param name="parameterSymbol">the parameter symbol</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Parameter Parameter(IParameterSymbol parameterSymbol)
+        => Syntaxes.Parameter.FromSymbol(parameterSymbol);
 
     /// <summary>
     /// Create an attribute.

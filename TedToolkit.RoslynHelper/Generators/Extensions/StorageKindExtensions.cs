@@ -108,6 +108,19 @@ public static class StorageKindExtensions
             }
         }
 
+        /// <summary>
+        /// <see cref="StorageKind.PARAMS"/>
+        /// </summary>
+        /// <returns>item</returns>
+        public TItem Params
+        {
+            get
+            {
+                instance.StorageKind = StorageKind.PARAMS;
+                return instance;
+            }
+        }
+
         internal void AddStorageKind(ref SourceBuilder builder)
         {
             if (instance.StorageKind is StorageKind.NONE)
