@@ -23,7 +23,7 @@ public sealed class InvocationExpression(IExpression member) :
     public void ToCode(ref SourceBuilder builder)
     {
         member.ToCode(ref builder);
-        this.AddArguments(ref builder);
+        this.AddArgumentsNoSkip(ref builder);
     }
 
     /// <inheritdoc />
