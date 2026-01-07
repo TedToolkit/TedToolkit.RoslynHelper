@@ -14,7 +14,9 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <summary>
 /// Some general things.
 /// </summary>
-internal static class GeneralExtensions
+#pragma warning disable CA1708
+public static class GeneralExtensions
+#pragma warning restore CA1708
 {
     private static class ArrayAccessor<T>
     {
@@ -30,14 +32,14 @@ internal static class GeneralExtensions
     /// <param name="list">the list</param>
     /// <typeparam name="T">Data</typeparam>
     /// <returns>span</returns>
-    public static Span<T> AsSpan<T>(this List<T> list)
+    internal static Span<T> AsSpan<T>(this List<T> list)
     {
         var items = (T[])ArrayAccessor<T>.ItemsField.GetValue(list);
         return new(items, 0, list.Count);
     }
 
+#pragma warning disable S2325, CA1034
     extension(string value)
-#pragma warning disable S2325
     {
         /// <summary>
         /// To the argument name
@@ -46,10 +48,8 @@ internal static class GeneralExtensions
         public string ToArgumentName()
             => ZString.Concat('@', value);
     }
-#pragma warning restore S2325
 
     extension(Type value)
-#pragma warning disable S2325
     {
         /// <summary>
         /// Get the tool name
@@ -77,5 +77,5 @@ internal static class GeneralExtensions
         public string GetVersion()
             => value.Assembly.GetName().Version.ToString();
     }
-#pragma warning restore S2325
+#pragma warning restore S2325, CA1034
 }

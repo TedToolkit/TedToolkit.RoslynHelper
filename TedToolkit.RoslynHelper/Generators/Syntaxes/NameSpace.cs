@@ -7,8 +7,6 @@
 
 using Cysharp.Text;
 
-using TedToolkit.RoslynHelper.Generators.Delegates;
-
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>

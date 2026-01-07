@@ -98,9 +98,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Event Event(
-        DataType type,
-        string identifier)
+    public static Event Event(DataType type, string identifier)
     {
         var instance = new Event(type, identifier);
         AddGeneratorAttribute(ref instance);
@@ -114,11 +112,8 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Event Event<T>(
-        string identifier)
-    {
-        return Event(typeof(T), identifier);
-    }
+    public static Event Event<T>(string identifier)
+        => Event(typeof(T), identifier);
 
     /// <summary>
     /// Create the Field
@@ -127,9 +122,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Field Field(
-        DataType type,
-        string identifier)
+    public static Field Field(DataType type, string identifier)
     {
         var instance = new Field(type, identifier);
         AddGeneratorAttribute(ref instance);
@@ -143,11 +136,8 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">identifier</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Field Field<T>(
-        string identifier)
-    {
-        return Field(typeof(T), identifier);
-    }
+    public static Field Field<T>(string identifier)
+        => Field(typeof(T), identifier);
 
     /// <summary>
     /// Create the Accessor
@@ -155,8 +145,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">accessor type</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Accessor Accessor(
-        AccessorType type)
+    public static Accessor Accessor(AccessorType type)
     {
         var instance = new Accessor(type);
         AddGeneratorAttribute(ref instance);
@@ -170,11 +159,8 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">parameter name</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Property Property<T>(
-        string identifier)
-    {
-        return Property(DataType.FromType<T>(), identifier);
-    }
+    public static Property Property<T>(string identifier)
+        => Property(DataType.FromType<T>(), identifier);
 
     /// <summary>
     /// Create the property
@@ -183,9 +169,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="identifier">parameter name</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Property Property(
-        DataType type,
-        string identifier)
+    public static Property Property(DataType type, string identifier)
     {
         var instance = new Property(type, identifier);
         AddGeneratorAttribute(ref instance);
@@ -198,8 +182,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Conversion ImplicitConversionTo(
-        DataType type)
+    public static Conversion ImplicitConversionTo(DataType type)
     {
         var instance = new Conversion(type, false, true);
         AddGeneratorAttribute(ref instance);
@@ -212,8 +195,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Conversion ImplicitConversionFrom(
-        DataType type)
+    public static Conversion ImplicitConversionFrom(DataType type)
     {
         var instance = new Conversion(type, true, true);
         AddGeneratorAttribute(ref instance);
@@ -226,8 +208,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Conversion ExplicitConversionTo(
-        DataType type)
+    public static Conversion ExplicitConversionTo(DataType type)
     {
         var instance = new Conversion(type, false, false);
         AddGeneratorAttribute(ref instance);
@@ -240,8 +221,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="type">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Conversion ExplicitConversionFrom(
-        DataType type)
+    public static Conversion ExplicitConversionFrom(DataType type)
     {
         var instance = new Conversion(type, true, false);
         AddGeneratorAttribute(ref instance);
@@ -255,9 +235,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="returnType">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Method Method(
-        string identifier,
-        ReturnType? returnType = null)
+    public static Method Method(string identifier, ReturnType? returnType = null)
     {
         var instance = new Method(identifier, returnType);
         AddGeneratorAttribute(ref instance);
@@ -271,9 +249,7 @@ public static class SourceComposer<TGenerator>
     /// <param name="returnType">return returnType</param>
     /// <returns>parameter</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Syntaxes.Delegate Delegate(
-        string identifier,
-        ReturnType? returnType = null)
+    public static Syntaxes.Delegate Delegate(string identifier, ReturnType? returnType = null)
     {
         var instance = new Syntaxes.Delegate(identifier, returnType);
         AddGeneratorAttribute(ref instance);
