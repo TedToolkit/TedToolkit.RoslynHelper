@@ -95,6 +95,15 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Throw
+        /// </summary>
+        public ThrowExpression Throw
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
         /// Using
         /// </summary>
         public UsingStatement Using
