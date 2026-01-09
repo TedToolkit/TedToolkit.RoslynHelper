@@ -45,14 +45,14 @@ public record struct SourceBuilder : IDisposable
     /// Indent
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Indent()
+    public void Indent()
         => _indentCount++;
 
     /// <summary>
     /// Dedent
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Dedent()
+    public void Dedent()
         => _indentCount--;
 
     /// <inheritdoc cref="Utf16ValueStringBuilder.AppendLine()"/>

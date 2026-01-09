@@ -12,10 +12,10 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// Enum
 /// </summary>
-/// <param name="identifer">identifier</param>
+/// <param name="identifier">identifier</param>
 /// <param name="dataType">data type</param>
 #pragma warning disable CA1711
-public sealed class Enum(string identifer, DataType? dataType = null) :
+public sealed class Enum(string identifier, DataType? dataType = null) :
 #pragma warning restore CA1711
     IAccessibility,
     IMember,
@@ -29,7 +29,7 @@ public sealed class Enum(string identifer, DataType? dataType = null) :
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
         builder.Append("enum ");
-        builder.Append(identifer.ToValidIdentifier());
+        builder.Append(identifier.ToValidIdentifier());
 
         if (dataType is not null)
         {

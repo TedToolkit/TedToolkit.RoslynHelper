@@ -223,7 +223,6 @@ internal class TypeDeclarationTests
         await Assert.That(code).Contains("int item = 10;");
     }
 
-
     [Test]
     public async Task GenericTest()
     {
@@ -238,5 +237,40 @@ internal class TypeDeclarationTests
 
         await Assert.That(code).Contains("in Good");
         await Assert.That(code).Contains("where Good: new(), int");
+    }
+
+    [Test]
+    public async Task SwitchTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Method("Method")
+                        .AddStatement(new SwitchStatement("a".ToSimpleName())
+                            .AddSection(new SwitchSection()
+                                .AddLabel(new SwitchLabel(1.ToLiteral(), "true".ToSimpleName()))
+                                .AddLabel(new SwitchLabel())
+                                .AddStatement("break".ToSimpleName()))))))
+            .ToCode();
+
+        await Assert.That(code).Contains("switch (a)");
+        await Assert.That(code).Contains("case 1 when true:");
+        await Assert.That(code).Contains("default:");
+    }
+
+    [Test]
+    public async Task IndexerTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Indexer<int>().Internal
+                        .AddParameter(Parameter<int>("index"))
+                        .AddAccessor(Accessor(AccessorType.GET)
+                            .AddStatement(10.ToLiteral().Return)))))
+            .ToCode();
+
+        await Assert.That(code).Contains("internal int this[");
+        await Assert.That(code).Contains("get");
     }
 }
