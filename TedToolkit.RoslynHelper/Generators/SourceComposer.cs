@@ -23,15 +23,10 @@ public static class SourceComposer
     /// Create a file
     /// </summary>
     /// <param name="fileName">file name</param>
-    /// <param name="result">result</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ref SourceFile File(string fileName, in SourceFile result = default)
-    {
-        ref var instance = ref Unsafe.AsRef(in result);
-        instance.FileName = fileName;
-        return ref instance;
-    }
+    public static SourceFile File(string fileName)
+        => new(fileName);
 
     /// <summary>
     /// Create a namespace

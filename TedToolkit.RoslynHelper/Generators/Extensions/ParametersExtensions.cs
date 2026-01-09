@@ -40,6 +40,12 @@ public static class ParametersExtensions
         internal void AddParametersNoSkip(ref SourceBuilder builder)
         {
             builder.Append('(');
+            instance.AddParametersList(ref builder);
+            builder.Append(')');
+        }
+
+        internal void AddParametersList(ref SourceBuilder builder)
+        {
             var isNotStart = false;
             foreach (var parameter in instance.Parameters)
             {
@@ -53,8 +59,6 @@ public static class ParametersExtensions
 
                 isNotStart = true;
             }
-
-            builder.Append(')');
         }
     }
 }

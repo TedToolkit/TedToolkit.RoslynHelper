@@ -297,4 +297,26 @@ public static class SourceComposer<TGenerator>
         AddGeneratorAttribute(ref instance);
         return instance;
     }
+
+    /// <summary>
+    /// Create an indexer
+    /// </summary>
+    /// <typeparam name="T">Type</typeparam>
+    /// <returns>indexer</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Indexer Indexer<T>()
+        => Indexer(DataType.FromType<T>());
+
+    /// <summary>
+    /// Create an indexer
+    /// </summary>
+    /// <param name="type">the type</param>
+    /// <returns>indexer</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Indexer Indexer(DataType type)
+    {
+        var instance = new Indexer(type);
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
 }

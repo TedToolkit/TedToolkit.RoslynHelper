@@ -18,8 +18,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <summary>
 /// The source file
 /// </summary>
-/// <param name="FileName">file name</param>
-public record struct SourceFile(string FileName)
+/// <param name="fileName">file name</param>
+public class SourceFile(string fileName)
 {
     /// <summary>
     /// Generate the code
@@ -27,7 +27,7 @@ public record struct SourceFile(string FileName)
     /// <param name="context">context</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Generate(scoped in SourceProductionContext context)
-        => context.AddSource(ZString.Concat(FileName, ".g.cs"), ToCode());
+        => context.AddSource(ZString.Concat(fileName, ".g.cs"), ToCode());
 
     /// <summary>
     /// To code
@@ -105,4 +105,33 @@ public record struct SourceFile(string FileName)
     public List<Syntaxes.Attribute> Attributes
 #pragma warning restore S2325
         => field ??= [];
+
+    /// <summary>
+    /// Add a name space.
+    /// </summary>
+    /// <param name="nameSpace">the namespace</param>
+    /// <returns>result</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SourceFile AddNameSpace(NameSpace nameSpace)
+    {
+        NameSpaces.Add(nameSpace);
+        return this;
+    }
+
+    /// <summary>
+    /// Add a name space.
+    /// </summary>
+    /// <param name="attribute">the attribute</param>
+    /// <returns>result</returns>
+    /// <exception cref="ArgumentNullException">attribute is null</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SourceFile AddAttribute(Syntaxes.Attribute attribute)
+    {
+        if (attribute is null)
+            throw new ArgumentNullException(nameof(attribute));
+
+        attribute.Modifier = AttributeModifier.ASSEMBLY;
+        Attributes.Add(attribute);
+        return this;
+    }
 }
