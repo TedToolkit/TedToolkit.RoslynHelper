@@ -273,4 +273,17 @@ internal class TypeDeclarationTests
         await Assert.That(code).Contains("internal int this[");
         await Assert.That(code).Contains("get");
     }
+
+    [Test]
+    public async Task ConstructorTest()
+    {
+        var code = File("File")
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public
+                    .AddMember(Constructor().Public
+                        .AddInitializer(new ConstructorInitializer(false)))))
+            .ToCode();
+
+        await Assert.That(code).Contains("public FirstClass() : this()");
+    }
 }

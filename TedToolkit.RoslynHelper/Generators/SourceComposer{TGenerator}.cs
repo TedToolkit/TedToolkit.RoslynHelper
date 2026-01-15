@@ -257,6 +257,18 @@ public static class SourceComposer<TGenerator>
     }
 
     /// <summary>
+    /// Create a constructor
+    /// </summary>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Constructor Constructor()
+    {
+        var instance = new Constructor();
+        AddGeneratorAttribute(ref instance);
+        return instance;
+    }
+
+    /// <summary>
     /// Create an operator
     /// </summary>
     /// <param name="returnType">return type</param>
