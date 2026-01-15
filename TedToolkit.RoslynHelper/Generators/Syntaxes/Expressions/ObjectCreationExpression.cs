@@ -22,8 +22,16 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        builder.Append("new ");
-        dataType?.ToCode(ref builder);
+        if (dataType is not null)
+        {
+            builder.Append("new ");
+            dataType.ToCode(ref builder);
+        }
+        else
+        {
+            builder.Append("new");
+        }
+
         this.AddArgumentsNoSkip(ref builder);
     }
 

@@ -27,7 +27,17 @@ public class SourceFile(string fileName)
     /// <param name="context">context</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Generate(scoped in SourceProductionContext context)
-        => context.AddSource(ZString.Concat(fileName, ".g.cs"), ToCode());
+    {
+        if (context.CancellationToken.IsCancellationRequested)
+            return;
+
+        var code = ToCode();
+
+        if (context.CancellationToken.IsCancellationRequested)
+            return;
+
+        context.AddSource(ZString.Concat(fileName, ".g.cs"), code);
+    }
 
     /// <summary>
     /// To code
