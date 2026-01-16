@@ -105,6 +105,16 @@ public static class SourceComposer
         => Syntaxes.Parameter.FromSymbol(parameterSymbol);
 
     /// <summary>
+    /// Create the parameter
+    /// </summary>
+    /// <param name="parameterSymbol">the parameter symbol</param>
+    /// <param name="type">data type</param>
+    /// <returns>parameter</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Parameter Parameter(IParameterSymbol parameterSymbol, DataType type)
+        => Syntaxes.Parameter.FromSymbol(parameterSymbol, type);
+
+    /// <summary>
     /// Create an attribute.
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
