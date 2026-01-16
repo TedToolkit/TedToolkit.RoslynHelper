@@ -18,7 +18,7 @@ internal class ExpressionTests
                         .AddStatement(new ObjectCreationExpression()))))
             .ToCode();
 
-        await Assert.That(code).Contains("new ();");
+        await Assert.That(code).Contains("new();");
     }
 
     [Test]
