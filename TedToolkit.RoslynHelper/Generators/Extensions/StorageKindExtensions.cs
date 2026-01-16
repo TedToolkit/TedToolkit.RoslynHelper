@@ -108,19 +108,6 @@ public static class StorageKindExtensions
             }
         }
 
-        /// <summary>
-        /// <see cref="StorageKind.PARAMS"/>
-        /// </summary>
-        /// <returns>item</returns>
-        public TItem Params
-        {
-            get
-            {
-                instance.StorageKind = StorageKind.PARAMS;
-                return instance;
-            }
-        }
-
         internal void AddStorageKind(ref SourceBuilder builder)
         {
             if (instance.StorageKind is StorageKind.NONE)
@@ -135,7 +122,6 @@ public static class StorageKindExtensions
                 StorageKind.SCOPED_IN => "scoped in ",
                 StorageKind.SCOPED_REF => "scoped ref ",
                 StorageKind.SCOPED_REF_READONLY => "scoped ref readonly ",
-                StorageKind.PARAMS => "params ",
                 _ => throw new InvalidOperationException(nameof(instance.StorageKind)),
             });
         }

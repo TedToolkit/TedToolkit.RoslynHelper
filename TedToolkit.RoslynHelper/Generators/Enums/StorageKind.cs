@@ -51,9 +51,4 @@ public enum StorageKind
     /// <see langword="scoped"/> <see langword="ref"/> <see langword="readonly"/>
     /// </summary>
     SCOPED_REF_READONLY = 7,
-
-    /// <summary>
-    /// <see langword="params"/>
-    /// </summary>
-    PARAMS = 8,
 }

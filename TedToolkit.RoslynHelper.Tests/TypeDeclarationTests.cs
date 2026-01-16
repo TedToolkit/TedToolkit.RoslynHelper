@@ -41,10 +41,10 @@ internal class TypeDeclarationTests
         var code = File("File")
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
-                    .AddParameter(Parameter(DataType.Int.ScopedIn, "item").AddDefault(10.ToLiteral()))))
+                    .AddParameter(Parameter(DataType.Int.ScopedIn, "item").This.AddDefault(10.ToLiteral()))))
             .ToCode();
 
-        await Assert.That(code).Contains("scoped in int item = 10");
+        await Assert.That(code).Contains("this scoped in int item = 10");
     }
 
     [Test]
