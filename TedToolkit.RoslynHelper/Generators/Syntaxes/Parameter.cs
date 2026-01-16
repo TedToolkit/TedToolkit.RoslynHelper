@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 using Microsoft.CodeAnalysis;
 
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
@@ -46,12 +48,29 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <param name="parameterSymbol">parameter symbol</param>
     /// <returns>parameter</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol is null</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter FromSymbol(IParameterSymbol parameterSymbol)
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
 
-        var type = new DataType(parameterSymbol.Type);
+        return FromSymbol(parameterSymbol, new(parameterSymbol.Type));
+    }
+
+    /// <summary>
+    /// From a symbol with type
+    /// </summary>
+    /// <param name="parameterSymbol">parameter symbol</param>
+    /// <param name="type">data type</param>
+    /// <returns>parameter</returns>
+    /// <exception cref="ArgumentNullException">parameterSymbol or type is null</exception>
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, DataType type)
+    {
+        if (parameterSymbol is null)
+            throw new ArgumentNullException(nameof(parameterSymbol));
+
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
 
         if (parameterSymbol.ScopedKind is ScopedKind.None)
         {
