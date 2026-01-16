@@ -53,11 +53,7 @@ public sealed class Parameter(DataType type, string identifier) :
 
         var type = new DataType(parameterSymbol.Type);
 
-        if (parameterSymbol.IsParams)
-        {
-            type = type.Params;
-        }
-        else if (parameterSymbol.ScopedKind is ScopedKind.None)
+        if (parameterSymbol.ScopedKind is ScopedKind.None)
         {
             switch (parameterSymbol.RefKind)
             {
@@ -97,6 +93,11 @@ public sealed class Parameter(DataType type, string identifier) :
         }
 
         var parameter = new Parameter(type, parameterSymbol.Name);
+
+        if (parameterSymbol.IsParams)
+            parameter = parameter.Params;
+        else if (parameterSymbol.IsThis)
+            parameter = parameter.This;
 
         if (parameterSymbol.HasExplicitDefaultValue)
         {
@@ -163,6 +164,17 @@ public sealed class Parameter(DataType type, string identifier) :
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddAttributes(ref builder);
+        switch (ParameterKind)
+        {
+            case ParameterKind.THIS:
+                builder.Append("this ");
+                break;
+
+            case ParameterKind.PARAMS:
+                builder.Append("params ");
+                break;
+        }
+
         type.ToCode(ref builder);
         builder.Append(' ');
         builder.Append(identifier.ToValidIdentifier());
@@ -176,4 +188,35 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <inheritdoc />
     public List<Attribute> Attributes
         => field ??= [];
+
+    /// <summary>
+    /// Parameter Kind.
+    /// </summary>
+    public ParameterKind ParameterKind { get; set; }
+
+    /// <summary>
+    /// <see cref="ParameterKind.PARAMS"/>
+    /// </summary>
+    /// <returns>item</returns>
+    public Parameter Params
+    {
+        get
+        {
+            ParameterKind = ParameterKind.PARAMS;
+            return this;
+        }
+    }
+
+    /// <summary>
+    /// <see cref="ParameterKind.THIS"/>
+    /// </summary>
+    /// <returns>item</returns>
+    public Parameter This
+    {
+        get
+        {
+            ParameterKind = ParameterKind.THIS;
+            return this;
+        }
+    }
 }
