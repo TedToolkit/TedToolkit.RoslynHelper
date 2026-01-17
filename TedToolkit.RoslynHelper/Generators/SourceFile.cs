@@ -18,15 +18,15 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// <summary>
 /// The source file
 /// </summary>
-/// <param name="fileName">file name</param>
-public class SourceFile(string fileName)
+public class SourceFile()
 {
     /// <summary>
     /// Generate the code
     /// </summary>
     /// <param name="context">context</param>
+    /// <param name="fileName">file name</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Generate(scoped in SourceProductionContext context)
+    public void Generate(scoped in SourceProductionContext context, string fileName)
     {
         if (context.CancellationToken.IsCancellationRequested)
             return;
