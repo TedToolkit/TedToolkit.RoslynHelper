@@ -14,11 +14,11 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <param name="identifier">identifier</param>
 public sealed class VariableExpression(DataType type, string identifier) :
     IExpression,
-    IVariable
+    IVariable,
+    IDefault,
+    IConst
 {
-    /// <summary>
-    /// Default Value
-    /// </summary>
+    /// <inheritdoc />
     public IExpression? Default { get; set; }
 
     /// <summary>
@@ -35,14 +35,11 @@ public sealed class VariableExpression(DataType type, string identifier) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        this.AddConst(ref builder);
         type.ToCode(ref builder);
         builder.Append(' ');
         builder.Append(identifier.ToValidIdentifier());
-        if (Default is null)
-            return;
-
-        builder.Append(" = ");
-        Default.ToCode(ref builder);
+        this.AddDefault(ref builder);
     }
 
     /// <inheritdoc />
@@ -52,4 +49,7 @@ public sealed class VariableExpression(DataType type, string identifier) :
     /// <inheritdoc/>
     public string Variable
         => identifier.ToValidIdentifier();
+
+    /// <inheritdoc/>
+    public bool IsConst { get; set; }
 }

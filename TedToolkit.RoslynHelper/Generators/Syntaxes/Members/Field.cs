@@ -19,7 +19,9 @@ public sealed class Field(DataType type, string identifier) :
     IAccessibility,
     IReadonly,
     IVariable,
-    IRootDescription
+    IRootDescription,
+    IDefault,
+    IConst
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
@@ -30,11 +32,13 @@ public sealed class Field(DataType type, string identifier) :
         this.AddAccessibility(ref builder);
         this.AddStatic(ref builder);
         this.AddReadonly(ref builder);
+        this.AddConst(ref builder);
 
         type.ToCode(ref builder);
         builder.Append(' ');
 
         builder.Append(identifier.ToValidIdentifier());
+        this.AddDefault(ref builder);
         builder.Append(';');
     }
 
@@ -58,4 +62,10 @@ public sealed class Field(DataType type, string identifier) :
     /// <inheritdoc/>
     public string Variable
         => identifier.ToValidIdentifier();
+
+    /// <inheritdoc />
+    public IExpression? Default { get; set; }
+
+    /// <inheritdoc />
+    public bool IsConst { get; set; }
 }
