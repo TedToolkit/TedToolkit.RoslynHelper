@@ -22,11 +22,10 @@ public static class SourceComposer
     /// <summary>
     /// Create a file
     /// </summary>
-    /// <param name="fileName">file name</param>
     /// <returns>class</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SourceFile File(string fileName)
-        => new(fileName);
+    public static SourceFile File()
+        => new();
 
     /// <summary>
     /// Create a namespace

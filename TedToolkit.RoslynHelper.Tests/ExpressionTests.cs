@@ -11,7 +11,7 @@ internal class ExpressionTests
     [Test]
     public async Task ObjectCreationTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
@@ -24,7 +24,7 @@ internal class ExpressionTests
     [Test]
     public async Task ObjectIntCreationTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
@@ -38,7 +38,7 @@ internal class ExpressionTests
     [Test]
     public async Task CollectionsTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")

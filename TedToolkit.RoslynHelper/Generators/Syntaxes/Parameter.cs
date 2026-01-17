@@ -20,7 +20,8 @@ public sealed class Parameter(DataType type, string identifier) :
     IToCode,
     IDescription,
     IVariable,
-    IAttributes
+    IAttributes,
+    IDefault
 {
     /// <summary>
     /// Create from a type
@@ -143,41 +144,8 @@ public sealed class Parameter(DataType type, string identifier) :
     public string Variable
         => identifier.ToValidIdentifier();
 
-    /// <summary>
-    /// The default value.
-    /// </summary>
-    public IExpression? Default { get; internal set; }
-
-    /// <summary>
-    /// Add null
-    /// </summary>
-    /// <returns>self</returns>
-    public Parameter AddNull()
-    {
-        Default = SimpleNameExpression.Null;
-        return this;
-    }
-
-    /// <summary>
-    /// Add default
-    /// </summary>
-    /// <returns>self</returns>
-    public Parameter AddDefault()
-    {
-        Default = SimpleNameExpression.Default;
-        return this;
-    }
-
-    /// <summary>
-    /// Add default
-    /// </summary>
-    /// <param name="value">defaultValue</param>
-    /// <returns>self</returns>
-    public Parameter AddDefault(IExpression value)
-    {
-        Default = value;
-        return this;
-    }
+    /// <inheritdoc/>
+    public IExpression? Default { get; set; }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -197,11 +165,7 @@ public sealed class Parameter(DataType type, string identifier) :
         type.ToCode(ref builder);
         builder.Append(' ');
         builder.Append(identifier.ToValidIdentifier());
-        if (Default is null)
-            return;
-
-        builder.Append(" = ");
-        Default.ToCode(ref builder);
+        this.AddDefault(ref builder);
     }
 
     /// <inheritdoc />

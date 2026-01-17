@@ -8,7 +8,7 @@ internal class EnumTests
     [Test]
     public async Task EnumTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Enum("MyEnum").Public
                     .AddEnumMember(EnumMember("CCC"))))

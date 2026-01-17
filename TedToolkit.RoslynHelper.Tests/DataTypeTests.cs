@@ -11,7 +11,7 @@ internal class DataTypeTests
     [Test]
     public async Task GenericNonParameterTypeTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public.AddBaseType(typeof(List<>))))
             .ToCode();
@@ -22,7 +22,7 @@ internal class DataTypeTests
     [Test]
     public async Task GenericTypeTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public.AddBaseType(DataType.FromType(typeof(List<>))
                     .Generic(DataType.FromType<int>()))))
@@ -34,7 +34,7 @@ internal class DataTypeTests
     [Test]
     public async Task GenericBaseTypeTest()
     {
-        var code = File("File")
+        var code = File()
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public.AddBaseType<List<int>>()))
             .ToCode();
