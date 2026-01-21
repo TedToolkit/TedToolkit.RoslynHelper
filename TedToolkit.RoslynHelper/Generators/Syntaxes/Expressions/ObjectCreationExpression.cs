@@ -33,9 +33,45 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
         }
 
         this.AddArgumentsNoSkip(ref builder);
+
+        if (Variables.Count is 0)
+            return;
+
+        builder.BeginBlock();
+
+        foreach (var (name, value) in Variables)
+        {
+            builder.AppendLine();
+            builder.Append(name);
+            builder.Append(" = ");
+            value.ToCode(ref builder);
+            builder.Append(',');
+        }
+
+        builder.EndBlock();
     }
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
         => ToCode(ref builder);
+
+    /// <summary>
+    /// Some variables.
+    /// </summary>
+#pragma warning disable S2325
+    public List<(string Name, IExpression Value)> Variables
+#pragma warning restore S2325
+        => field ??= [];
+
+    /// <summary>
+    /// Add variable.
+    /// </summary>
+    /// <param name="name">name.</param>
+    /// <param name="value">value.</param>
+    /// <returns>self</returns>
+    public ObjectCreationExpression AddVariable(string name, IExpression value)
+    {
+        Variables.Add((name, value));
+        return this;
+    }
 }

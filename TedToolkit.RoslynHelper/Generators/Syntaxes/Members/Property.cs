@@ -22,6 +22,7 @@ public sealed class Property(DataType type, string identifier) :
     IPolymorphism,
     IRootDescription,
     IAttributes,
+    IDefault,
     IAccessors
 {
     /// <inheritdoc/>
@@ -47,6 +48,8 @@ public sealed class Property(DataType type, string identifier) :
         builder.Append(' ');
         builder.Append(identifier.ToValidIdentifier());
         this.AddAccessors(ref builder);
+        this.AddDefault(ref builder);
+        builder.Append(';');
     }
 
     /// <inheritdoc/>
@@ -72,4 +75,7 @@ public sealed class Property(DataType type, string identifier) :
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }
+
+    /// <inheritdoc />
+    public IExpression? Default { get; set; }
 }
