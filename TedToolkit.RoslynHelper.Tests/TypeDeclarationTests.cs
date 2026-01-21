@@ -151,11 +151,13 @@ internal class TypeDeclarationTests
             .AddNameSpace(NameSpace("Space")
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Property<long>("Item").Internal
-                        .AddAccessor(Accessor(AccessorType.GET)))))
+                        .AddAccessor(Accessor(AccessorType.GET))
+                        .AddDefault(10.ToLiteral()))))
             .ToCode();
 
         await Assert.That(code).Contains("internal long Item");
         await Assert.That(code).Contains("get");
+        await Assert.That(code).Contains("} = 10;");
     }
 
     [Test]
