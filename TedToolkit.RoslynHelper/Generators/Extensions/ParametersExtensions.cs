@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IParameters"/>
+/// The extensions for the <see cref="IParameters"/>.
 /// </summary>
 public static class ParametersExtensions
 {
@@ -20,9 +20,9 @@ public static class ParametersExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add parameter
+        /// Add parameter.
         /// </summary>
-        /// <param name="parameter">the parameter</param>
+        /// <param name="parameter">the parameter.</param>
         public TItem AddParameter(Parameter parameter)
         {
             instance.Parameters.Add(parameter);

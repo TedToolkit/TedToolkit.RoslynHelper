@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IVariable
 {
     /// <summary>
-    /// The identifier
+    /// Gets the identifier.
     /// </summary>
     string Variable { get; }
 }

@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IExpressionOwner"/>
+/// The extensions for the <see cref="IExpressionOwner"/>.
 /// </summary>
 public static class ExpressionOwnerExtensions
 {
@@ -18,10 +18,10 @@ public static class ExpressionOwnerExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add the expression
+        /// Add the expression.
         /// </summary>
-        /// <param name="expression">the expression</param>
-        /// <returns>the item</returns>
+        /// <param name="expression">the expression.</param>
+        /// <returns>the item.</returns>
         public TItem AddExpression(IExpression expression)
         {
             instance.Expressions.Add(expression);

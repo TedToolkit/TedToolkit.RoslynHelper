@@ -13,8 +13,8 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IToCode
 {
     /// <summary>
-    /// Get the codes
+    /// Get the codes.
     /// </summary>
-    /// <param name="builder">builder</param>
+    /// <param name="builder">builder.</param>
     void ToCode(ref SourceBuilder builder);
 }

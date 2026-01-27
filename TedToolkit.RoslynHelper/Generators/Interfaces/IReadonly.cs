@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// <see langword="readonly"/>
+/// <see langword="readonly"/>.
 /// </summary>
 public interface IReadonly
 {
     /// <summary>
-    /// <see langword="readonly"/>
+    /// Gets or sets a value indicating whether <see langword="readonly"/>.
     /// </summary>
     bool IsReadonly { get; set; }
 }

@@ -20,9 +20,10 @@ public abstract class TypeParametersName<T> : BaseName<T>, ITypeParametersName
     private readonly Lazy<TypeParamName[]> _lazyTypeParameters;
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="TypeParametersName{T}"/> class.
     /// Create the type parameters.
     /// </summary>
-    /// <param name="symbol">symbol</param>
+    /// <param name="symbol">symbol.</param>
     private protected TypeParametersName(T symbol)
         : base(symbol)
     {
@@ -38,9 +39,9 @@ public abstract class TypeParametersName<T> : BaseName<T>, ITypeParametersName
         => _lazyTypeParameters.Value;
 
     /// <summary>
-    /// Get the type parameters
+    /// Get the type parameters.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
-    /// <returns>Symbols</returns>
+    /// <param name="symbol">Symbol.</param>
+    /// <returns>Symbols.</returns>
     private protected abstract IEnumerable<ITypeParameterSymbol> GetTypeParameters(T symbol);
 }

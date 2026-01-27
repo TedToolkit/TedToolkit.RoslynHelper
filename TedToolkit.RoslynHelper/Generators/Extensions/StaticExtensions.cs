@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IStatic"/>
+/// The extensions for the <see cref="IStatic"/>.
 /// </summary>
 public static class StaticExtensions
 {
@@ -18,7 +18,7 @@ public static class StaticExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see langword="static"/>
+        /// Gets <see langword="static"/>.
         /// </summary>
         public TItem Static
         {

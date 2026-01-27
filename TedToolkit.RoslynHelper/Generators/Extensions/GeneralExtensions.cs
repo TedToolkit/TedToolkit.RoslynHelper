@@ -27,11 +27,11 @@ public static class GeneralExtensions
     }
 
     /// <summary>
-    /// As span
+    /// As span.
     /// </summary>
-    /// <param name="list">the list</param>
-    /// <typeparam name="T">Data</typeparam>
-    /// <returns>span</returns>
+    /// <param name="list">the list.</param>
+    /// <typeparam name="T">Data.</typeparam>
+    /// <returns>span.</returns>
     internal static Span<T> AsSpan<T>(this List<T> list)
     {
         var items = (T[])ArrayAccessor<T>.ItemsField.GetValue(list);
@@ -42,9 +42,9 @@ public static class GeneralExtensions
     extension(string value)
     {
         /// <summary>
-        /// To the argument name
+        /// To the argument name.
         /// </summary>
-        /// <returns>argument Name</returns>
+        /// <returns>argument Name.</returns>
         public string ToValidIdentifier()
             => _keywords.Contains(value) ? ZString.Concat('@', value) : value;
     }
@@ -172,9 +172,9 @@ public static class GeneralExtensions
     extension(Type value)
     {
         /// <summary>
-        /// Get the tool name
+        /// Get the tool name.
         /// </summary>
-        /// <returns>tool name</returns>
+        /// <returns>tool name.</returns>
         public string GetToolName()
         {
             var builder = new SourceBuilder();
@@ -191,9 +191,9 @@ public static class GeneralExtensions
         }
 
         /// <summary>
-        ///  Get the version
+        ///  Get the version.
         /// </summary>
-        /// <returns>version</returns>
+        /// <returns>version.</returns>
         public string GetVersion()
             => value.Assembly.GetName().Version.ToString();
     }

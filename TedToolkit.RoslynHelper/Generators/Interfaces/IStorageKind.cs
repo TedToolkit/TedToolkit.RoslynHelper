@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The ref Type
+/// The ref Type.
 /// </summary>
 public interface IStorageKind
 {
     /// <summary>
-    /// Ref Type
+    /// Gets or sets ref Type.
     /// </summary>
     StorageKind StorageKind { get; set; }
 }

@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The switch Sections
+/// The switch Sections.
 /// </summary>
 public sealed class SwitchSection :
     IToCode,
@@ -38,7 +38,7 @@ public sealed class SwitchSection :
         => field ??= [];
 
     /// <summary>
-    /// The labels
+    /// Gets the labels.
     /// </summary>
 #pragma warning disable S2325
     public List<SwitchLabel> Labels
@@ -46,10 +46,10 @@ public sealed class SwitchSection :
         => field ??= [];
 
     /// <summary>
-    /// Add a label
+    /// Add a label.
     /// </summary>
-    /// <param name="label">label</param>
-    /// <returns>value</returns>
+    /// <param name="label">label.</param>
+    /// <returns>value.</returns>
     public SwitchSection AddLabel(SwitchLabel label)
     {
         Labels.Add(label);

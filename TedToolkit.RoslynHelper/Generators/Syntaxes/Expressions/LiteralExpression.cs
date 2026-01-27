@@ -12,7 +12,7 @@ using Cysharp.Text;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The literal Expression
+/// The literal Expression.
 /// </summary>
 public sealed class LiteralExpression : IExpression
 {
@@ -27,79 +27,90 @@ public sealed class LiteralExpression : IExpression
         => ToCode(ref builder);
 
     /// <summary>
-    /// Create from string
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from string.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(string value)
         => _value = ZString.Concat('"', value, '"');
 
     /// <summary>
-    /// Create from char
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from char.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(char value)
         => _value = ZString.Concat('\'', value, '\'');
 
     /// <summary>
-    /// Create from byte
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from byte.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(byte value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from sbyte
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from sbyte.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(sbyte value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from short
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from short.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(short value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from ushort
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from ushort.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(ushort value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from int
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from int.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(int value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from uint
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from uint.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(uint value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from long
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from long.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(long value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from ulong
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from ulong.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(ulong value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
-    /// Create from bool
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from bool.
     /// </summary>
-    /// <param name="value">value</param>
+    /// <param name="value">value.</param>
     public LiteralExpression(bool value)
         => _value = value.ToString(CultureInfo.InvariantCulture);
 #pragma warning disable CA2225

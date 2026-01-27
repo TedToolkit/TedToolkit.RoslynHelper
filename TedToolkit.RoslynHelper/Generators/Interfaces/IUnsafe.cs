@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// <see langword="unsafe"/>
+/// <see langword="unsafe"/>.
 /// </summary>
 public interface IUnsafe
 {
     /// <summary>
-    /// <see langword="unsafe"/>
+    /// Gets or sets a value indicating whether <see langword="unsafe"/>.
     /// </summary>
     bool IsUnsafe { get; set; }
 }

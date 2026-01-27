@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IAccessors"/>
+/// The extensions for the <see cref="IAccessors"/>.
 /// </summary>
 public static class AccessorExtensions
 {
@@ -20,10 +20,10 @@ public static class AccessorExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add attribute
+        /// Add attribute.
         /// </summary>
-        /// <param name="attribute">attribute</param>
-        /// <returns>the item</returns>
+        /// <param name="attribute">attribute.</param>
+        /// <returns>the item.</returns>
         public TItem AddAccessor(Accessor attribute)
         {
             instance.Accessors.Add(attribute);

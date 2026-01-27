@@ -15,7 +15,7 @@ public sealed class CollectionElement(IExpression expression) :
     IToCode
 {
     /// <summary>
-    /// If it is spread.
+    /// Gets or sets a value indicating whether if it is spread.
     /// </summary>
     public bool IsSpread { get; set; }
 
@@ -29,7 +29,7 @@ public sealed class CollectionElement(IExpression expression) :
     }
 
     /// <summary>
-    /// Spread it.
+    /// Gets spread it.
     /// </summary>
     public CollectionElement Spread
     {

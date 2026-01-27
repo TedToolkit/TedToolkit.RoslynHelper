@@ -12,7 +12,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IVariable"/>
+/// The extensions for the <see cref="IVariable"/>.
 /// </summary>
 public static class VariableExtensions
 {
@@ -22,7 +22,7 @@ public static class VariableExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Get the name
+        /// Gets get the name.
         /// </summary>
         public SimpleNameExpression Name
         {

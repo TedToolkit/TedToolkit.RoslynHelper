@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IDefault
 {
     /// <summary>
-    /// The default value.
+    /// Gets or sets the default value.
     /// </summary>
     IExpression? Default { get; set; }
 }

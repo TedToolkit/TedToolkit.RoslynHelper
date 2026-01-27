@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IOwner
 {
     /// <summary>
-    /// The owner
+    /// Gets or sets the owner.
     /// </summary>
     string Owner { get; set; }
 }

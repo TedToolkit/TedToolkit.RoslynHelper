@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The type param Expression
+/// The type param Expression.
 /// </summary>
-/// <param name="expression">expression</param>
-/// <param name="types">the types</param>
+/// <param name="expression">expression.</param>
+/// <param name="types">the types.</param>
 public sealed class TypeParameterExpression(IExpression expression, params DataType[] types) :
     IExpression
 {

@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IRootDescription"/>
+/// The extensions for the <see cref="IRootDescription"/>.
 /// </summary>
 public static class RootDescriptionExtensions
 {
@@ -18,9 +18,9 @@ public static class RootDescriptionExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add description
+        /// Add description.
         /// </summary>
-        /// <param name="description">description</param>
+        /// <param name="description">description.</param>
         public TItem AddRootDescription(IRootDescriptionItem description)
         {
             instance.RootDescriptions.Add(description);

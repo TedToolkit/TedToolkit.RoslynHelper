@@ -20,9 +20,10 @@ namespace TedToolkit.RoslynHelper.Names;
 public class ParameterName : BaseName<IParameterSymbol>
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="ParameterName"/> class.
     /// Create by the parameter name.
     /// </summary>
-    /// <param name="symbol">symbol</param>
+    /// <param name="symbol">symbol.</param>
     internal ParameterName(IParameterSymbol symbol)
         : base(symbol)
     {
@@ -32,22 +33,22 @@ public class ParameterName : BaseName<IParameterSymbol>
     }
 
     /// <summary>
-    /// Has in.
+    /// Gets a value indicating whether has in.
     /// </summary>
     public bool IsIn { get; }
 
     /// <summary>
-    /// Has out
+    /// Gets a value indicating whether has out.
     /// </summary>
     public bool IsOut { get; }
 
     /// <summary>
-    ///     The type.
+    ///     Gets the type.
     /// </summary>
     public TypeName Type { get; }
 
     /// <summary>
-    ///     The parameter syntax.
+    ///     Gets the parameter syntax.
     /// </summary>
     public ParameterSyntax ParameterSyntax
     {
@@ -84,7 +85,7 @@ public class ParameterName : BaseName<IParameterSymbol>
     }
 
     /// <summary>
-    ///     The default value expression
+    ///     Gets the default value expression.
     /// </summary>
     public ExpressionSyntax? DefaultValueExpression
         => GetDefaultValueExpression(Symbol);

@@ -8,6 +8,6 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The expression
+/// The expression.
 /// </summary>
 public interface IExpression : IToCode, ICref;

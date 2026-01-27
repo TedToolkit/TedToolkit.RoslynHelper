@@ -8,18 +8,18 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Tuple expression
+/// Tuple expression.
 /// </summary>
 public sealed class TupleExpression : IExpression
 {
     private readonly List<(DataType Type, string Identifier)> _items = [];
 
     /// <summary>
-    /// Add the item
+    /// Add the item.
     /// </summary>
-    /// <param name="dataType">data type</param>
-    /// <param name="identifier">identifier</param>
-    /// <returns>self</returns>
+    /// <param name="dataType">data type.</param>
+    /// <param name="identifier">identifier.</param>
+    /// <returns>self.</returns>
     public TupleExpression AddItem(DataType dataType, string identifier = "")
     {
         _items.Add((dataType, identifier));

@@ -12,12 +12,12 @@ using Cysharp.Text;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The Source Builder
+/// The Source Builder.
 /// </summary>
 public record struct SourceBuilder : IDisposable
 {
     /// <summary>
-    /// The Builder
+    /// The Builder.
     /// </summary>
     private Utf16ValueStringBuilder _stringBuilder;
 
@@ -27,7 +27,8 @@ public record struct SourceBuilder : IDisposable
     private byte _indentCount;
 
     /// <summary>
-    /// Create a source builder
+    /// Initializes a new instance of the <see cref="SourceBuilder"/> struct.
+    /// Create a source builder.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SourceBuilder()
@@ -42,14 +43,14 @@ public record struct SourceBuilder : IDisposable
         => _stringBuilder.Dispose();
 
     /// <summary>
-    /// Indent
+    /// Indent.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Indent()
         => _indentCount++;
 
     /// <summary>
-    /// Dedent
+    /// Dedent.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dedent()
@@ -97,14 +98,14 @@ public record struct SourceBuilder : IDisposable
         => _stringBuilder.Append(value, repeatCount);
 
     /// <summary>
-    /// AppendSpace
+    /// AppendSpace.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AppendSpace()
         => _stringBuilder.Append(' ');
 
     /// <summary>
-    /// Begin a block
+    /// Begin a block.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void BeginBlock()
@@ -115,7 +116,7 @@ public record struct SourceBuilder : IDisposable
     }
 
     /// <summary>
-    /// End a block
+    /// End a block.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void EndBlock()
@@ -128,7 +129,7 @@ public record struct SourceBuilder : IDisposable
     /// <summary>
     /// To Code.
     /// </summary>
-    /// <returns>codes</returns>
+    /// <returns>codes.</returns>
     public string ToCode()
         => _stringBuilder.ToString();
 }

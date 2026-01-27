@@ -12,10 +12,10 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Parameter
+/// The Parameter.
 /// </summary>
-/// <param name="type">The Parameter Type</param>
-/// <param name="identifier">The Variable</param>
+/// <param name="type">The Parameter Type.</param>
+/// <param name="identifier">The Variable.</param>
 public sealed class Parameter(DataType type, string identifier) :
     IToCode,
     IDescription,
@@ -24,31 +24,33 @@ public sealed class Parameter(DataType type, string identifier) :
     IDefault
 {
     /// <summary>
-    /// Create from a type
+    /// Initializes a new instance of the <see cref="Parameter"/> class.
+    /// Create from a type.
     /// </summary>
-    /// <param name="type">type</param>
-    /// <param name="identifier">identifier</param>
+    /// <param name="type">type.</param>
+    /// <param name="identifier">identifier.</param>
     public Parameter(Type type, string identifier)
         : this(DataType.FromType(type), identifier)
     {
     }
 
     /// <summary>
-    /// Create from a type
+    /// Initializes a new instance of the <see cref="Parameter"/> class.
+    /// Create from a type.
     /// </summary>
-    /// <param name="type">type</param>
-    /// <param name="identifier">identifier</param>
+    /// <param name="type">type.</param>
+    /// <param name="identifier">identifier.</param>
     public Parameter(ITypeSymbol type, string identifier)
         : this(new DataType(type), identifier)
     {
     }
 
     /// <summary>
-    /// Create from a symbol
+    /// Create from a symbol.
     /// </summary>
-    /// <param name="parameterSymbol">parameter symbol</param>
-    /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">parameterSymbol is null</exception>
+    /// <param name="parameterSymbol">parameter symbol.</param>
+    /// <returns>parameter.</returns>
+    /// <exception cref="ArgumentNullException">parameterSymbol is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter FromSymbol(IParameterSymbol parameterSymbol)
     {
@@ -59,12 +61,12 @@ public sealed class Parameter(DataType type, string identifier) :
     }
 
     /// <summary>
-    /// From a symbol with type
+    /// From a symbol with type.
     /// </summary>
-    /// <param name="parameterSymbol">parameter symbol</param>
-    /// <param name="type">data type</param>
-    /// <returns>parameter</returns>
-    /// <exception cref="ArgumentNullException">parameterSymbol or type is null</exception>
+    /// <param name="parameterSymbol">parameter symbol.</param>
+    /// <param name="type">data type.</param>
+    /// <returns>parameter.</returns>
+    /// <exception cref="ArgumentNullException">parameterSymbol or type is null.</exception>
     public static Parameter FromSymbol(IParameterSymbol parameterSymbol, DataType type)
     {
         if (parameterSymbol is null)
@@ -173,14 +175,14 @@ public sealed class Parameter(DataType type, string identifier) :
         => field ??= [];
 
     /// <summary>
-    /// Parameter Kind.
+    /// Gets or sets parameter Kind.
     /// </summary>
     public ParameterKind ParameterKind { get; set; }
 
     /// <summary>
-    /// <see cref="ParameterKind.PARAMS"/>
+    /// Gets <see cref="ParameterKind.PARAMS"/>.
     /// </summary>
-    /// <returns>item</returns>
+    /// <returns>item.</returns>
     public Parameter Params
     {
         get
@@ -191,9 +193,9 @@ public sealed class Parameter(DataType type, string identifier) :
     }
 
     /// <summary>
-    /// <see cref="ParameterKind.THIS"/>
+    /// Gets <see cref="ParameterKind.THIS"/>.
     /// </summary>
-    /// <returns>item</returns>
+    /// <returns>item.</returns>
     public Parameter This
     {
         get

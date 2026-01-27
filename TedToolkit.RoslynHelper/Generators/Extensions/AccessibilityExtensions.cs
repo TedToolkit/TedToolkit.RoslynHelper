@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IAccessibility"/>
+/// The extensions for the <see cref="IAccessibility"/>.
 /// </summary>
 public static class AccessibilityExtensions
 {
@@ -18,9 +18,9 @@ public static class AccessibilityExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see cref="Accessibility.PUBLIC"/>
+        /// Gets <see cref="Accessibility.PUBLIC"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Public
         {
             get
@@ -31,9 +31,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.INTERNAL"/>
+        /// Gets <see cref="Accessibility.INTERNAL"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Internal
         {
             get
@@ -44,9 +44,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.PRIVATE"/>
+        /// <see cref="Accessibility.PRIVATE"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Private
         {
             get
@@ -57,9 +57,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.FILE"/>
+        /// <see cref="Accessibility.FILE"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem File
         {
             get
@@ -70,9 +70,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.PRIVATE_PROTECTED"/>
+        /// Gets <see cref="Accessibility.PRIVATE_PROTECTED"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem PrivateProtected
         {
             get
@@ -83,9 +83,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.PROTECTED"/>
+        /// Gets <see cref="Accessibility.PROTECTED"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Protected
         {
             get
@@ -96,9 +96,9 @@ public static class AccessibilityExtensions
         }
 
         /// <summary>
-        /// <see cref="Accessibility.PROTECTED_INTERNAL"/>
+        /// Gets <see cref="Accessibility.PROTECTED_INTERNAL"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem ProtectedInternal
         {
             get

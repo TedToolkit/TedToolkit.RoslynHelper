@@ -8,8 +8,8 @@
 namespace TedToolkit.RoslynHelper.Generators.Delegates;
 
 /// <summary>
-/// Modify the item
+/// Modify the item.
 /// </summary>
-/// <typeparam name="T">argument</typeparam>
-/// <param name="arg">the argument</param>
+/// <typeparam name="T">argument.</typeparam>
+/// <param name="arg">the argument.</param>
 public delegate void ModifierHandler<T>(ref T arg);

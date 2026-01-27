@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Cast to the type
+/// Cast to the type.
 /// </summary>
-/// <param name="type">type</param>
-/// <param name="expression">expression</param>
+/// <param name="type">type.</param>
+/// <param name="expression">expression.</param>
 public sealed class CastExpression(DataType type, IExpression expression) :
     IExpression
 {

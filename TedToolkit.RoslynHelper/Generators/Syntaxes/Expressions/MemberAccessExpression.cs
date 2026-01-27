@@ -10,8 +10,8 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The member access.
 /// </summary>
-/// <param name="left">left</param>
-/// <param name="right">right</param>
+/// <param name="left">left.</param>
+/// <param name="right">right.</param>
 public sealed class MemberAccessExpression(IExpression left, IExpression right) :
     IExpression
 {

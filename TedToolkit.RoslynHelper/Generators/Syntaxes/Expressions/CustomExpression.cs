@@ -10,9 +10,9 @@ using TedToolkit.RoslynHelper.Generators.Delegates;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Custom expression
+/// Custom expression.
 /// </summary>
-/// <param name="action">action</param>
+/// <param name="action">action.</param>
 public sealed class CustomExpression(SourceBuilderHandler action) :
     IExpression
 {
@@ -21,9 +21,10 @@ public sealed class CustomExpression(SourceBuilderHandler action) :
         => action(ref builder);
 
     /// <summary>
-    /// Create by string
+    /// Initializes a new instance of the <see cref="CustomExpression"/> class.
+    /// Create by string.
     /// </summary>
-    /// <param name="value">the string</param>
+    /// <param name="value">the string.</param>
     public CustomExpression(string value)
         : this((ref b) => b.Append(value))
     {

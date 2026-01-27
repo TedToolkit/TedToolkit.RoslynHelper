@@ -10,12 +10,12 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The arguments
+/// The arguments.
 /// </summary>
 public interface IArguments
 {
     /// <summary>
-    /// Arguments
+    /// Gets arguments.
     /// </summary>
     List<Argument> Arguments { get; }
 }

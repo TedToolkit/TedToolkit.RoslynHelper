@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// <see langword="static"/>
+/// <see langword="static"/>.
 /// </summary>
 public interface IStatic
 {
     /// <summary>
-    /// <see langword="static"/>
+    /// Gets or sets a value indicating whether <see langword="static"/>.
     /// </summary>
     bool IsStatic { get; set; }
 }

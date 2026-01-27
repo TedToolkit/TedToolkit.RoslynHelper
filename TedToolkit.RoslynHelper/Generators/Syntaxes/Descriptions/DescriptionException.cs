@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The exception description
+/// The exception description.
 /// </summary>
-/// <param name="exception">exception</param>
-/// <param name="descriptions">descriptions</param>
+/// <param name="exception">exception.</param>
+/// <param name="descriptions">descriptions.</param>
 #pragma warning disable S2166, CA1711
 public sealed class DescriptionException(ICref exception, params IReadOnlyList<IDescriptionItem> descriptions) : IRootDescriptionItem
 #pragma warning restore S2166, CA1711

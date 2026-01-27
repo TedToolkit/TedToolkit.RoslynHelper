@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="Polymorphism"/>
+/// The extensions for the <see cref="Polymorphism"/>.
 /// </summary>
 public static class PolymorphismExtensions
 {
@@ -18,9 +18,9 @@ public static class PolymorphismExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see cref="Polymorphism.ABSTRACT"/>
+        /// <see cref="Polymorphism.ABSTRACT"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Abstract
         {
             get
@@ -31,9 +31,9 @@ public static class PolymorphismExtensions
         }
 
         /// <summary>
-        /// <see cref="Polymorphism.VIRTUAL"/>
+        /// <see cref="Polymorphism.VIRTUAL"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Virtual
         {
             get
@@ -44,9 +44,9 @@ public static class PolymorphismExtensions
         }
 
         /// <summary>
-        /// <see cref="Polymorphism.OVERRIDE"/>
+        /// <see cref="Polymorphism.OVERRIDE"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Override
         {
             get
@@ -57,9 +57,9 @@ public static class PolymorphismExtensions
         }
 
         /// <summary>
-        /// <see cref="Polymorphism.SEALED"/>
+        /// <see cref="Polymorphism.SEALED"/>Gets .
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Sealed
         {
             get
@@ -70,9 +70,9 @@ public static class PolymorphismExtensions
         }
 
         /// <summary>
-        /// <see cref="Polymorphism.NEW"/>
+        /// Gets <see cref="Polymorphism.NEW"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem New
         {
             get
@@ -83,9 +83,9 @@ public static class PolymorphismExtensions
         }
 
         /// <summary>
-        /// <see cref="Polymorphism.SEALED_OVERRIDE"/>
+        /// Gets <see cref="Polymorphism.SEALED_OVERRIDE"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem SealedOverride
         {
             get

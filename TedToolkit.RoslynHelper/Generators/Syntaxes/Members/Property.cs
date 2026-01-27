@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The property
+/// The property.
 /// </summary>
-/// <param name="type">The type</param>
-/// <param name="identifier">The identifier</param>
+/// <param name="type">The type.</param>
+/// <param name="identifier">The identifier.</param>
 public sealed class Property(DataType type, string identifier) :
     IMember,
     IVariable,

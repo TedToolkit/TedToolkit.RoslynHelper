@@ -8,19 +8,19 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Just a name Expression
+/// Just a name Expression.
 /// </summary>
-/// <param name="name">name of the expression</param>
+/// <param name="name">name of the expression.</param>
 public sealed class SimpleNameExpression(string name) :
     IExpression
 {
     /// <summary>
-    /// <see langword="null"/>
+    /// Gets <see langword="null"/>.
     /// </summary>
     public static SimpleNameExpression Null { get; } = new("null");
 
     /// <summary>
-    /// <see langword="default"/>
+    /// Gets <see langword="default"/>.
     /// </summary>
     public static SimpleNameExpression Default { get; } = new("default");
 

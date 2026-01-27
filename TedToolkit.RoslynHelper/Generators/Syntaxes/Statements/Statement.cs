@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Create a statement
+/// Create a statement.
 /// </summary>
-/// <param name="expression">the expression</param>
+/// <param name="expression">the expression.</param>
 public sealed class Statement(IExpression expression) :
     IStatement
 {

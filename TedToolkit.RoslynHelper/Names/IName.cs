@@ -13,32 +13,32 @@ namespace TedToolkit.RoslynHelper.Names;
 public interface IName
 {
     /// <summary>
-    ///     Full Name
+    ///     Gets full Name.
     /// </summary>
     string FullName { get; }
 
     /// <summary>
-    ///     Full Name with Null
+    ///     Gets full Name with Null.
     /// </summary>
     string FullNameNull { get; }
 
     /// <summary>
-    ///     Summary Name
+    ///     Gets summary Name.
     /// </summary>
     string SummaryName { get; }
 
     /// <summary>
-    ///     Name
+    ///     Gets name.
     /// </summary>
     string Name { get; }
 
     /// <summary>
-    ///     MiniName
+    ///     Gets miniName.
     /// </summary>
     string MiniName { get; }
 
     /// <summary>
-    ///     Full Name without global
+    ///     Gets full Name without global.
     /// </summary>
     string FullNameNoGlobal { get; }
 }

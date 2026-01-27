@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IDescription"/>
+/// The extensions for the <see cref="IDescription"/>.
 /// </summary>
 public static class DescriptionExtensions
 {
@@ -18,9 +18,9 @@ public static class DescriptionExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add description
+        /// Add description.
         /// </summary>
-        /// <param name="description">description</param>
+        /// <param name="description">description.</param>
         public TItem AddDescription(IDescriptionItem description)
         {
             instance.Descriptions.Add(description);
@@ -34,9 +34,9 @@ public static class DescriptionExtensions
 #pragma warning disable S2325
     {
         /// <summary>
-        /// 转为描述
+        /// 转为描述.
         /// </summary>
-        /// <param name="builder">builder</param>
+        /// <param name="builder">builder.</param>
         internal void ToDescription(ref SourceBuilder builder)
         {
             foreach (var descriptionItem in descriptions)

@@ -10,30 +10,30 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper;
 
 /// <summary>
-///     The signature of a method
+///     The signature of a method.
 /// </summary>
-/// <param name="methodSymbol">The method symbol</param>
+/// <param name="methodSymbol">The method symbol.</param>
 public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<MethodSignature>
 {
     /// <summary>
-    ///     Should check the equality with containing type.
+    ///     Gets or sets a value indicating whether should check the equality with containing type.
     /// </summary>
     public static bool EqualityWithContainingType { get; set; } = true;
 
     /// <summary>
-    ///     the name of the method.
+    ///     Gets the name of the method.
     /// </summary>
     public string MethodName { get; } = methodSymbol.Name;
 
     /// <summary>
-    ///     The containing type.
+    ///     Gets the containing type.
     /// </summary>
     public ITypeSymbol ContainingType { get; } = methodSymbol.IsExtensionMethod
         ? methodSymbol.Parameters[0].Type.OriginalDefinition
         : methodSymbol.ContainingType.OriginalDefinition;
 
     /// <summary>
-    ///     Tye parameter types.
+    ///     Gets tye parameter types.
     /// </summary>
     public IReadOnlyList<ITypeSymbol> ParameterTypes { get; } = methodSymbol.Parameters
         .Skip(methodSymbol.IsExtensionMethod ? 1 : 0)
@@ -41,7 +41,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
         .ToArray();
 
     /// <summary>
-    ///     The Ref Kinds.
+    ///     Gets the Ref Kinds.
     /// </summary>
     public IReadOnlyList<RefKind> RefKinds { get; } = methodSymbol.Parameters
         .Skip(methodSymbol.IsExtensionMethod ? 1 : 0)
@@ -49,7 +49,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
         .ToArray();
 
     /// <summary>
-    ///     The type Parameter counts.
+    ///     Gets the type Parameter counts.
     /// </summary>
     public int TypeArgumentsCount { get; } =
         methodSymbol.TypeArguments.Length + methodSymbol.ContainingType.TypeArguments.Length;
@@ -109,20 +109,20 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     }
 
     /// <summary>
-    /// Equal
+    /// Equal.
     /// </summary>
-    /// <param name="left">left</param>
-    /// <param name="right">right</param>
-    /// <returns>result</returns>
+    /// <param name="left">left.</param>
+    /// <param name="right">right.</param>
+    /// <returns>result.</returns>
     public static bool operator ==(in MethodSignature left, in MethodSignature right)
         => left.Equals(right);
 
     /// <summary>
-    /// Not Equal
+    /// Not Equal.
     /// </summary>
-    /// <param name="left">left</param>
-    /// <param name="right">right</param>
-    /// <returns>result</returns>
+    /// <param name="left">left.</param>
+    /// <param name="right">right.</param>
+    /// <returns>result.</returns>
     public static bool operator !=(in MethodSignature left, in MethodSignature right)
         => !(left == right);
 }

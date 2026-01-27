@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The type of the parameter
+/// The type of the parameter.
 /// </summary>
 public enum StorageKind
 {
@@ -18,37 +18,37 @@ public enum StorageKind
     NONE = 0,
 
     /// <summary>
-    /// <see langword="in"/>
+    /// <see langword="in"/>.
     /// </summary>
     IN = 1,
 
     /// <summary>
-    /// <see langword="out"/>
+    /// <see langword="out"/>.
     /// </summary>
     OUT = 2,
 
     /// <summary>
-    /// <see langword="ref"/>
+    /// <see langword="ref"/>.
     /// </summary>
     REF = 3,
 
     /// <summary>
-    /// <see langword="ref"/> <see langword="readonly"/>
+    /// <see langword="ref"/> <see langword="readonly"/>.
     /// </summary>
     REF_READONLY = 4,
 
     /// <summary>
-    /// <see langword="scoped"/> <see langword="in"/>
+    /// <see langword="scoped"/> <see langword="in"/>.
     /// </summary>
     SCOPED_IN = 5,
 
     /// <summary>
-    /// <see langword="scoped"/> <see langword="ref"/>
+    /// <see langword="scoped"/> <see langword="ref"/>.
     /// </summary>
     SCOPED_REF = 6,
 
     /// <summary>
-    /// <see langword="scoped"/> <see langword="ref"/> <see langword="readonly"/>
+    /// <see langword="scoped"/> <see langword="ref"/> <see langword="readonly"/>.
     /// </summary>
     SCOPED_REF_READONLY = 7,
 }

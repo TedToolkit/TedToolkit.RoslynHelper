@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IArguments"/>
+/// The extensions for the <see cref="IArguments"/>.
 /// </summary>
 public static class ArgumentExtensions
 {
@@ -20,10 +20,10 @@ public static class ArgumentExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add argument
+        /// Add argument.
         /// </summary>
-        /// <param name="argument">argument</param>
-        /// <returns>the item</returns>
+        /// <param name="argument">argument.</param>
+        /// <returns>the item.</returns>
         public TItem AddArgument(Argument argument)
         {
             instance.Arguments.Add(argument);

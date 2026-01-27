@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// A simple text
+/// A simple text.
 /// </summary>
-/// <param name="value">text value</param>
+/// <param name="value">text value.</param>
 public sealed class DescriptionText(string value) : IDescriptionItem
 {
     /// <inheritdoc />

@@ -8,11 +8,11 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Foreach Statement
+/// The Foreach Statement.
 /// </summary>
-/// <param name="type">type</param>
-/// <param name="identifier">identifier</param>
-/// <param name="expression">expression</param>
+/// <param name="type">type.</param>
+/// <param name="identifier">identifier.</param>
+/// <param name="expression">expression.</param>
 public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
     IStatement,
     IVariable,

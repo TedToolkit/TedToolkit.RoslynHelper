@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Add ref readonly
+/// Add ref readonly.
 /// </summary>
-/// <param name="expression">expression</param>
+/// <param name="expression">expression.</param>
 public sealed class RefReadonlyExpression(IExpression expression) : IExpression
 {
     /// <inheritdoc />

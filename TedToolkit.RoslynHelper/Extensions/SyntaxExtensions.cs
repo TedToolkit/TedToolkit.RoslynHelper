@@ -15,12 +15,12 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace TedToolkit.RoslynHelper.Extensions;
 
 /// <summary>
-///     The extensions for the <see cref="Microsoft.CodeAnalysis.CSharp.SyntaxFactory" />
+///     The extensions for the <see cref="Microsoft.CodeAnalysis.CSharp.SyntaxFactory" />.
 /// </summary>
 public static class SyntaxExtensions
 {
     /// <summary>
-    ///     Add the comment
+    ///     Add the comment.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     /// <param name="node"></param>
@@ -145,7 +145,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    /// Method Impl Attribute
+    /// Method Impl Attribute.
     /// </summary>
     /// <param name="methodImplOptions"></param>
     /// <returns></returns>
@@ -176,10 +176,10 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Obsolete Attribute
+    ///     Obsolete Attribute.
     /// </summary>
-    /// <param name="message">The message to show</param>
-    /// <param name="error">make it as error</param>
+    /// <param name="message">The message to show.</param>
+    /// <param name="error">make it as error.</param>
     /// <returns></returns>
     public static AttributeSyntax ObsoleteAttribute(string message = "", bool error = false)
     {
@@ -262,7 +262,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Add the parameter names for the class declaration
+    ///     Add the parameter names for the class declaration.
     /// </summary>
     /// <param name="classDeclaration"></param>
     /// <param name="typeParamNames"></param>
@@ -285,7 +285,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Add the parameter names for the method declaration
+    ///     Add the parameter names for the method declaration.
     /// </summary>
     /// <param name="methodDeclaration"></param>
     /// <param name="typeParamNames"></param>
@@ -308,7 +308,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Add the parameter names for the interface declaration
+    ///     Add the parameter names for the interface declaration.
     /// </summary>
     /// <param name="interfaceDeclaration"></param>
     /// <param name="typeParamNames"></param>
@@ -332,7 +332,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Add the parameter names for the struct declaration
+    ///     Add the parameter names for the struct declaration.
     /// </summary>
     /// <param name="structDeclaration"></param>
     /// <param name="typeParamNames"></param>
@@ -356,7 +356,7 @@ public static class SyntaxExtensions
     }
 
     /// <summary>
-    ///     Add the parameter names for the name syntax
+    ///     Add the parameter names for the name syntax.
     /// </summary>
     /// <param name="typeSyntax"></param>
     /// <param name="typeParamNames"></param>

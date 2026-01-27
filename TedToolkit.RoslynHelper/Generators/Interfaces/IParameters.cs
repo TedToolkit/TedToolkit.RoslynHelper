@@ -10,12 +10,12 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the items that has Parameters
+/// For the items that has Parameters.
 /// </summary>
 public interface IParameters
 {
     /// <summary>
-    /// The parameters
+    /// Gets the parameters.
     /// </summary>
     List<Parameter> Parameters { get; }
 }

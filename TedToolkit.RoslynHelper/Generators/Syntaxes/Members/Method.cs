@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The method
+/// The method.
 /// </summary>
-/// <param name="identifier">name</param>
-/// <param name="returnType">ReturnType</param>
+/// <param name="identifier">name.</param>
+/// <param name="returnType">ReturnType.</param>
 public sealed class Method(string identifier, ReturnType? returnType = null) :
     IMember,
     IParameters,

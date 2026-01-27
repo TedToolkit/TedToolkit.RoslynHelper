@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Summary
+/// Summary.
 /// </summary>
-/// <param name="descriptions">Descriptions</param>
+/// <param name="descriptions">Descriptions.</param>
 public sealed class DescriptionReturns(params IReadOnlyList<IDescriptionItem> descriptions) : IRootDescriptionItem
 {
     /// <inheritdoc />

@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IAttributes
 {
     /// <summary>
-    /// Attributes
+    /// Gets attributes.
     /// </summary>
     List<Syntaxes.Attribute> Attributes { get; }
 }

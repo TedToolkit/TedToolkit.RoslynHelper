@@ -20,7 +20,8 @@ namespace TedToolkit.RoslynHelper.Names;
 public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
 {
     /// <summary>
-    /// Create by the symbol
+    /// Initializes a new instance of the <see cref="TypeParamName"/> class.
+    /// Create by the symbol.
     /// </summary>
     /// <param name="symbol">symbol.</param>
     internal TypeParamName(ITypeParameterSymbol symbol)
@@ -29,12 +30,12 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
     }
 
     /// <summary>
-    ///     Modifier
+    ///     Gets or sets modifier.
     /// </summary>
     public string Prefix { get; set; } = "";
 
     /// <summary>
-    /// Syntax
+    /// Gets syntax.
     /// </summary>
     public TypeParameterSyntax Syntax
     {
@@ -51,13 +52,13 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
     }
 
     /// <summary>
-    ///     The Syntax name
+    ///     Gets the Syntax name.
     /// </summary>
     public string SyntaxName
         => Prefix + Symbol.Name;
 
     /// <summary>
-    /// Constraint
+    /// Gets constraint.
     /// </summary>
     public TypeParameterConstraintClauseSyntax? ConstraintClause
     {

@@ -23,6 +23,7 @@ public class TypeName : TypeParametersName<ITypeSymbol>
     private static readonly Regex _regex = new(@"[.\[\]<>,\s:]");
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="TypeName"/> class.
     /// The type name.
     /// </summary>
     /// <param name="typeSymbol">Type symbol.</param>
@@ -34,7 +35,7 @@ public class TypeName : TypeParametersName<ITypeSymbol>
     }
 
     /// <summary>
-    ///     The safe name.
+    ///     Gets the safe name.
     /// </summary>
     public string SafeName
         => _lazySafeName.Value;

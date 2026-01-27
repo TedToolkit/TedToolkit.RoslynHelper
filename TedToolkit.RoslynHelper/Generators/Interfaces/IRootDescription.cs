@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IRootDescription
 {
     /// <summary>
-    /// The Description
+    /// Gets the Description.
     /// </summary>
     List<IRootDescriptionItem> RootDescriptions { get; }
 }

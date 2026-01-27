@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The accessor
+/// The accessor.
 /// </summary>
-/// <param name="type">Type of the accessor</param>
+/// <param name="type">Type of the accessor.</param>
 public sealed class Accessor(AccessorType type) :
     IToCode,
     IAttributes,

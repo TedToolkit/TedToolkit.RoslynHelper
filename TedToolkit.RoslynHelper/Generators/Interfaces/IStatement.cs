@@ -8,6 +8,6 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The statement
+/// The statement.
 /// </summary>
 public interface IStatement : IToCode;

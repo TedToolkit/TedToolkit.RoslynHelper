@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Type Param Name
+/// Type Param Name.
 /// </summary>
-/// <param name="typePramName">paramName</param>
-/// <param name="descriptions">Descriptions</param>
+/// <param name="typePramName">paramName.</param>
+/// <param name="descriptions">Descriptions.</param>
 public sealed class DescriptionTypeParam(string typePramName, params IReadOnlyList<IDescriptionItem> descriptions) : IRootDescriptionItem
 {
     /// <inheritdoc />

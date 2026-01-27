@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Prefix Unary Expression
+/// Prefix Unary Expression.
 /// </summary>
-/// <param name="operator">operator</param>
-/// <param name="expression">expression</param>
+/// <param name="operator">operator.</param>
+/// <param name="expression">expression.</param>
 public sealed class PrefixUnaryExpression(string @operator, IExpression expression) :
     IExpression
 {

@@ -10,26 +10,28 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Return Type
+/// The Return Type.
 /// </summary>
-/// <param name="type">return Type</param>
+/// <param name="type">return Type.</param>
 public sealed class ReturnType(DataType type) :
     IDescription,
     IToCode
 {
     /// <summary>
-    /// Create from a symbol
+    /// Initializes a new instance of the <see cref="ReturnType"/> class.
+    /// Create from a symbol.
     /// </summary>
-    /// <param name="type">symbol</param>
+    /// <param name="type">symbol.</param>
     public ReturnType(ITypeSymbol type)
         : this(new DataType(type))
     {
     }
 
     /// <summary>
-    /// Create from a type
+    /// Initializes a new instance of the <see cref="ReturnType"/> class.
+    /// Create from a type.
     /// </summary>
-    /// <param name="type">type</param>
+    /// <param name="type">type.</param>
     public ReturnType(Type type)
         : this(DataType.FromType(type))
     {

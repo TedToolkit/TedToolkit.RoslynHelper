@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The collection expression
+/// The collection expression.
 /// </summary>
 public sealed class CollectionExpression :
     IExpression
@@ -37,7 +37,7 @@ public sealed class CollectionExpression :
     }
 
     /// <summary>
-    /// The elements.
+    /// Gets the elements.
     /// </summary>
 #pragma warning disable S2325
     public List<CollectionElement> Elements
@@ -48,7 +48,7 @@ public sealed class CollectionExpression :
     /// Add one element.
     /// </summary>
     /// <param name="element">the element.</param>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     public CollectionExpression AddElement(CollectionElement element)
     {
         Elements.Add(element);
@@ -60,7 +60,7 @@ public sealed class CollectionExpression :
     /// </summary>
     /// <param name="expression">the expression.</param>
     /// <param name="isSpread">is spread.</param>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     public CollectionExpression AddElement(IExpression expression, bool isSpread = false)
     {
         Elements.Add(new CollectionElement(expression) { IsSpread = isSpread, });

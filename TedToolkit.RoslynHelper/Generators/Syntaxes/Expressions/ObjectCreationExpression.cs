@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Creation expression
+/// Creation expression.
 /// </summary>
-/// <param name="dataType">data type</param>
+/// <param name="dataType">data type.</param>
 public sealed class ObjectCreationExpression(DataType? dataType = null) :
     IArguments,
     IExpression
@@ -56,7 +56,7 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
         => ToCode(ref builder);
 
     /// <summary>
-    /// Some variables.
+    /// Gets some variables.
     /// </summary>
 #pragma warning disable S2325
     public List<(string Name, IExpression Value)> Variables
@@ -68,7 +68,7 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
     /// </summary>
     /// <param name="name">name.</param>
     /// <param name="value">value.</param>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     public ObjectCreationExpression AddVariable(string name, IExpression value)
     {
         Variables.Add((name, value));

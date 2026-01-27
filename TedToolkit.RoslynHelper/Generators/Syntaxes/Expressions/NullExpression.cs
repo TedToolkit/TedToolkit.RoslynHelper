@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// For the null expression
+/// For the null expression.
 /// </summary>
-/// <param name="expression">the null expression</param>
+/// <param name="expression">the null expression.</param>
 public sealed class NullExpression(IExpression expression) : IExpression
 {
     /// <inheritdoc />

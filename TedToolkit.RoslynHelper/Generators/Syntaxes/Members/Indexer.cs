@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The indexer
+/// The indexer.
 /// </summary>
-/// <param name="type">data type</param>
+/// <param name="type">data type.</param>
 public sealed class Indexer(DataType type) :
     IMember,
     IAccessibility,

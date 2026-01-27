@@ -13,12 +13,12 @@ namespace TedToolkit.RoslynHelper.Names;
 public interface ITypeParametersName
 {
     /// <summary>
-    ///     Has the type parameters.
+    ///     Gets a value indicating whether has the type parameters.
     /// </summary>
     bool HasTypeParameters { get; }
 
     /// <summary>
-    ///     Get the type parameters symbol
+    ///     Gets get the type parameters symbol.
     /// </summary>
     IReadOnlyList<TypeParamName> TypeParameters { get; }
 }

@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The constructor
+/// The constructor.
 /// </summary>
 public sealed class Constructor :
     IMember,
@@ -72,15 +72,15 @@ public sealed class Constructor :
     public bool IsPartial { get; set; }
 
     /// <summary>
-    ///  Initializer
+    ///  Gets or sets initializer.
     /// </summary>
     public ConstructorInitializer? Initializer { get; set; }
 
     /// <summary>
-    /// Add initializer
+    /// Add initializer.
     /// </summary>
-    /// <param name="initializer">initializer</param>
-    /// <returns>self</returns>
+    /// <param name="initializer">initializer.</param>
+    /// <returns>self.</returns>
     public Constructor AddInitializer(ConstructorInitializer initializer)
     {
         Initializer = initializer;

@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The builder for class
+/// The builder for class.
 /// </summary>
-/// <param name="identifier">identifier</param>
-/// <param name="type">Type of the class</param>
+/// <param name="identifier">identifier.</param>
+/// <param name="type">Type of the class.</param>
 public sealed class TypeDeclaration(string identifier, TypeDeclarationType type) :
     IAccessibility,
     IUnsafe,
@@ -27,7 +27,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     ITypeParameters
 {
     /// <summary>
-    ///  The identifier
+    ///  Gets the identifier.
     /// </summary>
     public string Identifier { get; } = identifier.ToValidIdentifier();
 
@@ -101,7 +101,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
         => field ??= [];
 
     /// <summary>
-    /// The base DataTypes
+    /// Gets the base DataTypes.
     /// </summary>
 #pragma warning disable S2325
     public List<DataType> BaseTypes
@@ -111,8 +111,8 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <summary>
     /// Add the baseType.
     /// </summary>
-    /// <param name="baseType">the baseType</param>
-    /// <returns>the item</returns>
+    /// <param name="baseType">the baseType.</param>
+    /// <returns>the item.</returns>
     public TypeDeclaration AddBaseType(DataType baseType)
     {
         BaseTypes.Add(baseType);
@@ -122,8 +122,8 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <summary>
     /// Add the baseType.
     /// </summary>
-    /// <typeparam name="T">BaseType</typeparam>
-    /// <returns>the item</returns>
+    /// <typeparam name="T">BaseType.</typeparam>
+    /// <returns>the item.</returns>
     public TypeDeclaration AddBaseType<T>()
     {
         BaseTypes.Add(DataType.FromType<T>());
@@ -133,9 +133,9 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <summary>
     /// Add the baseType.
     /// </summary>
-    /// <param name="baseType">type</param>
-    /// <returns>the item</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
+    /// <param name="baseType">type.</param>
+    /// <returns>the item.</returns>
+    /// <exception cref="ArgumentNullException">type is null.</exception>
     public TypeDeclaration AddBaseType(Type baseType)
     {
         if (baseType is null)

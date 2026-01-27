@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The enum member
+/// The enum member.
 /// </summary>
-/// <param name="identifier">identifier</param>
-/// <param name="value">value</param>
+/// <param name="identifier">identifier.</param>
+/// <param name="value">value.</param>
 public sealed class EnumMember(string identifier, IExpression? value = null) :
     IRootDescription,
     IAttributes,

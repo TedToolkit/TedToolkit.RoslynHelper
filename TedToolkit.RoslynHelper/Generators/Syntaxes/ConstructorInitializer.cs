@@ -10,7 +10,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// Initializer.
 /// </summary>
-/// <param name="isBase">is base</param>
+/// <param name="isBase">is base.</param>
 public sealed class ConstructorInitializer(bool isBase) :
     IArguments,
     IToCode
