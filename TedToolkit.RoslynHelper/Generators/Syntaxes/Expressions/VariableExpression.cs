@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Add the variable statement
+/// Add the variable statement.
 /// </summary>
-/// <param name="type">type</param>
-/// <param name="identifier">identifier</param>
+/// <param name="type">type.</param>
+/// <param name="identifier">identifier.</param>
 public sealed class VariableExpression(DataType type, string identifier) :
     IExpression,
     IVariable,
@@ -22,10 +22,10 @@ public sealed class VariableExpression(DataType type, string identifier) :
     public IExpression? Default { get; set; }
 
     /// <summary>
-    /// Add the default value
+    /// Add the default value.
     /// </summary>
-    /// <param name="expression">expression</param>
-    /// <returns>result</returns>
+    /// <param name="expression">expression.</param>
+    /// <returns>result.</returns>
     public VariableExpression AddDefault(IExpression expression)
     {
         Default = expression;

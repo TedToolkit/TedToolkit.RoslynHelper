@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The field
+/// The field.
 /// </summary>
-/// <param name="type">Field Type</param>
-/// <param name="identifier">Identifier</param>
+/// <param name="type">Field Type.</param>
+/// <param name="identifier">Identifier.</param>
 public sealed class Field(DataType type, string identifier) :
     IMember,
     IAttributes,

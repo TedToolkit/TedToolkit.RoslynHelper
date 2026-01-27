@@ -8,52 +8,52 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The type of the attribute
+/// The type of the attribute.
 /// </summary>
 public enum AttributeModifier
 {
     /// <summary>
-    /// None
+    /// None.
     /// </summary>
     NONE = 0,
 
     /// <summary>
-    /// Field
+    /// Field.
     /// </summary>
     FIELD = 1,
 
     /// <summary>
-    /// Return
+    /// Return.
     /// </summary>
     RETURN = 2,
 
     /// <summary>
-    /// Assembly
+    /// Assembly.
     /// </summary>
     ASSEMBLY = 3,
 
     /// <summary>
-    /// Module
+    /// Module.
     /// </summary>
     MODULE = 4,
 
     /// <summary>
-    /// Type
+    /// Type.
     /// </summary>
     TYPE = 5,
 
     /// <summary>
-    /// Property
+    /// Property.
     /// </summary>
     PROPERTY = 6,
 
     /// <summary>
-    /// Event
+    /// Event.
     /// </summary>
     EVENT = 7,
 
     /// <summary>
-    /// Param
+    /// Param.
     /// </summary>
     PARAM = 8,
 }

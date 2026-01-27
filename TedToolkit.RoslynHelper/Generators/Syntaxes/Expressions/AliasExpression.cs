@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The alias expression
+/// The alias expression.
 /// </summary>
-/// <param name="alias">alias</param>
-/// <param name="expression">expression</param>
+/// <param name="alias">alias.</param>
+/// <param name="expression">expression.</param>
 public sealed class AliasExpression(string alias, IExpression expression) :
     IExpression
 {

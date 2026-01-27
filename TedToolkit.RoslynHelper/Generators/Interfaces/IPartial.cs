@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// <see langword="partial"/>
+/// <see langword="partial"/>.
 /// </summary>
 public interface IPartial
 {
     /// <summary>
-    /// <see langword="partial"/>
+    /// Gets or sets a value indicating whether <see langword="partial"/>.
     /// </summary>
     bool IsPartial { get; set; }
 }

@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IPartial"/>
+/// The extensions for the <see cref="IPartial"/>.
 /// </summary>
 public static class PartialExtensions
 {
@@ -18,7 +18,7 @@ public static class PartialExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see langword="partial"/>
+        /// <see langword="partial"/>Gets .
         /// </summary>
         public TItem Partial
         {

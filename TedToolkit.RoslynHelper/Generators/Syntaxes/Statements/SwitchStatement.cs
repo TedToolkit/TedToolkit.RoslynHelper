@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Switch Statement
+/// Switch Statement.
 /// </summary>
-/// <param name="expression">expression</param>
+/// <param name="expression">expression.</param>
 public sealed class SwitchStatement(IExpression expression) :
     IStatement
 {
@@ -36,7 +36,7 @@ public sealed class SwitchStatement(IExpression expression) :
     }
 
     /// <summary>
-    /// Sections
+    /// Gets sections.
     /// </summary>
 #pragma warning disable S2325
     public List<SwitchSection> Sections
@@ -44,10 +44,10 @@ public sealed class SwitchStatement(IExpression expression) :
         => field ??= [];
 
     /// <summary>
-    /// Add the section
+    /// Add the section.
     /// </summary>
-    /// <param name="section">section</param>
-    /// <returns>result</returns>
+    /// <param name="section">section.</param>
+    /// <returns>result.</returns>
     public SwitchStatement AddSection(SwitchSection section)
     {
         Sections.Add(section);

@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The custom description.
 /// </summary>
-/// <param name="handler">handler</param>
+/// <param name="handler">handler.</param>
 public class DescriptionCustom(SourceBuilderHandler handler) :
     IDescriptionItem,
     IRootDescriptionItem
@@ -22,9 +22,10 @@ public class DescriptionCustom(SourceBuilderHandler handler) :
         => handler(ref builder);
 
     /// <summary>
-    /// Create by string
+    /// Initializes a new instance of the <see cref="DescriptionCustom"/> class.
+    /// Create by string.
     /// </summary>
-    /// <param name="value">the string</param>
+    /// <param name="value">the string.</param>
     public DescriptionCustom(string value)
         : this((ref b) => b.Append(value))
     {

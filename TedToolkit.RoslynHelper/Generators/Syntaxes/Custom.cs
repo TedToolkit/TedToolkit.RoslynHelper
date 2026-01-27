@@ -10,9 +10,9 @@ using TedToolkit.RoslynHelper.Generators.Delegates;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The custom codes
+/// The custom codes.
 /// </summary>
-/// <param name="action">your action</param>
+/// <param name="action">your action.</param>
 public sealed class Custom(SourceBuilderHandler action) :
     IStatement,
     IMember
@@ -22,9 +22,10 @@ public sealed class Custom(SourceBuilderHandler action) :
         => action(ref builder);
 
     /// <summary>
-    /// Create by string
+    /// Initializes a new instance of the <see cref="Custom"/> class.
+    /// Create by string.
     /// </summary>
-    /// <param name="value">the string</param>
+    /// <param name="value">the string.</param>
     public Custom(string value)
         : this((ref b) => b.Append(value))
     {

@@ -18,12 +18,12 @@ public enum ParameterKind
     NONE = 0,
 
     /// <summary>
-    /// <see langword="this"/>
+    /// <see langword="this"/>.
     /// </summary>
     THIS = 1,
 
     /// <summary>
-    /// <see langword="params"/>
+    /// <see langword="params"/>.
     /// </summary>
     PARAMS = 2,
 }

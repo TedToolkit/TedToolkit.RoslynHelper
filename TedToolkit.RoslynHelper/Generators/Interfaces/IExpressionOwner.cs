@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The expression
+/// The expression.
 /// </summary>
 public interface IExpressionOwner
 {
     /// <summary>
-    /// The members
+    /// Gets the members.
     /// </summary>
     List<IExpression> Expressions { get; }
 }

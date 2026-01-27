@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The switch label
+/// The switch label.
 /// </summary>
-/// <param name="value">case value</param>
-/// <param name="when">when</param>
+/// <param name="value">case value.</param>
+/// <param name="when">when.</param>
 public sealed class SwitchLabel(IExpression? value = null, IExpression? when = null) :
     IToCode
 {

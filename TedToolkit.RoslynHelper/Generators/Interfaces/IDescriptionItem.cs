@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The description item
+/// The description item.
 /// </summary>
 public interface IDescriptionItem :
     IToDescription;

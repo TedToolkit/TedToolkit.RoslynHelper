@@ -13,37 +13,37 @@ namespace TedToolkit.RoslynHelper.Generators;
 public enum Polymorphism
 {
     /// <summary>
-    /// None
+    /// None.
     /// </summary>
     NONE = 0,
 
     /// <summary>
-    /// <see langword="virtual"/>
+    /// <see langword="virtual"/>.
     /// </summary>
     VIRTUAL = 1,
 
     /// <summary>
-    /// <see langword="abstract"/>
+    /// <see langword="abstract"/>.
     /// </summary>
     ABSTRACT = 2,
 
     /// <summary>
-    /// <see langword="override"/>
+    /// <see langword="override"/>.
     /// </summary>
     OVERRIDE = 3,
 
     /// <summary>
-    /// <see langword="sealed"/>
+    /// <see langword="sealed"/>.
     /// </summary>
     SEALED = 4,
 
     /// <summary>
-    /// <see langword="sealed"/> <see langword="override"/>
+    /// <see langword="sealed"/> <see langword="override"/>.
     /// </summary>
     SEALED_OVERRIDE = 5,
 
     /// <summary>
-    /// <see langword="new"/>
+    /// <see langword="new"/>.
     /// </summary>
     NEW = 6,
 }

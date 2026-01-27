@@ -10,9 +10,9 @@ using Cysharp.Text;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// <see langword="namespace"/>
+/// <see langword="namespace"/>.
 /// </summary>
-/// <param name="name">the name of the <see langword="namespace"/></param>
+/// <param name="name">the name of the <see langword="namespace"/>.</param>
 public sealed class NameSpace(IExpression name) :
     IMemberOwner,
     IToCode
@@ -22,18 +22,20 @@ public sealed class NameSpace(IExpression name) :
         => field ??= [];
 
     /// <summary>
-    /// Create the namespace based on strings
+    /// Initializes a new instance of the <see cref="NameSpace"/> class.
+    /// Create the namespace based on strings.
     /// </summary>
-    /// <param name="nameSpace">strings</param>
+    /// <param name="nameSpace">strings.</param>
     public NameSpace(in ReadOnlySpan<string> nameSpace)
         : this(ZString.Join('.', nameSpace))
     {
     }
 
     /// <summary>
-    /// Create the namespace based on string
+    /// Initializes a new instance of the <see cref="NameSpace"/> class.
+    /// Create the namespace based on string.
     /// </summary>
-    /// <param name="nameSpace">string</param>
+    /// <param name="nameSpace">string.</param>
     public NameSpace(string nameSpace)
         : this(nameSpace?.ToSimpleName()
                ?? throw new ArgumentNullException(nameof(nameSpace)))

@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Postfix unary expression
+/// Postfix unary expression.
 /// </summary>
-/// <param name="expression">expression</param>
-/// <param name="operator">operator</param>
+/// <param name="expression">expression.</param>
+/// <param name="operator">operator.</param>
 public sealed class PostfixUnaryExpression(IExpression expression, string @operator) :
     IExpression
 {

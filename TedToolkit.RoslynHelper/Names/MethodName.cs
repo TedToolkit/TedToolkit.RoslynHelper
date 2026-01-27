@@ -18,9 +18,10 @@ namespace TedToolkit.RoslynHelper.Names;
 public class MethodName : TypeParametersName<IMethodSymbol>
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="MethodName"/> class.
     /// The method name.
     /// </summary>
-    /// <param name="methodSymbol">symbol</param>
+    /// <param name="methodSymbol">symbol.</param>
     internal MethodName(IMethodSymbol methodSymbol)
         : base(methodSymbol)
     {
@@ -31,22 +32,22 @@ public class MethodName : TypeParametersName<IMethodSymbol>
     }
 
     /// <summary>
-    ///     The signature of the method
+    ///     Gets the signature of the method.
     /// </summary>
     public MethodSignature Signature { get; }
 
     /// <summary>
-    /// The parameters.
+    /// Gets the parameters.
     /// </summary>
     public IReadOnlyList<ParameterName> Parameters { get; }
 
     /// <summary>
-    ///     Return types.
+    ///     Gets return types.
     /// </summary>
     public TypeName ReturnType { get; }
 
     /// <summary>
-    ///     ContainingType
+    ///     Gets containingType.
     /// </summary>
     public TypeName ContainingType { get; }
 

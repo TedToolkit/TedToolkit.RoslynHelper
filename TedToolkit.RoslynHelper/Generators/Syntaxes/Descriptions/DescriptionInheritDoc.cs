@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Inherit the doc
+/// Inherit the doc.
 /// </summary>
-/// <param name="cref">cref</param>
+/// <param name="cref">cref.</param>
 public sealed class DescriptionInheritDoc(ICref? cref) : IRootDescriptionItem
 {
     /// <inheritdoc />

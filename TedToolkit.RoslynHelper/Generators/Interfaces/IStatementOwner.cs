@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IStatementOwner
 {
     /// <summary>
-    /// The members
+    /// Gets the members.
     /// </summary>
     List<IStatement> Statements { get; }
 }

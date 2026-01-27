@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IStorageKind"/>
+/// The extensions for the <see cref="IStorageKind"/>.
 /// </summary>
 public static class StorageKindExtensions
 {
@@ -18,9 +18,9 @@ public static class StorageKindExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see cref="StorageKind.IN"/>
+        /// Gets <see cref="StorageKind.IN"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem In
         {
             get
@@ -31,9 +31,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.OUT"/>
+        /// Gets <see cref="StorageKind.OUT"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Out
         {
             get
@@ -44,9 +44,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.REF"/>
+        /// Gets <see cref="StorageKind.REF"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem Ref
         {
             get
@@ -57,9 +57,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.REF_READONLY"/>
+        /// Gets <see cref="StorageKind.REF_READONLY"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem RefReadonly
         {
             get
@@ -70,9 +70,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.SCOPED_IN"/>
+        /// Gets <see cref="StorageKind.SCOPED_IN"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem ScopedIn
         {
             get
@@ -83,9 +83,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.SCOPED_REF"/>
+        /// Gets <see cref="StorageKind.SCOPED_REF"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem ScopedRef
         {
             get
@@ -96,9 +96,9 @@ public static class StorageKindExtensions
         }
 
         /// <summary>
-        /// <see cref="StorageKind.SCOPED_REF_READONLY"/>
+        /// Gets <see cref="StorageKind.SCOPED_REF_READONLY"/>.
         /// </summary>
-        /// <returns>item</returns>
+        /// <returns>item.</returns>
         public TItem ScopedRefReadonly
         {
             get

@@ -10,37 +10,37 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The Type of the <see cref="TypeDeclaration"/>
+/// The Type of the <see cref="TypeDeclaration"/>.
 /// </summary>
 public enum TypeDeclarationType
 {
     /// <summary>
-    /// <see langword="class"/>
+    /// <see langword="class"/>.
     /// </summary>
     CLASS = 0,
 
     /// <summary>
-    /// <see langword="struct"/>
+    /// <see langword="struct"/>.
     /// </summary>
     STRUCT = 1,
 
     /// <summary>
-    /// <see langword="ref"/> <see langword="struct"/>
+    /// <see langword="ref"/> <see langword="struct"/>.
     /// </summary>
     REF_STRUCT = 2,
 
     /// <summary>
-    /// <see langword="record"/>
+    /// <see langword="record"/>.
     /// </summary>
     RECORD = 3,
 
     /// <summary>
-    /// <see langword="record"/> <see langword="struct"/>
+    /// <see langword="record"/> <see langword="struct"/>.
     /// </summary>
     RECORD_STRUCT = 4,
 
     /// <summary>
-    /// <see langword="interface"/>
+    /// <see langword="interface"/>.
     /// </summary>
     INTERFACE = 5,
 }

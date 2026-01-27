@@ -8,13 +8,13 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// ToGet the description
+/// ToGet the description.
 /// </summary>
 public interface IToDescription
 {
     /// <summary>
     /// Get the description.
     /// </summary>
-    /// <param name="builder">builder</param>
+    /// <param name="builder">builder.</param>
     void ToDescription(ref SourceBuilder builder);
 }

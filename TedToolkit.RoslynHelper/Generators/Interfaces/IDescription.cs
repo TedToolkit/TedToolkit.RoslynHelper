@@ -13,13 +13,13 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IDescription
 {
     /// <summary>
-    /// The Description
+    /// Gets the Description.
     /// </summary>
     List<IDescriptionItem> Descriptions { get; }
 
     /// <summary>
-    /// Change to the root
+    /// Change to the root.
     /// </summary>
-    /// <returns>root item</returns>
+    /// <returns>root item.</returns>
     IRootDescriptionItem ToRoot();
 }

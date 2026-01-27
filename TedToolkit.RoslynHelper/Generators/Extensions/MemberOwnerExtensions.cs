@@ -12,7 +12,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IMemberOwner"/>
+/// The extensions for the <see cref="IMemberOwner"/>.
 /// </summary>
 public static class MemberOwnerExtensions
 {
@@ -24,9 +24,9 @@ public static class MemberOwnerExtensions
         /// <summary>
         /// Add the member.
         /// </summary>
-        /// <param name="member">the member</param>
-        /// <typeparam name="TMember">member type</typeparam>
-        /// <returns>the item</returns>
+        /// <param name="member">the member.</param>
+        /// <typeparam name="TMember">member type.</typeparam>
+        /// <returns>the item.</returns>
         public TItem AddMember<TMember>(TMember member)
             where TMember : class, IMember
         {

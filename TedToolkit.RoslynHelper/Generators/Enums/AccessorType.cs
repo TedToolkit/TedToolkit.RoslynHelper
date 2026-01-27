@@ -13,27 +13,27 @@ namespace TedToolkit.RoslynHelper.Generators;
 public enum AccessorType
 {
     /// <summary>
-    /// get
+    /// get.
     /// </summary>
     GET = 0,
 
     /// <summary>
-    /// set
+    /// set.
     /// </summary>
     SET = 1,
 
     /// <summary>
-    /// init
+    /// init.
     /// </summary>
     INIT = 2,
 
     /// <summary>
-    /// add
+    /// add.
     /// </summary>
     ADD = 3,
 
     /// <summary>
-    /// remove
+    /// remove.
     /// </summary>
     REMOVE = 4,
 }

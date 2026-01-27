@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The Item that has Accessibility
+/// The Item that has Accessibility.
 /// </summary>
 public interface IAccessibility
 {
     /// <summary>
-    /// The Accessibility
+    /// Gets or sets the Accessibility.
     /// </summary>
     Accessibility Accessibility { get; set; }
 }

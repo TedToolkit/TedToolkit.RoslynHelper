@@ -8,11 +8,11 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Binary Expression
+/// Binary Expression.
 /// </summary>
-/// <param name="operator">operator</param>
-/// <param name="left">left</param>
-/// <param name="right">right</param>
+/// <param name="operator">operator.</param>
+/// <param name="left">left.</param>
+/// <param name="right">right.</param>
 public sealed class BinaryExpression(string @operator, IExpression left, IExpression right) :
     IExpression
 {

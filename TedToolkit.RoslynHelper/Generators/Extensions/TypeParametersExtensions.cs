@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="ITypeParameters"/>
+/// The extensions for the <see cref="ITypeParameters"/>.
 /// </summary>
 public static class TypeParametersExtensions
 {
@@ -20,9 +20,9 @@ public static class TypeParametersExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add type parameter
+        /// Add type parameter.
         /// </summary>
-        /// <param name="typeParameter">the type parameter</param>
+        /// <param name="typeParameter">the type parameter.</param>
         public TItem AddTypeParameter(TypeParameter typeParameter)
         {
             instance.TypeParameters.Add(typeParameter);

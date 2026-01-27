@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Para
+/// Para.
 /// </summary>
-/// <param name="descriptions">Descriptions</param>
+/// <param name="descriptions">Descriptions.</param>
 public sealed class DescriptionPara(params IReadOnlyList<IDescriptionItem> descriptions) : IDescriptionItem
 {
     /// <inheritdoc />

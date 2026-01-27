@@ -13,7 +13,7 @@ namespace TedToolkit.RoslynHelper.Generators;
 public interface IMemberOwner
 {
     /// <summary>
-    /// The members
+    /// Gets the members.
     /// </summary>
     List<IMember> Members { get; }
 }

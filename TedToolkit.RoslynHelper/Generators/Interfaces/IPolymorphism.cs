@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// For the Polymorphism
+/// For the Polymorphism.
 /// </summary>
 public interface IPolymorphism
 {
     /// <summary>
-    /// The Polymorphism
+    /// Gets or sets the Polymorphism.
     /// </summary>
     Polymorphism Polymorphism { get; set; }
 }

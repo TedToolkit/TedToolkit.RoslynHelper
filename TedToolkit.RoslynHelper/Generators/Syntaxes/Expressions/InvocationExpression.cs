@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The Invocation expression
+/// The Invocation expression.
 /// </summary>
-/// <param name="member">the member</param>
+/// <param name="member">the member.</param>
 public sealed class InvocationExpression(IExpression member) :
     IArguments,
     IExpression

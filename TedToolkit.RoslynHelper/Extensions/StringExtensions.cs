@@ -17,9 +17,9 @@ public static class StringExtensions
     /// <summary>
     ///     Make a string to pascal case.
     /// </summary>
-    /// <param name="input">input</param>
-    /// <returns>Pascal</returns>
-    /// <exception cref="ArgumentNullException">input is null</exception>
+    /// <param name="input">input.</param>
+    /// <returns>Pascal.</returns>
+    /// <exception cref="ArgumentNullException">input is null.</exception>
     public static string ToPascalCase(this string input)
     {
         if (input is null)
@@ -52,10 +52,10 @@ public static class StringExtensions
     /// <summary>
     ///     Add leading string.
     /// </summary>
-    /// <param name="input">Input</param>
-    /// <param name="leading">Leading</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">input or leading is null</exception>
+    /// <param name="input">Input.</param>
+    /// <param name="leading">Leading.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">input or leading is null.</exception>
     public static string Leading(this string input, string leading)
     {
         if (input is null)

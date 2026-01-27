@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// SeeAlso
+/// SeeAlso.
 /// </summary>
-/// <param name="cref">cref</param>
+/// <param name="cref">cref.</param>
 public sealed class DescriptionSeeAlso(ICref cref) : IRootDescriptionItem
 {
     /// <inheritdoc />

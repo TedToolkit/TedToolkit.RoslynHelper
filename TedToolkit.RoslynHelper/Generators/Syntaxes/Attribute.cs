@@ -10,9 +10,9 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Attribute
+/// Attribute.
 /// </summary>
-/// <param name="type">The Type</param>
+/// <param name="type">The Type.</param>
 #pragma warning disable CA1711
 public sealed class Attribute(DataType type) :
 #pragma warning restore CA1711
@@ -20,18 +20,20 @@ public sealed class Attribute(DataType type) :
     IArguments
 {
     /// <summary>
-    /// Create from a symbol
+    /// Initializes a new instance of the <see cref="Attribute"/> class.
+    /// Create from a symbol.
     /// </summary>
-    /// <param name="type">symbol</param>
+    /// <param name="type">symbol.</param>
     public Attribute(ITypeSymbol type)
         : this(new DataType(type))
     {
     }
 
     /// <summary>
-    /// Create from a type
+    /// Initializes a new instance of the <see cref="Attribute"/> class.
+    /// Create from a type.
     /// </summary>
-    /// <param name="type">type</param>
+    /// <param name="type">type.</param>
     public Attribute(Type type)
         : this(DataType.FromType(type))
     {
@@ -59,15 +61,15 @@ public sealed class Attribute(DataType type) :
     }
 
     /// <summary>
-    /// The modifier of the attribute.
+    /// Gets or sets the modifier of the attribute.
     /// </summary>
     public AttributeModifier Modifier { get; set; }
 
     /// <summary>
-    /// Add modifier
+    /// Add modifier.
     /// </summary>
-    /// <param name="modifier">modifier</param>
-    /// <returns>the item</returns>
+    /// <param name="modifier">modifier.</param>
+    /// <returns>the item.</returns>
     public Attribute AddModifier(AttributeModifier modifier)
     {
         Modifier = modifier;

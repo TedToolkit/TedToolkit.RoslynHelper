@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Create an event
+/// Create an event.
 /// </summary>
-/// <param name="type">event type</param>
-/// <param name="identifier">identifier</param>
+/// <param name="type">event type.</param>
+/// <param name="identifier">identifier.</param>
 public sealed class Event(DataType type, string identifier) :
     IMember,
     IVariable,

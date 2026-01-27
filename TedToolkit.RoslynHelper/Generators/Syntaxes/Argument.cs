@@ -8,15 +8,15 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The argument
+/// The argument.
 /// </summary>
-/// <param name="variable">variable name</param>
+/// <param name="variable">variable name.</param>
 public sealed class Argument(IExpression variable) :
     IStorageKind,
     IToCode
 {
     /// <summary>
-    /// The parameter name
+    /// Gets or sets the parameter name.
     /// </summary>
     public string ParameterName { get; set; } = "";
 

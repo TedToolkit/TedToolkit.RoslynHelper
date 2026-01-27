@@ -10,9 +10,9 @@ using System.Runtime.CompilerServices;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The TypeParameters
+/// The TypeParameters.
 /// </summary>
-/// <param name="identifier">identifier</param>
+/// <param name="identifier">identifier.</param>
 public sealed class TypeParameter(string identifier) :
     IToCode,
     IDescription,
@@ -37,7 +37,7 @@ public sealed class TypeParameter(string identifier) :
         => field ??= [];
 
     /// <summary>
-    /// Constraints
+    /// Gets constraints.
     /// </summary>
 #pragma warning disable S2325
     public List<IExpression> Constraints
@@ -56,9 +56,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// To the constraint
+    /// To the constraint.
     /// </summary>
-    /// <param name="builder">the builder</param>
+    /// <param name="builder">the builder.</param>
     internal void ToConstraint(ref SourceBuilder builder)
     {
         if (Constraints.Count is 0)
@@ -82,10 +82,10 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add constraint
+    /// Add constraint.
     /// </summary>
-    /// <param name="constraint">the constraint</param>
-    /// <returns>self</returns>
+    /// <param name="constraint">the constraint.</param>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddConstraint(IExpression constraint)
     {
@@ -94,11 +94,11 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add constraint
+    /// Add constraint.
     /// </summary>
-    /// <param name="constraint">the constraint</param>
-    /// <returns>self</returns>
-    /// <exception cref="ArgumentNullException">constraint is null</exception>
+    /// <param name="constraint">the constraint.</param>
+    /// <returns>self.</returns>
+    /// <exception cref="ArgumentNullException">constraint is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddConstraint(DataType constraint)
     {
@@ -110,10 +110,10 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add constraint
+    /// Add constraint.
     /// </summary>
-    /// <param name="constraint">the constraint</param>
-    /// <returns>self</returns>
+    /// <param name="constraint">the constraint.</param>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddConstraint(Type constraint)
     {
@@ -122,10 +122,10 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add constraint
+    /// Add constraint.
     /// </summary>
-    /// <typeparam name="T">constraint type</typeparam>
-    /// <returns>self</returns>
+    /// <typeparam name="T">constraint type.</typeparam>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddConstraint<T>()
     {
@@ -134,9 +134,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add struct constraint
+    /// Add struct constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddStructConstraint()
     {
@@ -145,9 +145,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add class constraint
+    /// Add class constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddClassConstraint()
     {
@@ -156,9 +156,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add class null constraint
+    /// Add class null constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddClassNullConstraint()
     {
@@ -167,9 +167,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add not null constraint
+    /// Add not null constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddNotNullConstraint()
     {
@@ -178,9 +178,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add new constraint
+    /// Add new constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddNewConstraint()
     {
@@ -189,9 +189,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add unmanaged constraint
+    /// Add unmanaged constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddUnmanagedConstraint()
     {
@@ -200,9 +200,9 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <summary>
-    /// Add allows ref struct constraint
+    /// Add allows ref struct constraint.
     /// </summary>
-    /// <returns>self</returns>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TypeParameter AddRefStructConstraint()
     {

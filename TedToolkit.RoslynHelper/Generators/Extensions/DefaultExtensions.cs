@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IDefault"/>
+/// The extensions for the <see cref="IDefault"/>.
 /// </summary>
 public static class DefaultExtensions
 {
@@ -20,10 +20,10 @@ public static class DefaultExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add default
+        /// Add default.
         /// </summary>
-        /// <param name="value">defaultValue</param>
-        /// <returns>self</returns>
+        /// <param name="value">defaultValue.</param>
+        /// <returns>self.</returns>
         public TItem AddDefault(IExpression value)
         {
             instance.Default = value;
@@ -31,9 +31,9 @@ public static class DefaultExtensions
         }
 
         /// <summary>
-        /// Add null
+        /// Add null.
         /// </summary>
-        /// <returns>self</returns>
+        /// <returns>self.</returns>
         public TItem AddNull()
         {
             instance.Default = SimpleNameExpression.Null;
@@ -41,9 +41,9 @@ public static class DefaultExtensions
         }
 
         /// <summary>
-        /// Add default
+        /// Add default.
         /// </summary>
-        /// <returns>self</returns>
+        /// <returns>self.</returns>
         public TItem AddDefault()
         {
             instance.Default = SimpleNameExpression.Default;

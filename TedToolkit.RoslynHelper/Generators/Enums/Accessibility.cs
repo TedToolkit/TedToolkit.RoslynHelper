@@ -18,37 +18,37 @@ public enum Accessibility
     NONE = 0,
 
     /// <summary>
-    /// <see langword="public"/>
+    /// <see langword="public"/>.
     /// </summary>
     PUBLIC = 1,
 
     /// <summary>
-    /// <see langword="internal"/>
+    /// <see langword="internal"/>.
     /// </summary>
     INTERNAL = 2,
 
     /// <summary>
-    /// <see langword="private"/>
+    /// <see langword="private"/>.
     /// </summary>
     PRIVATE = 3,
 
     /// <summary>
-    /// <see langword="file"/>
+    /// <see langword="file"/>.
     /// </summary>
     FILE = 4,
 
     /// <summary>
-    /// <see langword="private"/> <see langword="protected"/>
+    /// <see langword="private"/> <see langword="protected"/>.
     /// </summary>
     PRIVATE_PROTECTED = 5,
 
     /// <summary>
-    /// <see langword="protected"/>
+    /// <see langword="protected"/>.
     /// </summary>
     PROTECTED = 6,
 
     /// <summary>
-    /// <see langword="protected"/> <see langword="internal"/>
+    /// <see langword="protected"/> <see langword="internal"/>.
     /// </summary>
     PROTECTED_INTERNAL = 7,
 }

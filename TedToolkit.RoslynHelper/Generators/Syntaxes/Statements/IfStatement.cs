@@ -10,7 +10,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// The if statement.
 /// </summary>
-/// <param name="expression">expression</param>
+/// <param name="expression">expression.</param>
 public sealed class IfStatement(IExpression expression) :
     IStatement,
     IStatementOwner

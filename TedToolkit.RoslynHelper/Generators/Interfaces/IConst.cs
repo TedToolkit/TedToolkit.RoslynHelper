@@ -8,12 +8,12 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// <see langword="const"/>
+/// <see langword="const"/>.
 /// </summary>
 public interface IConst
 {
     /// <summary>
-    /// <see langword="const"/>
+    /// Gets or sets a value indicating whether <see langword="const"/>.
     /// </summary>
     bool IsConst { get; set; }
 }

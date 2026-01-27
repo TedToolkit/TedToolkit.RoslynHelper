@@ -24,9 +24,10 @@ public abstract class BaseName<T> : IName<T>
     private readonly Lazy<string> _lazyMiniName;
 
     /// <summary>
-    /// Create the base name
+    /// Initializes a new instance of the <see cref="BaseName{T}"/> class.
+    /// Create the base name.
     /// </summary>
-    /// <param name="symbol">the symbol</param>
+    /// <param name="symbol">the symbol.</param>
     private protected BaseName(T symbol)
     {
         Symbol = symbol;

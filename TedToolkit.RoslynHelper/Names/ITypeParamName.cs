@@ -15,17 +15,17 @@ namespace TedToolkit.RoslynHelper.Names;
 public interface ITypeParamName
 {
     /// <summary>
-    ///     Syntax
+    ///     Gets syntax.
     /// </summary>
     TypeParameterSyntax Syntax { get; }
 
     /// <summary>
-    ///     Syntax name
+    ///     Gets syntax name.
     /// </summary>
     string SyntaxName { get; }
 
     /// <summary>
-    ///     THe Constraint clause.
+    ///     Gets tHe Constraint clause.
     /// </summary>
     TypeParameterConstraintClauseSyntax? ConstraintClause { get; }
 }

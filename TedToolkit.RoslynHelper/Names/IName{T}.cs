@@ -10,14 +10,14 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <summary>
-/// The I Name
+/// The I Name.
 /// </summary>
-/// <typeparam name="T">The type of the symbol</typeparam>
+/// <typeparam name="T">The type of the symbol.</typeparam>
 public interface IName<out T> : IName
     where T : ISymbol
 {
     /// <summary>
-    ///     Symbol
+    ///     Gets symbol.
     /// </summary>
     T Symbol { get; }
 }

@@ -12,7 +12,7 @@ using TedToolkit.RoslynHelper.Names;
 namespace TedToolkit.RoslynHelper.Extensions;
 
 /// <summary>
-///     Extensions for symbol
+///     Extensions for symbol.
 /// </summary>
 public static class SymbolExtensions
 {
@@ -21,7 +21,7 @@ public static class SymbolExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Full name of the symbol
+        /// Gets full name of the symbol.
         /// </summary>
 #pragma warning disable S2325
         public string FullName
@@ -39,25 +39,25 @@ public static class SymbolExtensions
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
-    /// <returns>Name</returns>
+    /// <param name="symbol">Symbol.</param>
+    /// <returns>Name.</returns>
     public static TypeName GetName(this ITypeSymbol symbol)
         => new(symbol);
 
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
-    /// <returns>Name</returns>
+    /// <param name="symbol">Symbol.</param>
+    /// <returns>Name.</returns>
     public static TypeParamName GetName(this ITypeParameterSymbol symbol)
         => new(symbol);
 
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
-    /// <returns>Name</returns>
-    /// <exception cref="ArgumentNullException">symbol is null</exception>
+    /// <param name="symbol">Symbol.</param>
+    /// <returns>Name.</returns>
+    /// <exception cref="ArgumentNullException">symbol is null.</exception>
     public static MethodName GetName(this IMethodSymbol symbol)
     {
         if (symbol is null)
@@ -69,9 +69,9 @@ public static class SymbolExtensions
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
-    /// <returns>Name</returns>
-    /// <exception cref="ArgumentNullException">symbol is null</exception>
+    /// <param name="symbol">Symbol.</param>
+    /// <returns>Name.</returns>
+    /// <exception cref="ArgumentNullException">symbol is null.</exception>
     public static ParameterName GetName(this IParameterSymbol symbol)
     {
         if (symbol is null)
@@ -83,25 +83,25 @@ public static class SymbolExtensions
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbols">Symbols</param>
-    /// <returns>result</returns>
+    /// <param name="symbols">Symbols.</param>
+    /// <returns>result.</returns>
     public static IEnumerable<TypeParamName> GetNames(this IEnumerable<ITypeParameterSymbol> symbols)
         => symbols.Select(GetName);
 
     /// <summary>
     ///     Get the type name.
     /// </summary>
-    /// <param name="symbols">Symbols</param>
-    /// <returns>result</returns>
+    /// <param name="symbols">Symbols.</param>
+    /// <returns>result.</returns>
     public static IEnumerable<ParameterName> GetNames(this IEnumerable<IParameterSymbol> symbols)
         => symbols.Select(GetName);
 
     /// <summary>
-    ///     Get the extension methods for
+    ///     Get the extension methods for.
     /// </summary>
-    /// <param name="compilation">compilation</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">compilation is null</exception>
+    /// <param name="compilation">compilation.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">compilation is null.</exception>
     public static IReadOnlyDictionary<ISymbol?, IMethodSymbol[]> GetAllExtensionMethods(this Compilation compilation)
     {
         if (compilation is null)
@@ -118,17 +118,17 @@ public static class SymbolExtensions
     /// <summary>
     ///     Get all static classes in a namespace.
     /// </summary>
-    /// <param name="namespaceSymbol">namespace</param>
-    /// <returns>result</returns>
+    /// <param name="namespaceSymbol">namespace.</param>
+    /// <returns>result.</returns>
     public static IEnumerable<INamedTypeSymbol> GetAllStaticClasses(this INamespaceSymbol namespaceSymbol)
         => namespaceSymbol.GetAllTypes().Where(t => t.IsStatic && t.TypeKind == TypeKind.Class);
 
     /// <summary>
     ///     Get all types in a namespace.
     /// </summary>
-    /// <param name="namespaceSymbol">namespace</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">namespaceSymbol is null</exception>
+    /// <param name="namespaceSymbol">namespace.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">namespaceSymbol is null.</exception>
     public static IEnumerable<INamedTypeSymbol> GetAllTypes(this INamespaceSymbol namespaceSymbol)
     {
         if (namespaceSymbol is null)
@@ -152,9 +152,9 @@ public static class SymbolExtensions
     /// <summary>
     ///     Replace the type with nested original definition.
     /// </summary>
-    /// <param name="symbol">symbol</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">symbol is null</exception>
+    /// <param name="symbol">symbol.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">symbol is null.</exception>
     public static ITypeSymbol ReplaceWithNestedOriginalDefinition(this ITypeSymbol symbol)
     {
         if (symbol is null)

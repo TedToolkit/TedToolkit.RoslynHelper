@@ -12,7 +12,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IAttributes"/>
+/// The extensions for the <see cref="IAttributes"/>.
 /// </summary>
 public static class AttributesExtensions
 {
@@ -22,10 +22,10 @@ public static class AttributesExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add attribute
+        /// Add attribute.
         /// </summary>
-        /// <param name="attribute">attribute</param>
-        /// <returns>the item</returns>
+        /// <param name="attribute">attribute.</param>
+        /// <returns>the item.</returns>
         public TItem AddAttribute(Syntaxes.Attribute attribute)
         {
             instance.Attributes.Add(attribute);
@@ -33,11 +33,11 @@ public static class AttributesExtensions
         }
 
         /// <summary>
-        /// Add generator attribute
+        /// Add generator attribute.
         /// </summary>
-        /// <param name="type">type</param>
-        /// <returns>self</returns>
-        /// <exception cref="ArgumentNullException">type is null</exception>
+        /// <param name="type">type.</param>
+        /// <returns>self.</returns>
+        /// <exception cref="ArgumentNullException">type is null.</exception>
         public TItem AddGeneratorAttribute(Type type)
         {
             if (type is null)
@@ -47,12 +47,12 @@ public static class AttributesExtensions
         }
 
         /// <summary>
-        /// Add generator attribute
+        /// Add generator attribute.
         /// </summary>
-        /// <param name="toolName">tool name</param>
-        /// <param name="version">version</param>
-        /// <returns>self</returns>
-        /// <exception cref="ArgumentNullException">toolName or version is null</exception>
+        /// <param name="toolName">tool name.</param>
+        /// <param name="version">version.</param>
+        /// <returns>self.</returns>
+        /// <exception cref="ArgumentNullException">toolName or version is null.</exception>
         public TItem AddGeneratorAttribute(string toolName, string version)
         {
             return instance.AddGeneratorAttribute(
@@ -61,11 +61,11 @@ public static class AttributesExtensions
         }
 
         /// <summary>
-        /// Add generator attribute
+        /// Add generator attribute.
         /// </summary>
-        /// <param name="toolName">tool name</param>
-        /// <param name="version">version</param>
-        /// <returns>self</returns>
+        /// <param name="toolName">tool name.</param>
+        /// <param name="version">version.</param>
+        /// <returns>self.</returns>
         public TItem AddGeneratorAttribute(IExpression toolName, IExpression version)
         {
             instance.AddAttribute(new Syntaxes.Attribute(typeof(GeneratedCodeAttribute))

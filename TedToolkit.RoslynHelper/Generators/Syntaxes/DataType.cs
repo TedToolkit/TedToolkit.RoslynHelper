@@ -14,15 +14,15 @@ using TedToolkit.RoslynHelper.Extensions;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The data Type
+/// The data Type.
 /// </summary>
-/// <param name="type">expression to the type</param>
+/// <param name="type">expression to the type.</param>
 public sealed class DataType(IExpression type) :
     IStorageKind,
     IToCode
 {
     /// <summary>
-    /// The Type
+    /// Gets or sets the Type.
     /// </summary>
     public IExpression Type { get; set; } = type;
 
@@ -30,12 +30,12 @@ public sealed class DataType(IExpression type) :
     public StorageKind StorageKind { get; set; }
 
     /// <summary>
-    /// Is Array
+    /// Gets or sets a value indicating whether is Array.
     /// </summary>
     public bool IsArray { get; set; }
 
     /// <summary>
-    /// Make Array
+    /// Gets make Array.
     /// </summary>
     public DataType Array
     {
@@ -48,7 +48,7 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// Make Null
+    /// Gets make Null.
     /// </summary>
     public DataType Null
     {
@@ -61,7 +61,7 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// Create an instance
+    /// Gets create an instance.
     /// </summary>
     public ObjectCreationExpression New
     {
@@ -70,12 +70,12 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// The pointer counter
+    /// Gets or sets the pointer counter.
     /// </summary>
     public int PointCounter { get; set; }
 
     /// <summary>
-    /// Pointer
+    /// Gets pointer.
     /// </summary>
 #pragma warning disable CA1720
     public DataType Pointer
@@ -92,8 +92,8 @@ public sealed class DataType(IExpression type) :
     /// <summary>
     /// Generic the items.
     /// </summary>
-    /// <param name="types">types</param>
-    /// <returns>expression</returns>
+    /// <param name="types">types.</param>
+    /// <returns>expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public DataType Generic(params DataType[] types)
     {
@@ -114,46 +114,48 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// Create from the symbol
+    /// Initializes a new instance of the <see cref="DataType"/> class.
+    /// Create from the symbol.
     /// </summary>
-    /// <param name="type">type symbol</param>
+    /// <param name="type">type symbol.</param>
     public DataType(ITypeSymbol type)
         : this(type?.FullName ?? throw new ArgumentNullException(nameof(type)))
     {
     }
 
     /// <summary>
-    /// Create from name
+    /// Initializes a new instance of the <see cref="DataType"/> class.
+    /// Create from name.
     /// </summary>
-    /// <param name="name">name</param>
+    /// <param name="name">name.</param>
     public DataType(string name)
         : this(new SimpleNameExpression(name))
     {
     }
 
     /// <summary>
-    /// Implicit convert
+    /// Implicit convert.
     /// </summary>
-    /// <param name="value">value</param>
-    /// <returns>result</returns>
+    /// <param name="value">value.</param>
+    /// <returns>result.</returns>
     public static implicit operator DataType(Type value)
         => FromType(value);
 
     /// <summary>
-    /// From Type
+    /// From Type.
     /// </summary>
-    /// <typeparam name="T">Type</typeparam>
-    /// <returns>Expression</returns>
+    /// <typeparam name="T">Type.</typeparam>
+    /// <returns>Expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DataType FromType<T>()
         => FromType(typeof(T));
 
     /// <summary>
-    /// From the type
+    /// From the type.
     /// </summary>
-    /// <param name="type">type</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">type is null</exception>
+    /// <param name="type">type.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">type is null.</exception>
     public static DataType FromType(Type type)
     {
         if (type is null)
@@ -196,103 +198,103 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// <see langword="var"/>
+    /// Gets <see langword="var"/>.
     /// </summary>
     public static DataType Var
         => new(new SimpleNameExpression("var"));
 #pragma warning disable CA1720
     /// <summary>
-    /// <see langword="string"/>
+    /// Gets <see langword="string"/>.
     /// </summary>
     public static DataType String
         => new(new SimpleNameExpression("string"));
 
     /// <summary>
-    /// <see langword="char"/>
+    /// Gets <see langword="char"/>.
     /// </summary>
     public static DataType Char
         => new(new SimpleNameExpression("char"));
 
     /// <summary>
-    /// <see langword="byte"/>
+    /// Gets <see langword="byte"/>.
     /// </summary>
     public static DataType Byte
         => new(new SimpleNameExpression("byte"));
 
     /// <summary>
-    /// <see langword="sbyte"/>
+    /// Gets <see langword="sbyte"/>.
     /// </summary>
     public static DataType Sbyte
         => new(new SimpleNameExpression("sbyte"));
 
     /// <summary>
-    /// <see langword="short"/>
+    /// Gets <see langword="short"/>.
     /// </summary>
     public static DataType Short
         => new(new SimpleNameExpression("short"));
 
     /// <summary>
-    /// <see langword="ushort"/>
+    /// Gets <see langword="ushort"/>.
     /// </summary>
     public static DataType Ushort
         => new(new SimpleNameExpression("ushort"));
 
     /// <summary>
-    /// <see langword="int"/>
+    /// Gets <see langword="int"/>.
     /// </summary>
     public static DataType Int
         => new(new SimpleNameExpression("int"));
 
     /// <summary>
-    /// <see langword="uint"/>
+    /// Gets <see langword="uint"/>.
     /// </summary>
     public static DataType Uint
         => new(new SimpleNameExpression("uint"));
 
     /// <summary>
-    /// <see langword="long"/>
+    /// Gets <see langword="long"/>.
     /// </summary>
     public static DataType Long
         => new(new SimpleNameExpression("long"));
 
     /// <summary>
-    /// <see langword="ulong"/>
+    /// Gets <see langword="ulong"/>.
     /// </summary>
     public static DataType Ulong
         => new(new SimpleNameExpression("ulong"));
 
     /// <summary>
-    /// <see langword="bool"/>
+    /// Gets <see langword="bool"/>.
     /// </summary>
     public static DataType Bool
         => new(new SimpleNameExpression("bool"));
 
     /// <summary>
-    /// <see langword="double"/>
+    /// Gets <see langword="double"/>.
     /// </summary>
     public static DataType Double
         => new(new SimpleNameExpression("double"));
 
     /// <summary>
-    /// <see langword="float"/>
+    /// Gets <see langword="float"/>.
     /// </summary>
     public static DataType Float
         => new(new SimpleNameExpression("float"));
 
     /// <summary>
-    /// <see langword="decimal"/>
+    /// Gets <see langword="decimal"/>.
     /// </summary>
     public static DataType Decimal
         => new(new SimpleNameExpression("decimal"));
 
     /// <summary>
-    /// <see langword="object"/>
+    /// Gets <see langword="object"/>.
     /// </summary>
     public static DataType Object
         => new(new SimpleNameExpression("object"));
 
     /// <summary>
-    /// <see langword="void"/>
+    /// Gets <see langword="void"/>.
     /// </summary>
     public static DataType Void
         => new(new SimpleNameExpression("void"));

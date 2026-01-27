@@ -16,15 +16,15 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The source file
+/// The source file.
 /// </summary>
 public class SourceFile()
 {
     /// <summary>
-    /// Generate the code
+    /// Generate the code.
     /// </summary>
-    /// <param name="context">context</param>
-    /// <param name="fileName">file name</param>
+    /// <param name="context">context.</param>
+    /// <param name="fileName">file name.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Generate(scoped in SourceProductionContext context, string fileName)
     {
@@ -40,9 +40,9 @@ public class SourceFile()
     }
 
     /// <summary>
-    /// To code
+    /// To code.
     /// </summary>
-    /// <returns>the code</returns>
+    /// <returns>the code.</returns>
     public string ToCode()
     {
         var builder = new SourceBuilder();
@@ -101,7 +101,7 @@ public class SourceFile()
     }
 
     /// <summary>
-    /// NameSpaces
+    /// Gets nameSpaces.
     /// </summary>
 #pragma warning disable S2325
     public List<NameSpace> NameSpaces
@@ -109,7 +109,7 @@ public class SourceFile()
         => field ??= [];
 
     /// <summary>
-    /// Attributes
+    /// Gets attributes.
     /// </summary>
 #pragma warning disable S2325
     public List<Syntaxes.Attribute> Attributes
@@ -119,8 +119,8 @@ public class SourceFile()
     /// <summary>
     /// Add a name space.
     /// </summary>
-    /// <param name="nameSpace">the namespace</param>
-    /// <returns>result</returns>
+    /// <param name="nameSpace">the namespace.</param>
+    /// <returns>result.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SourceFile AddNameSpace(NameSpace nameSpace)
     {
@@ -131,9 +131,9 @@ public class SourceFile()
     /// <summary>
     /// Add a name space.
     /// </summary>
-    /// <param name="attribute">the attribute</param>
-    /// <returns>result</returns>
-    /// <exception cref="ArgumentNullException">attribute is null</exception>
+    /// <param name="attribute">the attribute.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">attribute is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SourceFile AddAttribute(Syntaxes.Attribute attribute)
     {

@@ -10,10 +10,10 @@ using System.Runtime.CompilerServices;
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Enum
+/// Enum.
 /// </summary>
-/// <param name="identifier">identifier</param>
-/// <param name="dataType">data type</param>
+/// <param name="identifier">identifier.</param>
+/// <param name="dataType">data type.</param>
 #pragma warning disable CA1711
 public sealed class Enum(string identifier, DataType? dataType = null) :
 #pragma warning restore CA1711
@@ -67,7 +67,7 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
         => field ??= [];
 
     /// <summary>
-    /// The enum members.
+    /// Gets the enum members.
     /// </summary>
 #pragma warning disable S2325
     public List<EnumMember> EnumMembers
@@ -75,10 +75,10 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
         => field ??= [];
 
     /// <summary>
-    /// Add enum member
+    /// Add enum member.
     /// </summary>
-    /// <param name="member">member</param>
-    /// <returns>self</returns>
+    /// <param name="member">member.</param>
+    /// <returns>self.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Enum AddEnumMember(EnumMember member)
     {

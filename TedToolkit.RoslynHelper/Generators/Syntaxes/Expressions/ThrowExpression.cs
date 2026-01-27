@@ -8,9 +8,9 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// throw an expression
+/// throw an expression.
 /// </summary>
-/// <param name="expression">expression</param>
+/// <param name="expression">expression.</param>
 public sealed class ThrowExpression(IExpression expression) : IExpression
 {
     /// <inheritdoc />

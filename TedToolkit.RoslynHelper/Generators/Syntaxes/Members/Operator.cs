@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// Add the operator
+/// Add the operator.
 /// </summary>
-/// <param name="returnType">return type</param>
-/// <param name="operatorName">operator name</param>
+/// <param name="returnType">return type.</param>
+/// <param name="operatorName">operator name.</param>
 public sealed class Operator(ReturnType returnType, string operatorName) :
     IMember,
     IParameters,

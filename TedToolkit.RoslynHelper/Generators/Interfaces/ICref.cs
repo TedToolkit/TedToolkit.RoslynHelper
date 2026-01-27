@@ -15,6 +15,6 @@ public interface ICref
     /// <summary>
     /// Get the cref.
     /// </summary>
-    /// <param name="builder">builder</param>
+    /// <param name="builder">builder.</param>
     void ToCref(ref SourceBuilder builder);
 }

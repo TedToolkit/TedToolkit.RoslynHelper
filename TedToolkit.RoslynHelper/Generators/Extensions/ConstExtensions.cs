@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IConst"/>
+/// The extensions for the <see cref="IConst"/>.
 /// </summary>
 public static class ConstExtensions
 {
@@ -18,7 +18,7 @@ public static class ConstExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see langword="const"/>
+        /// Gets <see langword="const"/>.
         /// </summary>
         public TItem Const
         {

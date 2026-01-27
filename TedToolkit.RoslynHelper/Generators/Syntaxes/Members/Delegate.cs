@@ -8,10 +8,10 @@
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
-/// The delegate
+/// The delegate.
 /// </summary>
-/// <param name="identifier">the identifier</param>
-/// <param name="returnType">the return type</param>
+/// <param name="identifier">the identifier.</param>
+/// <param name="returnType">the return type.</param>
 #pragma warning disable CA1711
 public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 #pragma warning restore CA1711

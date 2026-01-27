@@ -10,7 +10,7 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IStatementOwner"/>
+/// The extensions for the <see cref="IStatementOwner"/>.
 /// </summary>
 public static class StatementOwnerExtensions
 {
@@ -20,11 +20,11 @@ public static class StatementOwnerExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Add the statement
+        /// Add the statement.
         /// </summary>
-        /// <param name="statement">the statement</param>
-        /// <typeparam name="TStatement">statement type</typeparam>
-        /// <returns>the item</returns>
+        /// <param name="statement">the statement.</param>
+        /// <typeparam name="TStatement">statement type.</typeparam>
+        /// <returns>the item.</returns>
         public TItem AddStatement<TStatement>(TStatement statement)
             where TStatement : class, IStatement
         {
@@ -33,10 +33,10 @@ public static class StatementOwnerExtensions
         }
 
         /// <summary>
-        /// Add the statement
+        /// Add the statement.
         /// </summary>
-        /// <param name="expression">the statement</param>
-        /// <returns>the item</returns>
+        /// <param name="expression">the statement.</param>
+        /// <returns>the item.</returns>
         public TItem AddStatement(IExpression expression)
         {
             instance.Statements.Add(new Statement(expression));

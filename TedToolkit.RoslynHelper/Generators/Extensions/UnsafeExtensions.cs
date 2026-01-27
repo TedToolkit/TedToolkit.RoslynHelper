@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IUnsafe"/>
+/// The extensions for the <see cref="IUnsafe"/>.
 /// </summary>
 public static class UnsafeExtensions
 {
@@ -18,7 +18,7 @@ public static class UnsafeExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see langword="unsafe"/>
+        /// Gets <see langword="unsafe"/>.
         /// </summary>
         public TItem Unsafe
         {

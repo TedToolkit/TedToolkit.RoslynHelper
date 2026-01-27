@@ -10,12 +10,12 @@ using TedToolkit.RoslynHelper.Generators.Syntaxes;
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// Get the accessors
+/// Get the accessors.
 /// </summary>
 public interface IAccessors
 {
     /// <summary>
-    /// Accessors
+    /// Gets accessors.
     /// </summary>
     List<Accessor> Accessors { get; }
 }

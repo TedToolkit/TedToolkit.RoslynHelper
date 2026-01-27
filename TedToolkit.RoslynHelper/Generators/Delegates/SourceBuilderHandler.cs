@@ -10,5 +10,5 @@ namespace TedToolkit.RoslynHelper.Generators.Delegates;
 /// <summary>
 /// The member delegate.
 /// </summary>
-/// <param name="builder">builder</param>
+/// <param name="builder">builder.</param>
 public delegate void SourceBuilderHandler(ref SourceBuilder builder);

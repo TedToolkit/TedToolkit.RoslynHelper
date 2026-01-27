@@ -8,7 +8,7 @@
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
-/// The extensions for the <see cref="IReadonly"/>
+/// The extensions for the <see cref="IReadonly"/>.
 /// </summary>
 public static class ReadonlyExtensions
 {
@@ -18,7 +18,7 @@ public static class ReadonlyExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// <see langword="partial"/>
+        /// Gets <see langword="partial"/>.
         /// </summary>
         public TItem Readonly
         {
