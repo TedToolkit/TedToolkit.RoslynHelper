@@ -43,13 +43,13 @@ internal class ExpressionTests
                 .AddMember(Class("FirstClass").Public
                     .AddMember(Method("Method")
                         .AddStatement(new CollectionExpression()
-                            .AddExpression(new ObjectCreationExpression(DataType.FromType<int>()))
-                            .AddExpression(new ObjectCreationExpression(DataType.FromType<double>()))))))
+                            .AddElement(new ObjectCreationExpression(DataType.FromType<int>()))
+                            .AddElement(new ObjectCreationExpression(DataType.FromType<double>()), true)))))
             .ToCode();
 
         await Assert.That(code).Contains("[");
         await Assert.That(code).Contains("new int(),");
-        await Assert.That(code).Contains("new double(),");
+        await Assert.That(code).Contains("..new double(),");
         await Assert.That(code).Contains("];");
     }
 }
