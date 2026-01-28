@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
@@ -112,6 +113,25 @@ public static class SourceComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(IParameterSymbol parameterSymbol, DataType type)
         => Syntaxes.Parameter.FromSymbol(parameterSymbol, type);
+
+    /// <summary>
+    /// Create the parameter.
+    /// </summary>
+    /// <param name="parameterInfo">the parameter info.</param>
+    /// <returns>parameter.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Parameter Parameter(ParameterInfo parameterInfo)
+        => Syntaxes.Parameter.FromInfo(parameterInfo);
+
+    /// <summary>
+    /// Create the parameter.
+    /// </summary>
+    /// <param name="parameterInfo">the parameter info.</param>
+    /// <param name="type">data type.</param>
+    /// <returns>parameter.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Parameter Parameter(ParameterInfo parameterInfo, DataType type)
+        => Syntaxes.Parameter.FromInfo(parameterInfo, type);
 
     /// <summary>
     /// Create an attribute.
