@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using Microsoft.CodeAnalysis;
@@ -127,6 +128,100 @@ public sealed class Parameter(DataType type, string identifier) :
                 parameter.AddDefault();
             else if (parameterSymbol.Type.SpecialType is SpecialType.System_String)
                 parameter.AddDefault(defaultValue.ToString().ToLiteral());
+            else
+                parameter.AddDefault(defaultValue.ToString().ToSimpleName());
+        }
+
+        return parameter;
+    }
+
+    /// <summary>
+    /// Create from info.
+    /// </summary>
+    /// <param name="parameterInfo">parameter info.</param>
+    /// <returns>parameter.</returns>
+    /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Parameter FromInfo(ParameterInfo parameterInfo)
+    {
+        if (parameterInfo is null)
+            throw new ArgumentNullException(nameof(parameterInfo));
+
+        return FromInfo(parameterInfo, DataType.FromType(parameterInfo.ParameterType));
+    }
+
+    /// <summary>
+    /// Create from info.
+    /// </summary>
+    /// <param name="parameterInfo">parameter info.</param>
+    /// <param name="type">data type.</param>
+    /// <returns>parameter.</returns>
+    /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
+    public static Parameter FromInfo(ParameterInfo parameterInfo, DataType type)
+    {
+        if (parameterInfo is null)
+            throw new ArgumentNullException(nameof(parameterInfo));
+
+        if (type is null)
+            throw new ArgumentNullException(nameof(type));
+
+        if (parameterInfo.ParameterType.IsByRef)
+        {
+            if (parameterInfo.CustomAttributes.Any(a =>
+                    a.AttributeType.FullName == "System.Runtime.CompilerServices.ScopedRefAttribute"))
+            {
+                if (parameterInfo.IsIn)
+                {
+                    if (parameterInfo.CustomAttributes.Any(a =>
+                            a.AttributeType.FullName == "System.Runtime.CompilerServices.RequiresLocationAttribute"))
+                    {
+                        type = type.ScopedRefReadonly;
+                    }
+                    else
+                    {
+                        type = type.ScopedIn;
+                    }
+                }
+                else
+                {
+                    type = type.ScopedRef;
+                }
+            }
+            else if (parameterInfo.IsOut)
+            {
+                type = type.Out;
+            }
+            else if (parameterInfo.IsIn)
+            {
+                if (parameterInfo.CustomAttributes.Any(a =>
+                        a.AttributeType.FullName == "System.Runtime.CompilerServices.RequiresLocationAttribute"))
+                {
+                    type = type.RefReadonly;
+                }
+                else
+                {
+                    type = type.In;
+                }
+            }
+            else
+            {
+                type = type.Ref;
+            }
+        }
+
+        var parameter = new Parameter(type, parameterInfo.Name);
+
+        if (parameterInfo.IsDefined(typeof(ParamArrayAttribute), false))
+            parameter = parameter.Params;
+        else if (parameterInfo.Position is 0 && parameterInfo.Member.IsDefined(typeof(ExtensionAttribute), false))
+            parameter = parameter.This;
+
+        if (parameterInfo.HasDefaultValue)
+        {
+            if (parameterInfo.DefaultValue is not { } defaultValue)
+                parameter.AddDefault();
+            else if (defaultValue is string str)
+                parameter.AddDefault(str.ToLiteral());
             else
                 parameter.AddDefault(defaultValue.ToString().ToSimpleName());
         }

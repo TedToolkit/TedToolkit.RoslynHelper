@@ -11,11 +11,17 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// The return statement.
 /// </summary>
 /// <param name="expression">expression.</param>
-public sealed class ReturnStatement(IExpression expression) : IStatement
+public sealed class ReturnStatement(IExpression? expression = null) : IStatement
 {
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
+        if (expression is null)
+        {
+            builder.Append("return;");
+            return;
+        }
+
         builder.Append("return ");
         expression.ToCode(ref builder);
         builder.Append(";");
