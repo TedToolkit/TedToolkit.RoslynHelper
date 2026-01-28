@@ -140,7 +140,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// </summary>
     /// <param name="parameterInfo">parameter info.</param>
     /// <returns>parameter.</returns>
-    /// <exception cref="ArgumentNullException">parameter info or type is null</exception>
+    /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter FromInfo(ParameterInfo parameterInfo)
     {
@@ -156,7 +156,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <param name="parameterInfo">parameter info.</param>
     /// <param name="type">data type.</param>
     /// <returns>parameter.</returns>
-    /// <exception cref="ArgumentNullException">parameter info or type is null</exception>
+    /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
     public static Parameter FromInfo(ParameterInfo parameterInfo, DataType type)
     {
         if (parameterInfo is null)
