@@ -171,6 +171,9 @@ public sealed class DataType(IExpression type) :
         if (_typeAlias.TryGetValue(type, out var s))
             return s();
 
+        if (type.IsPointer)
+            return FromType(type.GetElementType()!).Pointer;
+
         if (type.IsArray)
             return FromType(type.GetElementType()!).Array;
 

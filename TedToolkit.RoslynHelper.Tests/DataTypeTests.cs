@@ -32,6 +32,17 @@ internal class DataTypeTests
     }
 
     [Test]
+    public async Task PointerTypeTest()
+    {
+        var code = File()
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public.AddBaseType(DataType.FromType(typeof(void*)))))
+            .ToCode();
+
+        await Assert.That(code).Contains("void*");
+    }
+
+    [Test]
     public async Task GenericTypeGlobalTest()
     {
         var code = File()
