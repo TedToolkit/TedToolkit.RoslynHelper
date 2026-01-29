@@ -32,6 +32,18 @@ internal class DataTypeTests
     }
 
     [Test]
+    public async Task GenericTypeGlobalTest()
+    {
+        var code = File()
+            .AddNameSpace(NameSpace("Space")
+                .AddMember(Class("FirstClass").Public.AddBaseType(DataType.FromType(typeof(List<>), "global")
+                    .Generic(DataType.FromType<int>()))))
+            .ToCode();
+
+        await Assert.That(code).Contains("global::System.Collections.Generic.List<int>");
+    }
+
+    [Test]
     public async Task GenericBaseTypeTest()
     {
         var code = File()
