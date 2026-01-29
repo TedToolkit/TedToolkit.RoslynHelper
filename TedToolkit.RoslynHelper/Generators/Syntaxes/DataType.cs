@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using Cysharp.Text;
+
 using Microsoft.CodeAnalysis;
 
 using TedToolkit.RoslynHelper.Extensions;
@@ -118,8 +120,11 @@ public sealed class DataType(IExpression type) :
     /// Create from the symbol.
     /// </summary>
     /// <param name="type">type symbol.</param>
-    public DataType(ITypeSymbol type)
-        : this(type?.FullName ?? throw new ArgumentNullException(nameof(type)))
+    /// <param name="alias">alias.</param>
+    public DataType(ITypeSymbol type, string alias = "")
+        : this(string.IsNullOrEmpty(alias)
+            ? type?.FullName ?? throw new ArgumentNullException(nameof(type))
+            : ZString.Concat(alias, "::", type?.FullName ?? throw new ArgumentNullException(nameof(type))))
     {
     }
 
@@ -145,18 +150,20 @@ public sealed class DataType(IExpression type) :
     /// From Type.
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
+    /// <param name="alias">alias.</param>
     /// <returns>Expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DataType FromType<T>()
-        => FromType(typeof(T));
+    public static DataType FromType<T>(string alias = "")
+        => FromType(typeof(T), alias);
 
     /// <summary>
     /// From the type.
     /// </summary>
     /// <param name="type">type.</param>
+    /// <param name="alias">alias.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">type is null.</exception>
-    public static DataType FromType(Type type)
+    public static DataType FromType(Type type, string alias = "")
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));
@@ -176,7 +183,7 @@ public sealed class DataType(IExpression type) :
                 .Generic([
                     .. type.GetGenericArguments()
                         .Where(i => !i.IsGenericParameter)
-                        .Select(FromType),
+                        .Select(t => FromType(t, alias)),
                 ]));
         }
 
@@ -185,15 +192,23 @@ public sealed class DataType(IExpression type) :
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IExpression SimpleType()
         {
-            var name = new SimpleNameExpression(type.Name.Split('`')[0]);
+            var name = new SimpleNameExpression(type.Name.Split('`')[0].Replace("&", ""));
 
             if (type.DeclaringType is not null)
                 return new MemberAccessExpression(FromType(type.DeclaringType).Type, name);
 
             if (string.IsNullOrEmpty(type.Namespace))
-                return name;
+                return AddAlias(name);
 
-            return new MemberAccessExpression(new SimpleNameExpression(type.Namespace), name);
+            return AddAlias(new MemberAccessExpression(new SimpleNameExpression(type.Namespace), name));
+        }
+
+        IExpression AddAlias(IExpression expression)
+        {
+            if (string.IsNullOrEmpty(alias))
+                return expression;
+
+            return new AliasExpression(alias, expression);
         }
     }
 

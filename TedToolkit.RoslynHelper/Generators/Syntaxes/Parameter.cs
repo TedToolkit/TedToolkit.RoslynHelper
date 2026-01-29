@@ -50,15 +50,16 @@ public sealed class Parameter(DataType type, string identifier) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="parameterSymbol">parameter symbol.</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter FromSymbol(IParameterSymbol parameterSymbol)
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, string alias = "")
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
 
-        return FromSymbol(parameterSymbol, new(parameterSymbol.Type));
+        return FromSymbol(parameterSymbol, new DataType(parameterSymbol.Type, alias));
     }
 
     /// <summary>
@@ -139,15 +140,16 @@ public sealed class Parameter(DataType type, string identifier) :
     /// Create from info.
     /// </summary>
     /// <param name="parameterInfo">parameter info.</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter FromInfo(ParameterInfo parameterInfo)
+    public static Parameter FromInfo(ParameterInfo parameterInfo, string alias = "")
     {
         if (parameterInfo is null)
             throw new ArgumentNullException(nameof(parameterInfo));
 
-        return FromInfo(parameterInfo, DataType.FromType(parameterInfo.ParameterType));
+        return FromInfo(parameterInfo, DataType.FromType(parameterInfo.ParameterType, alias));
     }
 
     /// <summary>

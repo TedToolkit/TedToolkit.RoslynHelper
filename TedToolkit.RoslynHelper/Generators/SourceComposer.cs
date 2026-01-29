@@ -99,10 +99,11 @@ public static class SourceComposer
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterSymbol">the parameter symbol.</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(IParameterSymbol parameterSymbol)
-        => Syntaxes.Parameter.FromSymbol(parameterSymbol);
+    public static Parameter Parameter(IParameterSymbol parameterSymbol, string alias = "")
+        => Syntaxes.Parameter.FromSymbol(parameterSymbol, alias);
 
     /// <summary>
     /// Create the parameter.
@@ -118,10 +119,11 @@ public static class SourceComposer
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterInfo">the parameter info.</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(ParameterInfo parameterInfo)
-        => Syntaxes.Parameter.FromInfo(parameterInfo);
+    public static Parameter Parameter(ParameterInfo parameterInfo, string alias = "")
+        => Syntaxes.Parameter.FromInfo(parameterInfo, alias);
 
     /// <summary>
     /// Create the parameter.
