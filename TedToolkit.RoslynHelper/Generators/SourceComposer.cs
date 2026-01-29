@@ -57,10 +57,19 @@ public static class SourceComposer
         => new(nameSpace);
 
     /// <summary>
+    /// Create an argument by parameter info.
+    /// </summary>
+    /// <param name="parameterInfo">the info.</param>
+    /// <returns>argument.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Argument Argument(ParameterInfo parameterInfo)
+        => Syntaxes.Argument.FromInfo(parameterInfo);
+
+    /// <summary>
     /// Create an argument.
     /// </summary>
     /// <param name="variable">the variable.</param>
-    /// <returns>namespace.</returns>
+    /// <returns>argument.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Argument Argument(IExpression variable)
         => new(variable);
