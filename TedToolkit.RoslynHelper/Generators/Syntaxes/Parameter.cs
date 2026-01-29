@@ -50,7 +50,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="parameterSymbol">parameter symbol.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -140,7 +140,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// Create from info.
     /// </summary>
     /// <param name="parameterInfo">parameter info.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

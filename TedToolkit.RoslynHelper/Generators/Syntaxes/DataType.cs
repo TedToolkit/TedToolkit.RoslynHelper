@@ -120,7 +120,7 @@ public sealed class DataType(IExpression type) :
     /// Create from the symbol.
     /// </summary>
     /// <param name="type">type symbol.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     public DataType(ITypeSymbol type, string alias = "")
         : this(string.IsNullOrEmpty(alias)
             ? type?.FullName ?? throw new ArgumentNullException(nameof(type))
@@ -150,7 +150,7 @@ public sealed class DataType(IExpression type) :
     /// From Type.
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>Expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DataType FromType<T>(string alias = "")
@@ -160,7 +160,7 @@ public sealed class DataType(IExpression type) :
     /// From the type.
     /// </summary>
     /// <param name="type">type.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">type is null.</exception>
     public static DataType FromType(Type type, string alias = "")

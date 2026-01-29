@@ -123,7 +123,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// Add the baseType.
     /// </summary>
     /// <typeparam name="T">BaseType.</typeparam>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>the item.</returns>
     public TypeDeclaration AddBaseType<T>(string alias = "")
     {

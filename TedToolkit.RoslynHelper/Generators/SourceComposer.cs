@@ -99,7 +99,7 @@ public static class SourceComposer
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterSymbol">the parameter symbol.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(IParameterSymbol parameterSymbol, string alias = "")
@@ -119,7 +119,7 @@ public static class SourceComposer
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterInfo">the parameter info.</param>
-    /// <param name="alias">alias</param>
+    /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(ParameterInfo parameterInfo, string alias = "")
