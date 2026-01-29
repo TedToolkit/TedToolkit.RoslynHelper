@@ -7,6 +7,8 @@
 
 using System.CodeDom.Compiler;
 
+using Cysharp.Text;
+
 using TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Generators;
@@ -16,6 +18,38 @@ namespace TedToolkit.RoslynHelper.Generators;
 /// </summary>
 public static class MemberOwnerExtensions
 {
+    /// <summary>
+    /// Get the type name.
+    /// </summary>
+    /// <param name="type">type.</param>
+    /// <returns>string.</returns>
+#pragma warning disable S3398
+    private static string GetTypeName(TypeDeclaration type)
+#pragma warning restore S3398
+    {
+        var name = type.Identifier;
+        if (type.TypeParameters.Count is 0)
+            return name;
+
+        using var builder = ZString.CreateStringBuilder();
+        builder.Append(name);
+        builder.Append('<');
+
+        var isNotStart = false;
+
+        foreach (var typeTypeParameter in type.TypeParameters)
+        {
+            if (isNotStart)
+                builder.Append(", ");
+
+            builder.Append(typeTypeParameter.Variable);
+            isNotStart = true;
+        }
+
+        builder.Append('>');
+        return builder.ToString();
+    }
+
 #pragma warning disable CA1034
     extension<TItem>(TItem instance)
         where TItem : class, IMemberOwner
@@ -31,7 +65,7 @@ public static class MemberOwnerExtensions
             where TMember : class, IMember
         {
             if (member is IOwner owner && instance is TypeDeclaration type)
-                owner.Owner = type.Identifier;
+                owner.Owner = GetTypeName(type);
 
             instance.Members.Add(member);
             return instance;
