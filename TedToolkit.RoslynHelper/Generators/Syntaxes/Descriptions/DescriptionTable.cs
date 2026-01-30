@@ -15,7 +15,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 public sealed class DescriptionTable(IDescriptionItem termHeader, IDescriptionItem descriptionHeader) : IDescriptionItem
 {
     /// <summary>
-    /// The list items.
+    /// Gets the list items.
     /// </summary>
     public List<(IDescriptionItem Term, IDescriptionItem Description)> Items { get; } = [];
 
