@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 
 /// <summary>
@@ -79,6 +81,43 @@ public sealed class TypeParameter(string identifier) :
 
             isNotStart = true;
         }
+    }
+
+    /// <summary>
+    /// Create a type parameter from symbol.
+    /// </summary>
+    /// <param name="symbol">symbol.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
+    public static TypeParameter FromSymbol(ITypeParameterSymbol symbol)
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        var result = new TypeParameter(symbol.Name);
+
+        foreach (var symbolConstraintType in symbol.ConstraintTypes)
+            result.AddConstraint(new DataType(symbolConstraintType));
+
+        if (symbol.AllowsRefLikeType)
+            result.AddRefStructConstraint();
+
+        if (symbol.HasConstructorConstraint)
+            result.AddNewConstraint();
+
+        if (symbol.HasNotNullConstraint)
+            result.AddNotNullConstraint();
+
+        if (symbol.HasReferenceTypeConstraint)
+            result.AddClassConstraint();
+
+        if (symbol.HasUnmanagedTypeConstraint)
+            result.AddUnmanagedConstraint();
+
+        if (symbol.HasValueTypeConstraint)
+            result.AddStructConstraint();
+
+        return result;
     }
 
     /// <summary>

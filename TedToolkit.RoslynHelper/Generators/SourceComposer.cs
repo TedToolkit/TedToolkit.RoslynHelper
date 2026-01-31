@@ -166,6 +166,15 @@ public static class SourceComposer
         => new(type);
 
     /// <summary>
+    /// Create an attribute.
+    /// </summary>
+    /// <param name="data">attribute data.</param>
+    /// <returns>attribute.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Syntaxes.Attribute Attribute(AttributeData data)
+        => Syntaxes.Attribute.FromSymbol(data);
+
+    /// <summary>
     /// Create the returnType.
     /// </summary>
     /// <param name="type">the Type.</param>
@@ -182,5 +191,14 @@ public static class SourceComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeParameter TypeParameter(string identifier)
         => new(identifier);
+
+    /// <summary>
+    /// Create a type parameter.
+    /// </summary>
+    /// <param name="symbol">symbol.</param>
+    /// <returns>attribute.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static TypeParameter TypeParameter(ITypeParameterSymbol symbol)
+        => Syntaxes.TypeParameter.FromSymbol(symbol);
 }
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
