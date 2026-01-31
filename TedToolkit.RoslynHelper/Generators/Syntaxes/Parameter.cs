@@ -42,7 +42,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <param name="type">type.</param>
     /// <param name="identifier">identifier.</param>
     public Parameter(ITypeSymbol type, string identifier)
-        : this(new DataType(type), identifier)
+        : this(DataType.FromSymbol(type), identifier)
     {
     }
 
@@ -59,7 +59,7 @@ public sealed class Parameter(DataType type, string identifier) :
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
 
-        return FromSymbol(parameterSymbol, new DataType(parameterSymbol.Type, alias));
+        return FromSymbol(parameterSymbol, DataType.FromSymbol(parameterSymbol.Type, alias));
     }
 
     /// <summary>
