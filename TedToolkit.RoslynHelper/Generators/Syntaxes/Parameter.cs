@@ -118,6 +118,9 @@ public sealed class Parameter(DataType type, string identifier) :
 
         var parameter = new Parameter(type, parameterSymbol.Name);
 
+        foreach (var attributeData in parameterSymbol.GetAttributes())
+            parameter.AddAttribute(Attribute.FromSymbol(attributeData));
+
         if (parameterSymbol.IsParams)
             parameter = parameter.Params;
         else if (parameterSymbol.IsThis)

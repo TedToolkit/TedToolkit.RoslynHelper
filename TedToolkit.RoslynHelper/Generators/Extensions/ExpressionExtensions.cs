@@ -41,6 +41,15 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Gets make Not.
+        /// </summary>
+        public NotExpression Not
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => new(expression);
+        }
+
+        /// <summary>
         /// Gets make Ref.
         /// </summary>
         public RefExpression Ref

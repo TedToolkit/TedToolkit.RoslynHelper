@@ -39,6 +39,75 @@ public sealed class Attribute(DataType type) :
     {
     }
 
+    /// <summary>
+    /// Create from a symbol.
+    /// </summary>
+    /// <param name="attribute">attribute data.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">attribute is null.</exception>
+    public static Attribute FromSymbol(AttributeData attribute)
+    {
+        if (attribute?.AttributeClass is null)
+            throw new ArgumentNullException(nameof(attribute));
+
+        var result = new Attribute(new DataType(attribute.AttributeClass));
+
+        foreach (var attributeConstructorArgument in attribute.ConstructorArguments)
+        {
+            if (GetArgument(attributeConstructorArgument) is { } argument)
+                result.AddArgument(new Argument(argument));
+        }
+
+        foreach (var attributeNamedArgument in attribute.NamedArguments)
+        {
+            if (GetArgument(attributeNamedArgument.Value) is { } argument)
+            {
+                result.AddArgument(new Argument(attributeNamedArgument.Key.ToSimpleName()
+                    .Operator("=", argument)));
+            }
+        }
+
+        return result;
+    }
+
+    private static IExpression? GetArgument(scoped in TypedConstant argument)
+    {
+        switch (argument.Kind)
+        {
+            case TypedConstantKind.Error:
+                return SimpleNameExpression.Null;
+
+            case TypedConstantKind.Primitive:
+                return argument.Value?.ToString().ToSimpleName();
+
+            case TypedConstantKind.Enum:
+                if (argument.Type is not { } symbol)
+                    return null;
+
+                return argument.Value!.ToString().ToSimpleName().Cast(new DataType(symbol));
+
+            case TypedConstantKind.Type:
+                if (argument.Value is not Type type)
+                    return null;
+
+                return "typeof".ToSimpleName().Invoke().AddArgument(
+                    new Argument(DataType.FromType(type).Type));
+
+            case TypedConstantKind.Array:
+                var collection = new CollectionExpression();
+                foreach (var argumentValue in argument.Values)
+                {
+                    if (GetArgument(argumentValue) is { } item)
+                        collection.AddElement(new CollectionElement(item));
+                }
+
+                return collection;
+
+            default:
+                return null;
+        }
+    }
+
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
