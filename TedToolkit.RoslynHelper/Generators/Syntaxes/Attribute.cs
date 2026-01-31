@@ -78,6 +78,9 @@ public sealed class Attribute(DataType type) :
                 return SimpleNameExpression.Null;
 
             case TypedConstantKind.Primitive:
+                if (argument.Value is string str)
+                    return str.ToLiteral();
+
                 return argument.Value?.ToString().ToSimpleName();
 
             case TypedConstantKind.Enum:
