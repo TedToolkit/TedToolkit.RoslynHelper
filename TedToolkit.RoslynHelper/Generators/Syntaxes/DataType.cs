@@ -21,7 +21,8 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <param name="type">expression to the type.</param>
 public sealed class DataType(IExpression type) :
     IStorageKind,
-    IToCode
+    IToCode,
+    ICref
 {
     /// <summary>
     /// Gets or sets the Type.
@@ -117,25 +118,36 @@ public sealed class DataType(IExpression type) :
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataType"/> class.
-    /// Create from the symbol.
-    /// </summary>
-    /// <param name="type">type symbol.</param>
-    /// <param name="alias">alias.</param>
-    public DataType(ITypeSymbol type, string alias = "")
-        : this(string.IsNullOrEmpty(alias)
-            ? type?.FullName ?? throw new ArgumentNullException(nameof(type))
-            : ZString.Concat(alias, "::", type?.FullName ?? throw new ArgumentNullException(nameof(type))))
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DataType"/> class.
     /// Create from name.
     /// </summary>
     /// <param name="name">name.</param>
     public DataType(string name)
         : this(new SimpleNameExpression(name))
     {
+    }
+
+    /// <summary>
+    /// Create from a symbol.
+    /// </summary>
+    /// <param name="symbol">the symbol.</param>
+    /// <param name="alias">alias.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
+    public static DataType FromSymbol(ITypeSymbol symbol, string alias = "")
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        var name = string.IsNullOrEmpty(alias) ? symbol.FullName : ZString.Concat(alias, "::", symbol.FullName);
+        if (symbol is not INamedTypeSymbol { IsGenericType: true, } namedType)
+            return new(name.ToSimpleName());
+
+        var index = name.IndexOf('<');
+        if (index < 0)
+            return new(name.ToSimpleName());
+
+        return new(name.Substring(0, index).ToSimpleName()
+            .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, alias)).ToArray()));
     }
 
     /// <summary>
@@ -337,4 +349,8 @@ public sealed class DataType(IExpression type) :
         { typeof(ushort), () => Ushort },
         { typeof(void), () => Void },
     };
+
+    /// <inheritdoc />
+    public void ToCref(ref SourceBuilder builder)
+        => Type.ToCref(ref builder);
 }

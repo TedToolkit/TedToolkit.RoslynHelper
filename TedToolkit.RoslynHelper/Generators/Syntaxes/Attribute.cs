@@ -25,7 +25,7 @@ public sealed class Attribute(DataType type) :
     /// </summary>
     /// <param name="type">symbol.</param>
     public Attribute(ITypeSymbol type)
-        : this(new DataType(type))
+        : this(DataType.FromSymbol(type))
     {
     }
 
@@ -50,7 +50,7 @@ public sealed class Attribute(DataType type) :
         if (attribute?.AttributeClass is null)
             throw new ArgumentNullException(nameof(attribute));
 
-        var result = new Attribute(new DataType(attribute.AttributeClass));
+        var result = new Attribute(DataType.FromSymbol(attribute.AttributeClass));
 
         foreach (var attributeConstructorArgument in attribute.ConstructorArguments)
         {
@@ -87,7 +87,7 @@ public sealed class Attribute(DataType type) :
                 if (argument.Type is not { } symbol)
                     return null;
 
-                return argument.Value!.ToString().ToSimpleName().Cast(new DataType(symbol));
+                return argument.Value!.ToString().ToSimpleName().Cast(DataType.FromSymbol(symbol));
 
             case TypedConstantKind.Type:
                 if (argument.Value is not Type type)

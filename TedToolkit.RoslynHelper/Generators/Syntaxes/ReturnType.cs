@@ -23,7 +23,7 @@ public sealed class ReturnType(DataType type) :
     /// </summary>
     /// <param name="type">symbol.</param>
     public ReturnType(ITypeSymbol type)
-        : this(new DataType(type))
+        : this(DataType.FromSymbol(type))
     {
     }
 

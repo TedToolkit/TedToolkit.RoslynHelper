@@ -11,7 +11,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// Inherit the doc.
 /// </summary>
 /// <param name="cref">cref.</param>
-public sealed class DescriptionInheritDoc(ICref? cref) : IRootDescriptionItem
+public sealed class DescriptionInheritDoc(ICref? cref = null) : IRootDescriptionItem
 {
     /// <inheritdoc />
     public void ToDescription(ref SourceBuilder builder)

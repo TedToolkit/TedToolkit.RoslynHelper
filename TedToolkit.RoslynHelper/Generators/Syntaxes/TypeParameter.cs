@@ -97,7 +97,7 @@ public sealed class TypeParameter(string identifier) :
         var result = new TypeParameter(symbol.Name);
 
         foreach (var symbolConstraintType in symbol.ConstraintTypes)
-            result.AddConstraint(new DataType(symbolConstraintType));
+            result.AddConstraint(DataType.FromSymbol(symbolConstraintType));
 
         if (symbol.AllowsRefLikeType)
             result.AddRefStructConstraint();
