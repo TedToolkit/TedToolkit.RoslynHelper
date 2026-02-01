@@ -125,7 +125,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <typeparam name="T">BaseType.</typeparam>
     /// <param name="alias">alias.</param>
     /// <returns>the item.</returns>
-    public TypeDeclaration AddBaseType<T>(string alias = "")
+    public TypeDeclaration AddBaseType<T>(string alias = "global")
     {
         BaseTypes.Add(DataType.FromType<T>(alias));
         return this;
