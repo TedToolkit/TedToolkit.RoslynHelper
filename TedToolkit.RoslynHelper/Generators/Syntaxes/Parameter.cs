@@ -54,7 +54,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, string alias = "")
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, string alias = "global")
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
@@ -147,7 +147,7 @@ public sealed class Parameter(DataType type, string identifier) :
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameter info or type is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter FromInfo(ParameterInfo parameterInfo, string alias = "")
+    public static Parameter FromInfo(ParameterInfo parameterInfo, string alias = "global")
     {
         if (parameterInfo is null)
             throw new ArgumentNullException(nameof(parameterInfo));

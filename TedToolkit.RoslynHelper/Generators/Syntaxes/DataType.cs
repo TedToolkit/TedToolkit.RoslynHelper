@@ -133,7 +133,7 @@ public sealed class DataType(IExpression type) :
     /// <param name="alias">alias.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
-    public static DataType FromSymbol(ITypeSymbol symbol, string alias = "")
+    public static DataType FromSymbol(ITypeSymbol symbol, string alias = "global")
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -165,7 +165,7 @@ public sealed class DataType(IExpression type) :
     /// <param name="alias">alias.</param>
     /// <returns>Expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DataType FromType<T>(string alias = "")
+    public static DataType FromType<T>(string alias = "global")
         => FromType(typeof(T), alias);
 
     /// <summary>
@@ -175,7 +175,7 @@ public sealed class DataType(IExpression type) :
     /// <param name="alias">alias.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">type is null.</exception>
-    public static DataType FromType(Type type, string alias = "")
+    public static DataType FromType(Type type, string alias = "global")
     {
         if (type is null)
             throw new ArgumentNullException(nameof(type));

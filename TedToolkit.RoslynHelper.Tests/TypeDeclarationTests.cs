@@ -20,7 +20,7 @@ internal class TypeDeclarationTests
 
         await Assert.That(code)
             .Contains(
-                "[System.CodeDom.Compiler.GeneratedCodeAttribute(\"TedToolkit.RoslynHelper.Tests.TypeDeclarationTests\", \"");
+                "[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"global::TedToolkit.RoslynHelper.Tests.TypeDeclarationTests\", \"");
         await Assert.That(code).Contains("public static unsafe partial class FirstClass");
     }
 
@@ -69,7 +69,7 @@ internal class TypeDeclarationTests
                     .AddParameter(Parameter(DataType.FromType<NestType.NestClass>().ScopedIn, "item").AddDefault(10.ToLiteral()))))
             .ToCode();
 
-        await Assert.That(code).Contains("scoped in TedToolkit.RoslynHelper.Tests.NestType.NestClass item = 10");
+        await Assert.That(code).Contains("scoped in global::TedToolkit.RoslynHelper.Tests.NestType.NestClass item = 10");
     }
 
     [Test]
@@ -141,7 +141,7 @@ internal class TypeDeclarationTests
                             .AddArgument(Argument(MethodImplOptions.AggressiveInlining.ToExpression()))))))
             .ToCode();
 
-        await Assert.That(code).Contains("[System.Runtime.CompilerServices.MethodImplAttribute(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]");
+        await Assert.That(code).Contains("[global::System.Runtime.CompilerServices.MethodImplAttribute(global::System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]");
     }
 
     [Test]
@@ -181,7 +181,7 @@ internal class TypeDeclarationTests
                     .AddMember(Event<Action<int>>("Item").Internal)))
             .ToCode();
 
-        await Assert.That(code).Contains("internal event System.Action<int> Item;");
+        await Assert.That(code).Contains("internal event global::System.Action<int> Item;");
     }
 
     [Test]

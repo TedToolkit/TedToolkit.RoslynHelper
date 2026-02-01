@@ -111,7 +111,7 @@ public static class SourceComposer
     /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(IParameterSymbol parameterSymbol, string alias = "")
+    public static Parameter Parameter(IParameterSymbol parameterSymbol, string alias = "global")
         => Syntaxes.Parameter.FromSymbol(parameterSymbol, alias);
 
     /// <summary>
@@ -131,7 +131,7 @@ public static class SourceComposer
     /// <param name="alias">alias.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(ParameterInfo parameterInfo, string alias = "")
+    public static Parameter Parameter(ParameterInfo parameterInfo, string alias = "global")
         => Syntaxes.Parameter.FromInfo(parameterInfo, alias);
 
     /// <summary>
