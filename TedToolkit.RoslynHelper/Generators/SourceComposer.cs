@@ -200,5 +200,14 @@ public static class SourceComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeParameter TypeParameter(ITypeParameterSymbol symbol)
         => Syntaxes.TypeParameter.FromSymbol(symbol);
+
+    /// <summary>
+    /// Create an extension.
+    /// </summary>
+    /// <param name="parameter">parameter.</param>
+    /// <returns>extension.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Extension Extension(Parameter parameter)
+        => new(parameter);
 }
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
