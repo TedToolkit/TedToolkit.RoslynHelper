@@ -32,7 +32,7 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(string value)
-        => _value = ZString.Concat('"', value?.Replace(@"\", @"\\") ?? value, '"');
+        => _value = ZString.Concat('"', value?.ToValidLiteral(), '"');
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -40,7 +40,7 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(char value)
-        => _value = ZString.Concat('\'', value, '\'');
+        => _value = ZString.Concat('\'', value.ToValidLiteral(), '\'');
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.

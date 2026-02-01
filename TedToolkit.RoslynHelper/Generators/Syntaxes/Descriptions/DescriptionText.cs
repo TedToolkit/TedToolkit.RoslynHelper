@@ -17,6 +17,6 @@ public sealed class DescriptionText(string value) : IDescriptionItem
     public void ToDescription(ref SourceBuilder builder)
     {
         builder.Append("/// ");
-        builder.AppendLine(value);
+        builder.AppendLine(value.ToValidLiteral());
     }
 }
