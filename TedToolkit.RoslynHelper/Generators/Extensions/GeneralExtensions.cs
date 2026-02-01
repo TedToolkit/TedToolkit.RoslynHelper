@@ -47,7 +47,49 @@ public static class GeneralExtensions
         /// <returns>argument Name.</returns>
         public string ToValidIdentifier()
             => _keywords.Contains(value) ? ZString.Concat('@', value) : value;
+
+        /// <summary>
+        /// To the valid literal.
+        /// </summary>
+        /// <returns>result.</returns>
+        public string ToValidLiteral()
+        {
+            foreach (var keyValuePair in _specialChars)
+                value = value.Replace(keyValuePair.Key.ToString(), keyValuePair.Value);
+
+            return value;
+        }
     }
+
+    extension(char value)
+    {
+        /// <summary>
+        /// To the valid literal.
+        /// </summary>
+        /// <returns>result.</returns>
+        public string ToValidLiteral()
+        {
+            if (_specialChars.TryGetValue(value, out var result))
+                return result;
+
+            return value.ToString();
+        }
+    }
+
+    private static readonly Dictionary<char, string> _specialChars = new()
+    {
+        { '\'', @"\'" },
+        { '\"', "\\\"" },
+        { '\\', @"\\" },
+        { '\0', @"\0" },
+        { '\a', @"\a" },
+        { '\b', @"\b" },
+        { '\f', @"\f" },
+        { '\n', @"\n" },
+        { '\r', @"\r" },
+        { '\t', @"\t" },
+        { '\v', @"\v" },
+    };
 
     private static readonly HashSet<string> _keywords = new(StringComparer.Ordinal)
     {
@@ -128,7 +170,6 @@ public static class GeneralExtensions
         "void",
         "volatile",
         "while",
-
         "add",
         "and",
         "alias",
