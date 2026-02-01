@@ -78,17 +78,17 @@ public static class GeneralExtensions
 
     private static readonly Dictionary<char, string> _specialChars = new()
     {
-        { '\'', @"\'" },
-        { '\"', "\\\"" },
-        { '\\', @"\\" },
-        { '\0', @"\0" },
-        { '\a', @"\a" },
-        { '\b', @"\b" },
-        { '\f', @"\f" },
+        // { '\'', @"\'" },
+        // { '\"', "\\\"" },
+        // { '\\', @"\\" },
+        // { '\0', @"\0" },
+        // { '\a', @"\a" },
+        // { '\b', @"\b" },
+        // { '\f', @"\f" },
+        // { '\r', @"\r" },
+        // { '\t', @"\t" },
+        // { '\v', @"\v" },
         { '\n', @"\n" },
-        { '\r', @"\r" },
-        { '\t', @"\t" },
-        { '\v', @"\v" },
     };
 
     private static readonly HashSet<string> _keywords = new(StringComparer.Ordinal)
