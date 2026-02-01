@@ -47,6 +47,7 @@ public static class ParametersExtensions
         internal void AddParametersList(ref SourceBuilder builder)
         {
             var isNotStart = false;
+            builder.Indent();
             foreach (var parameter in instance.Parameters)
             {
                 if (isNotStart)
@@ -54,11 +55,12 @@ public static class ParametersExtensions
                 else
                     builder.AppendLine();
 
-                builder.Append('\t');
                 parameter.ToCode(ref builder);
 
                 isNotStart = true;
             }
+
+            builder.Dedent();
         }
     }
 }
