@@ -138,6 +138,9 @@ public sealed class DataType(IExpression type) :
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
+        if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
+            return FromSymbol(nullableType.TypeArguments[0], alias).Null;
+
         if (symbol.TypeKind is TypeKind.TypeParameter)
             return new(symbol.Name.ToSimpleName());
 
