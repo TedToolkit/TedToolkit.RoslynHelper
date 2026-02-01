@@ -138,6 +138,9 @@ public sealed class DataType(IExpression type) :
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
+        if (symbol.Kind is SymbolKind.TypeParameter)
+            return new(symbol.Name.ToSimpleName());
+
         var name = string.IsNullOrEmpty(alias) ? symbol.FullName : ZString.Concat(alias, "::", symbol.FullName);
         if (symbol is not INamedTypeSymbol { IsGenericType: true, } namedType)
             return new(name.ToSimpleName());
