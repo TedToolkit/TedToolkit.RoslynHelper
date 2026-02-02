@@ -9,6 +9,8 @@ using System.Reflection;
 
 using Cysharp.Text;
 
+using Microsoft.CodeAnalysis;
+
 namespace TedToolkit.RoslynHelper.Generators;
 
 /// <summary>
@@ -239,4 +241,29 @@ public static class GeneralExtensions
             => value.Assembly.GetName().Version.ToString();
     }
 #pragma warning restore S2325, CA1034
+
+    /// <summary>
+    /// Get the alias of the type.
+    /// </summary>
+    /// <param name="typeSymbol">the type symbol.</param>
+    /// <param name="compilation">compilation.</param>
+    /// <returns>alias.</returns>
+    public static string GetAlias(this ITypeSymbol typeSymbol, Compilation? compilation = null)
+    {
+        if (compilation is null || typeSymbol?.ContainingAssembly is not { } assembly)
+            return "global";
+
+        foreach (var reference in compilation.References)
+        {
+            var symbol = compilation.GetAssemblyOrModuleSymbol(reference);
+
+            if (SymbolEqualityComparer.Default.Equals(symbol, assembly)
+                && reference.Properties.Aliases.Length > 0)
+            {
+                return reference.Properties.Aliases[0];
+            }
+        }
+
+        return "global";
+    }
 }

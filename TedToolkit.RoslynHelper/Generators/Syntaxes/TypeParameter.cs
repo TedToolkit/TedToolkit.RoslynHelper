@@ -87,9 +87,10 @@ public sealed class TypeParameter(string identifier) :
     /// Create a type parameter from symbol.
     /// </summary>
     /// <param name="symbol">symbol.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
-    public static TypeParameter FromSymbol(ITypeParameterSymbol symbol)
+    public static TypeParameter FromSymbol(ITypeParameterSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
@@ -97,7 +98,7 @@ public sealed class TypeParameter(string identifier) :
         var result = new TypeParameter(symbol.Name);
 
         foreach (var symbolConstraintType in symbol.ConstraintTypes)
-            result.AddConstraint(DataType.FromSymbol(symbolConstraintType));
+            result.AddConstraint(DataType.FromSymbol(symbolConstraintType, compilation));
 
         if (symbol.AllowsRefLikeType)
             result.AddRefStructConstraint();

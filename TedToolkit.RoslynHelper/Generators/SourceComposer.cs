@@ -108,21 +108,22 @@ public static class SourceComposer
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterSymbol">the parameter symbol.</param>
-    /// <param name="alias">alias.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(IParameterSymbol parameterSymbol, string alias = "global")
-        => Syntaxes.Parameter.FromSymbol(parameterSymbol, alias);
+    public static Parameter Parameter(IParameterSymbol parameterSymbol, Compilation? compilation = null)
+        => Syntaxes.Parameter.FromSymbol(parameterSymbol, compilation);
 
     /// <summary>
     /// Create the parameter.
     /// </summary>
     /// <param name="parameterSymbol">the parameter symbol.</param>
     /// <param name="type">data type.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter Parameter(IParameterSymbol parameterSymbol, DataType type)
-        => Syntaxes.Parameter.FromSymbol(parameterSymbol, type);
+    public static Parameter Parameter(IParameterSymbol parameterSymbol, DataType type, Compilation? compilation = null)
+        => Syntaxes.Parameter.FromSymbol(parameterSymbol, type, compilation);
 
     /// <summary>
     /// Create the parameter.
@@ -169,10 +170,11 @@ public static class SourceComposer
     /// Create an attribute.
     /// </summary>
     /// <param name="data">attribute data.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Syntaxes.Attribute Attribute(AttributeData data)
-        => Syntaxes.Attribute.FromSymbol(data);
+    public static Syntaxes.Attribute Attribute(AttributeData data, Compilation? compilation = null)
+        => Syntaxes.Attribute.FromSymbol(data, compilation);
 
     /// <summary>
     /// Create the returnType.
@@ -196,10 +198,11 @@ public static class SourceComposer
     /// Create a type parameter.
     /// </summary>
     /// <param name="symbol">symbol.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static TypeParameter TypeParameter(ITypeParameterSymbol symbol)
-        => Syntaxes.TypeParameter.FromSymbol(symbol);
+    public static TypeParameter TypeParameter(ITypeParameterSymbol symbol, Compilation? compilation = null)
+        => Syntaxes.TypeParameter.FromSymbol(symbol, compilation);
 
     /// <summary>
     /// Create an extension.
