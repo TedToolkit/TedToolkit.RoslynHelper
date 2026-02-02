@@ -141,7 +141,7 @@ public sealed class DataType(IExpression type) :
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
             return FromSymbol(nullableType.TypeArguments[0], alias).Null;
 
-        if (symbol.TypeKind is TypeKind.TypeParameter)
+        if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
             return new(symbol.Name.ToSimpleName());
 
         var name = string.IsNullOrEmpty(alias) ? symbol.FullName : ZString.Concat(alias, "::", symbol.FullName);
