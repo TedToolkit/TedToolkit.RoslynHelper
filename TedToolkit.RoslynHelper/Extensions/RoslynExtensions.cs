@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="RoslynExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -49,6 +49,7 @@ public static class RoslynExtensions
     /// </summary>
     /// <param name="node">node.</param>
     /// <returns>string.</returns>
+    [Obsolete("Do not use this method, try to use the generators instead!")]
     public static string NodeToString(this SyntaxNode node)
     {
         using var stringWriter = new StringWriter();

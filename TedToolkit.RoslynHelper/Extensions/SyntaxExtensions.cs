@@ -4,12 +4,16 @@
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
+
 #pragma warning disable
 using System.Runtime.CompilerServices;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using TedToolkit.RoslynHelper.Names;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace TedToolkit.RoslynHelper.Extensions;
@@ -17,6 +21,7 @@ namespace TedToolkit.RoslynHelper.Extensions;
 /// <summary>
 ///     The extensions for the <see cref="Microsoft.CodeAnalysis.CSharp.SyntaxFactory" />.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public static class SyntaxExtensions
 {
     /// <summary>

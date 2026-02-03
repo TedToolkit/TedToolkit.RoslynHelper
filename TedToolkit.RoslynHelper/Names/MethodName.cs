@@ -15,6 +15,7 @@ namespace TedToolkit.RoslynHelper.Names;
 /// <summary>
 /// The name for the method.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public class MethodName : TypeParametersName<IMethodSymbol>
 {
     /// <summary>
