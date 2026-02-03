@@ -13,6 +13,7 @@ namespace TedToolkit.RoslynHelper;
 ///     The signature of a method.
 /// </summary>
 /// <param name="methodSymbol">The method symbol.</param>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<MethodSignature>
 {
     /// <summary>

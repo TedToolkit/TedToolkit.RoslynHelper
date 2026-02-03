@@ -130,21 +130,21 @@ public sealed class DataType(IExpression type) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="symbol">the symbol.</param>
-    /// <param name="alias">alias.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
-    public static DataType FromSymbol(ITypeSymbol symbol, string alias = "global")
+    public static DataType FromSymbol(ITypeSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
             throw new ArgumentNullException(nameof(symbol));
 
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
-            return FromSymbol(nullableType.TypeArguments[0], alias).Null;
+            return FromSymbol(nullableType.TypeArguments[0], compilation).Null;
 
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
             return new(symbol.Name.ToSimpleName());
 
-        var name = string.IsNullOrEmpty(alias) ? symbol.FullName : ZString.Concat(alias, "::", symbol.FullName);
+        var name = ZString.Concat(symbol.GetAlias(compilation), "::", symbol.FullName);
         if (symbol is not INamedTypeSymbol { IsGenericType: true, } namedType)
             return new(name.ToSimpleName());
 
@@ -153,7 +153,7 @@ public sealed class DataType(IExpression type) :
             return new(name.ToSimpleName());
 
         return new(name.Substring(0, index).ToSimpleName()
-            .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, alias)).ToArray()));
+            .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, compilation)).ToArray()));
     }
 
     /// <summary>

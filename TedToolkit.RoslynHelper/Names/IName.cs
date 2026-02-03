@@ -10,6 +10,7 @@ namespace TedToolkit.RoslynHelper.Names;
 /// <summary>
 /// The names.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public interface IName
 {
     /// <summary>

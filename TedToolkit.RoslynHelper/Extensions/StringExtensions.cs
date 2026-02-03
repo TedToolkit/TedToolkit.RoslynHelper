@@ -12,6 +12,7 @@ namespace TedToolkit.RoslynHelper.Extensions;
 /// <summary>
 ///     For the string extensions.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public static class StringExtensions
 {
     /// <summary>

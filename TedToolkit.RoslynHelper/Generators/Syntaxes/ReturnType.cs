@@ -22,8 +22,9 @@ public sealed class ReturnType(DataType type) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="type">symbol.</param>
-    public ReturnType(ITypeSymbol type)
-        : this(DataType.FromSymbol(type))
+    /// <param name="compilation">compilation.</param>
+    public ReturnType(ITypeSymbol type, Compilation? compilation = null)
+        : this(DataType.FromSymbol(type, compilation))
     {
     }
 

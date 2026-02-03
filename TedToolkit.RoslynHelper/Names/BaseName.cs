@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 namespace TedToolkit.RoslynHelper.Names;
 
 /// <inheritdoc />
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public abstract class BaseName<T> : IName<T>
     where T : ISymbol
 {

@@ -12,6 +12,7 @@ namespace TedToolkit.RoslynHelper.Names;
 /// <summary>
 ///     The type param name.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public interface ITypeParamName
 {
     /// <summary>

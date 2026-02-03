@@ -24,8 +24,9 @@ public sealed class Attribute(DataType type) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="type">symbol.</param>
-    public Attribute(ITypeSymbol type)
-        : this(DataType.FromSymbol(type))
+    /// <param name="compilation">compilation.</param>
+    public Attribute(ITypeSymbol type, Compilation? compilation = null)
+        : this(DataType.FromSymbol(type, compilation))
     {
     }
 
@@ -43,24 +44,25 @@ public sealed class Attribute(DataType type) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="attribute">attribute data.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">attribute is null.</exception>
-    public static Attribute FromSymbol(AttributeData attribute)
+    public static Attribute FromSymbol(AttributeData attribute, Compilation? compilation = null)
     {
         if (attribute?.AttributeClass is null)
             throw new ArgumentNullException(nameof(attribute));
 
-        var result = new Attribute(DataType.FromSymbol(attribute.AttributeClass));
+        var result = new Attribute(DataType.FromSymbol(attribute.AttributeClass, compilation));
 
         foreach (var attributeConstructorArgument in attribute.ConstructorArguments)
         {
-            if (GetArgument(attributeConstructorArgument) is { } argument)
+            if (GetArgument(attributeConstructorArgument, compilation) is { } argument)
                 result.AddArgument(new Argument(argument));
         }
 
         foreach (var attributeNamedArgument in attribute.NamedArguments)
         {
-            if (GetArgument(attributeNamedArgument.Value) is { } argument)
+            if (GetArgument(attributeNamedArgument.Value, compilation) is { } argument)
             {
                 result.AddArgument(new Argument(attributeNamedArgument.Key.ToSimpleName()
                     .Operator("=", argument)));
@@ -70,7 +72,7 @@ public sealed class Attribute(DataType type) :
         return result;
     }
 
-    private static IExpression? GetArgument(scoped in TypedConstant argument)
+    private static IExpression? GetArgument(scoped in TypedConstant argument, Compilation? compilation = null)
     {
         switch (argument.Kind)
         {
@@ -87,7 +89,7 @@ public sealed class Attribute(DataType type) :
                 if (argument.Type is not { } symbol)
                     return null;
 
-                return argument.Value!.ToString().ToSimpleName().Cast(DataType.FromSymbol(symbol));
+                return argument.Value!.ToString().ToSimpleName().Cast(DataType.FromSymbol(symbol, compilation));
 
             case TypedConstantKind.Type:
                 if (argument.Value is not Type type)
@@ -100,7 +102,7 @@ public sealed class Attribute(DataType type) :
                 var collection = new CollectionExpression();
                 foreach (var argumentValue in argument.Values)
                 {
-                    if (GetArgument(argumentValue) is { } item)
+                    if (GetArgument(argumentValue, compilation) is { } item)
                         collection.AddElement(new CollectionElement(item));
                 }
 

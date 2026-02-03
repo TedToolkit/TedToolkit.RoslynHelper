@@ -41,8 +41,9 @@ public sealed class Parameter(DataType type, string identifier) :
     /// </summary>
     /// <param name="type">type.</param>
     /// <param name="identifier">identifier.</param>
-    public Parameter(ITypeSymbol type, string identifier)
-        : this(DataType.FromSymbol(type), identifier)
+    /// <param name="compilation">compilation.</param>
+    public Parameter(ITypeSymbol type, string identifier, Compilation? compilation = null)
+        : this(DataType.FromSymbol(type, compilation), identifier)
     {
     }
 
@@ -50,16 +51,16 @@ public sealed class Parameter(DataType type, string identifier) :
     /// Create from a symbol.
     /// </summary>
     /// <param name="parameterSymbol">parameter symbol.</param>
-    /// <param name="alias">alias.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, string alias = "global")
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, Compilation? compilation = null)
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
 
-        return FromSymbol(parameterSymbol, DataType.FromSymbol(parameterSymbol.Type, alias));
+        return FromSymbol(parameterSymbol, DataType.FromSymbol(parameterSymbol.Type, compilation), compilation);
     }
 
     /// <summary>
@@ -67,9 +68,10 @@ public sealed class Parameter(DataType type, string identifier) :
     /// </summary>
     /// <param name="parameterSymbol">parameter symbol.</param>
     /// <param name="type">data type.</param>
+    /// <param name="compilation">compilation.</param>
     /// <returns>parameter.</returns>
     /// <exception cref="ArgumentNullException">parameterSymbol or type is null.</exception>
-    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, DataType type)
+    public static Parameter FromSymbol(IParameterSymbol parameterSymbol, DataType type, Compilation? compilation = null)
     {
         if (parameterSymbol is null)
             throw new ArgumentNullException(nameof(parameterSymbol));
@@ -119,7 +121,7 @@ public sealed class Parameter(DataType type, string identifier) :
         var parameter = new Parameter(type, parameterSymbol.Name);
 
         foreach (var attributeData in parameterSymbol.GetAttributes())
-            parameter.AddAttribute(Attribute.FromSymbol(attributeData));
+            parameter.AddAttribute(Attribute.FromSymbol(attributeData, compilation));
 
         if (parameterSymbol.IsParams)
             parameter = parameter.Params;

@@ -16,6 +16,7 @@ namespace TedToolkit.RoslynHelper.Names;
 /// <summary>
 ///     Get the type name.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public class TypeName : TypeParametersName<ITypeSymbol>
 {
     private readonly Lazy<string> _lazySafeName;

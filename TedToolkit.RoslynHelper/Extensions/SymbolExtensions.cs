@@ -14,6 +14,7 @@ namespace TedToolkit.RoslynHelper.Extensions;
 /// <summary>
 ///     Extensions for symbol.
 /// </summary>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public static class SymbolExtensions
 {
 #pragma warning disable CA1034

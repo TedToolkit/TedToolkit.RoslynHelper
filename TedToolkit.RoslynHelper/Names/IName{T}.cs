@@ -13,6 +13,7 @@ namespace TedToolkit.RoslynHelper.Names;
 /// The I Name.
 /// </summary>
 /// <typeparam name="T">The type of the symbol.</typeparam>
+[Obsolete("Do not use this method, try to use the generators instead!")]
 public interface IName<out T> : IName
     where T : ISymbol
 {
