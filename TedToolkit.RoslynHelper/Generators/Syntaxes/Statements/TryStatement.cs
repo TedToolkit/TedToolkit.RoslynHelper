@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TryStatement.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -20,9 +20,16 @@ public sealed class TryStatement :
         builder.Append("try");
         this.AddStatements(ref builder);
         foreach (var catchClause in Catches)
+        {
+            builder.AppendLine();
             catchClause.ToCode(ref builder);
+        }
 
-        Finally?.ToCode(ref builder);
+        if (Finally is null)
+            return;
+
+        builder.AppendLine();
+        Finally.ToCode(ref builder);
     }
 
     /// <inheritdoc />
@@ -30,11 +37,11 @@ public sealed class TryStatement :
         => field ??= [];
 
     /// <summary>
-    /// The catches.
+    /// Gets the catches.
     /// </summary>
-#pragma warning disable SA1623
+#pragma warning disable S2325
     public List<CatchClause> Catches
-#pragma warning restore SA1623
+#pragma warning restore S2325
         => field ??= [];
 
     /// <summary>
