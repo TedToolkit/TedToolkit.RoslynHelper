@@ -11,11 +11,17 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// throw an expression.
 /// </summary>
 /// <param name="expression">expression.</param>
-public sealed class ThrowExpression(IExpression expression) : IExpression
+public sealed class ThrowExpression(IExpression? expression = null) : IExpression
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        if (expression is null)
+        {
+            builder.Append("throw");
+            return;
+        }
+
         builder.Append("throw ");
         expression.ToCode(ref builder);
     }
