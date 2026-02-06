@@ -85,7 +85,6 @@ public static class GeneralExtensions
     private static readonly Dictionary<char, string> _specialChars = new()
     {
         // { '\'', @"\'" },
-        // { '\"', "\\\"" },
         // { '\\', @"\\" },
         // { '\0', @"\0" },
         // { '\a', @"\a" },
@@ -94,6 +93,7 @@ public static class GeneralExtensions
         // { '\r', @"\r" },
         // { '\t', @"\t" },
         // { '\v', @"\v" },
+        { '\"', "\\\"" },
         { '\n', @"\n" },
     };
 
