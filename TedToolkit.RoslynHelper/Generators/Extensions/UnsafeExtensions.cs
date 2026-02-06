@@ -32,7 +32,9 @@ public static class UnsafeExtensions
         internal void AddUnsafe(ref SourceBuilder builder)
         {
             if (!instance.IsUnsafe)
+            {
                 return;
+            }
 
             builder.Append("unsafe ");
         }

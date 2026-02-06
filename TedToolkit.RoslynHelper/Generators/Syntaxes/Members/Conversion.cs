@@ -36,16 +36,24 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
         builder.Append(" operator ");
 
         if (isFrom)
+        {
             builder.Append(Owner);
+        }
         else
+        {
             type.ToCode(ref builder);
+        }
 
         builder.Append('(');
 
         if (isFrom)
+        {
             type.ToCode(ref builder);
+        }
         else
+        {
             builder.Append(Owner);
+        }
 
         builder.Append(" value)");
 

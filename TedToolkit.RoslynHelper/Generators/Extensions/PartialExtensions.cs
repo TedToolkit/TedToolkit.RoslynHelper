@@ -32,7 +32,9 @@ public static class PartialExtensions
         internal void AddPartial(ref SourceBuilder builder)
         {
             if (!instance.IsPartial)
+            {
                 return;
+            }
 
             builder.Append("partial ");
         }

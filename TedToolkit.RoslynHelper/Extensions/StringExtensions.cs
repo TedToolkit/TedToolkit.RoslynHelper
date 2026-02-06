@@ -24,7 +24,9 @@ public static class StringExtensions
     public static string ToPascalCase(this string input)
     {
         if (input is null)
+        {
             throw new ArgumentNullException(nameof(input));
+        }
 
         return string.Join(".", input.Split('.').Select(ConvertToPascalCase));
 
@@ -60,10 +62,14 @@ public static class StringExtensions
     public static string Leading(this string input, string leading)
     {
         if (input is null)
+        {
             throw new ArgumentNullException(nameof(input));
+        }
 
         if (leading is null)
+        {
             throw new ArgumentNullException(nameof(leading));
+        }
 
         return leading + input.Replace("\n", "\n" + leading);
     }

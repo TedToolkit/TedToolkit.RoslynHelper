@@ -37,8 +37,13 @@ public sealed class VariableExpression(DataType type, string identifier) :
     {
         this.AddConst(ref builder);
         type.ToCode(ref builder);
-        builder.Append(' ');
-        builder.Append(identifier.ToValidIdentifier());
+
+        if (!string.IsNullOrEmpty(identifier))
+        {
+            builder.Append(' ');
+            builder.Append(identifier.ToValidIdentifier());
+        }
+
         this.AddDefault(ref builder);
     }
 

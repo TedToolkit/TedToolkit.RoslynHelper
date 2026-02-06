@@ -32,7 +32,9 @@ public static class ParametersExtensions
         internal void AddParameters(ref SourceBuilder builder)
         {
             if (instance.Parameters.Count is 0)
+            {
                 return;
+            }
 
             instance.AddParametersNoSkip(ref builder);
         }
@@ -51,9 +53,13 @@ public static class ParametersExtensions
             foreach (var parameter in instance.Parameters)
             {
                 if (isNotStart)
+                {
                     builder.AppendLine(',');
+                }
                 else
+                {
                     builder.AppendLine();
+                }
 
                 parameter.ToCode(ref builder);
 

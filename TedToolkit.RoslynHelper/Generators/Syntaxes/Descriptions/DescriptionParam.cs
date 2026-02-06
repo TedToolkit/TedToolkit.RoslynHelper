@@ -18,7 +18,9 @@ public sealed class DescriptionParam(string pramName, params IReadOnlyList<IDesc
     public void ToDescription(ref SourceBuilder builder)
     {
         if (descriptions.Count == 0)
+        {
             return;
+        }
 
         builder.Append("/// <param name=\"");
         builder.Append(pramName);

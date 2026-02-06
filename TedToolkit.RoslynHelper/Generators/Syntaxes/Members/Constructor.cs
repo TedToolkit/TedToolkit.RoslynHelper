@@ -26,7 +26,9 @@ public sealed class Constructor :
     {
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
+        {
             parameter.ToRoot().ToDescription(ref builder);
+        }
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);

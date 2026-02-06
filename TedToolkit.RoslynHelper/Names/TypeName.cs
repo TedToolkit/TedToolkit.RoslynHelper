@@ -57,13 +57,19 @@ public class TypeName : TypeParametersName<ITypeSymbol>
         static IEnumerable<ITypeParameterSymbol> GetTypeParameterSymbols(ITypeSymbol symbol)
         {
             if (symbol is ITypeParameterSymbol typeParameterSymbol)
+            {
                 yield return typeParameterSymbol;
+            }
 
             if (symbol is not INamedTypeSymbol namedTypeSymbol)
+            {
                 yield break;
+            }
 
             foreach (var typeParameter in namedTypeSymbol.TypeArguments.SelectMany(GetTypeParameterSymbols))
+            {
                 yield return typeParameter;
+            }
         }
     }
 }

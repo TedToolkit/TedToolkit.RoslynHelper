@@ -29,7 +29,9 @@ public static class MemberOwnerExtensions
     {
         var name = type.Identifier;
         if (type.TypeParameters.Count is 0)
+        {
             return name;
+        }
 
         using var builder = ZString.CreateStringBuilder();
         builder.Append(name);
@@ -40,7 +42,9 @@ public static class MemberOwnerExtensions
         foreach (var typeTypeParameter in type.TypeParameters)
         {
             if (isNotStart)
+            {
                 builder.Append(", ");
+            }
 
             builder.Append(typeTypeParameter.Variable);
             isNotStart = true;
@@ -65,7 +69,9 @@ public static class MemberOwnerExtensions
             where TMember : class, IMember
         {
             if (member is IOwner owner && instance is TypeDeclaration type)
+            {
                 owner.Owner = GetTypeName(type);
+            }
 
             instance.Members.Add(member);
             return instance;
@@ -86,7 +92,9 @@ public static class MemberOwnerExtensions
             {
                 builder.AppendLine();
                 if (isNotStart)
+                {
                     builder.AppendLine();
+                }
 
                 member.ToCode(ref builder);
                 isNotStart = true;

@@ -59,10 +59,14 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     public bool Equals(MethodSignature other)
     {
         if (!MethodName.Equals(other.MethodName, StringComparison.Ordinal))
+        {
             return false;
+        }
 
         if (!TypeArgumentsCount.Equals(other.TypeArgumentsCount))
+        {
             return false;
+        }
 
         if (EqualityWithContainingType
             && !ContainingType.Equals(other.ContainingType, SymbolEqualityComparer.Default))
@@ -71,7 +75,9 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
         }
 
         if (!ParameterTypes.Count.Equals(other.ParameterTypes.Count))
+        {
             return false;
+        }
 
         for (var i = 0; i < ParameterTypes.Count; i++)
         {
@@ -84,10 +90,14 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
             }
 
             if (RefKinds[i] != other.RefKinds[i])
+            {
                 return false;
+            }
 
             if (!thisType.Equals(otherType, SymbolEqualityComparer.Default))
+            {
                 return false;
+            }
         }
 
         return true;

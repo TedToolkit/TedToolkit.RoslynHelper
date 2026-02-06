@@ -58,7 +58,9 @@ public sealed class Parameter(DataType type, string identifier) :
     public static Parameter FromSymbol(IParameterSymbol parameterSymbol, Compilation? compilation = null)
     {
         if (parameterSymbol is null)
+        {
             throw new ArgumentNullException(nameof(parameterSymbol));
+        }
 
         return FromSymbol(parameterSymbol, DataType.FromSymbol(parameterSymbol.Type, compilation), compilation);
     }
@@ -74,10 +76,14 @@ public sealed class Parameter(DataType type, string identifier) :
     public static Parameter FromSymbol(IParameterSymbol parameterSymbol, DataType type, Compilation? compilation = null)
     {
         if (parameterSymbol is null)
+        {
             throw new ArgumentNullException(nameof(parameterSymbol));
+        }
 
         if (type is null)
+        {
             throw new ArgumentNullException(nameof(type));
+        }
 
         if (parameterSymbol.ScopedKind is ScopedKind.None)
         {
@@ -121,21 +127,33 @@ public sealed class Parameter(DataType type, string identifier) :
         var parameter = new Parameter(type, parameterSymbol.Name);
 
         foreach (var attributeData in parameterSymbol.GetAttributes())
+        {
             parameter.AddAttribute(Attribute.FromSymbol(attributeData, compilation));
+        }
 
         if (parameterSymbol.IsParams)
+        {
             parameter = parameter.Params;
+        }
         else if (parameterSymbol.IsThis)
+        {
             parameter = parameter.This;
+        }
 
         if (parameterSymbol.HasExplicitDefaultValue)
         {
             if (parameterSymbol.ExplicitDefaultValue is not { } defaultValue)
+            {
                 parameter.AddDefault();
+            }
             else if (parameterSymbol.Type.SpecialType is SpecialType.System_String)
+            {
                 parameter.AddDefault(defaultValue.ToString().ToLiteral());
+            }
             else
+            {
                 parameter.AddDefault(defaultValue.ToString().ToSimpleName());
+            }
         }
 
         return parameter;
@@ -152,7 +170,9 @@ public sealed class Parameter(DataType type, string identifier) :
     public static Parameter FromInfo(ParameterInfo parameterInfo, string alias = "global")
     {
         if (parameterInfo is null)
+        {
             throw new ArgumentNullException(nameof(parameterInfo));
+        }
 
         return FromInfo(parameterInfo, DataType.FromType(parameterInfo.ParameterType, alias));
     }
@@ -167,10 +187,14 @@ public sealed class Parameter(DataType type, string identifier) :
     public static Parameter FromInfo(ParameterInfo parameterInfo, DataType type)
     {
         if (parameterInfo is null)
+        {
             throw new ArgumentNullException(nameof(parameterInfo));
+        }
 
         if (type is null)
+        {
             throw new ArgumentNullException(nameof(type));
+        }
 
         if (parameterInfo.ParameterType.IsByRef)
         {
@@ -219,18 +243,28 @@ public sealed class Parameter(DataType type, string identifier) :
         var parameter = new Parameter(type, parameterInfo.Name);
 
         if (parameterInfo.IsDefined(typeof(ParamArrayAttribute), false))
+        {
             parameter = parameter.Params;
+        }
         else if (parameterInfo.Position is 0 && parameterInfo.Member.IsDefined(typeof(ExtensionAttribute), false))
+        {
             parameter = parameter.This;
+        }
 
         if (parameterInfo.HasDefaultValue)
         {
             if (parameterInfo.DefaultValue is not { } defaultValue)
+            {
                 parameter.AddDefault();
+            }
             else if (defaultValue is string str)
+            {
                 parameter.AddDefault(str.ToLiteral());
+            }
             else
+            {
                 parameter.AddDefault(defaultValue.ToString().ToSimpleName());
+            }
         }
 
         return parameter;

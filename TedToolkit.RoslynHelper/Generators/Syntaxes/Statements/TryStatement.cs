@@ -26,7 +26,9 @@ public sealed class TryStatement :
         }
 
         if (Finally is null)
+        {
             return;
+        }
 
         builder.AppendLine();
         Finally.ToCode(ref builder);

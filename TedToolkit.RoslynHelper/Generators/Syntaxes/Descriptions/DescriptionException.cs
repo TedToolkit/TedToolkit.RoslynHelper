@@ -20,7 +20,9 @@ public sealed class DescriptionException(ICref exception, params IReadOnlyList<I
     public void ToDescription(ref SourceBuilder builder)
     {
         if (descriptions.Count == 0)
+        {
             return;
+        }
 
         builder.Append("/// <exception cref=\"");
         exception.ToCref(ref builder);

@@ -27,7 +27,9 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
     {
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
+        {
             parameter.ToRoot().ToDescription(ref builder);
+        }
 
         returnType?.ToRoot().ToDescription(ref builder);
 
@@ -38,9 +40,13 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
         builder.Append("delegate ");
 
         if (returnType is not null)
+        {
             returnType.ToCode(ref builder);
+        }
         else
+        {
             builder.Append("void");
+        }
 
         builder.Append(' ');
 

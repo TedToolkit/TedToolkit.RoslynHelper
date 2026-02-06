@@ -36,10 +36,14 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     {
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
+        {
             parameter.ToRoot().ToDescription(ref builder);
+        }
 
         foreach (var typeParameter in TypeParameters)
+        {
             typeParameter.ToRoot().ToDescription(ref builder);
+        }
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
@@ -69,9 +73,13 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
             foreach (var memberAccess in BaseTypes)
             {
                 if (isNotStart)
+                {
                     builder.AppendLine(',');
+                }
                 else
+                {
                     builder.AppendLine();
+                }
 
                 builder.Append('\t');
                 memberAccess.ToCode(ref builder);
@@ -140,7 +148,9 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     public TypeDeclaration AddBaseType(Type baseType)
     {
         if (baseType is null)
+        {
             throw new ArgumentNullException(nameof(baseType));
+        }
 
         BaseTypes.Add(DataType.FromType(baseType));
         return this;

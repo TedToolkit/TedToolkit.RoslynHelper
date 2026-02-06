@@ -17,7 +17,9 @@ public sealed class DescriptionPara(params IReadOnlyList<IDescriptionItem> descr
     public void ToDescription(ref SourceBuilder builder)
     {
         if (descriptions.Count == 0)
+        {
             return;
+        }
 
         builder.AppendLine("/// <para>");
         descriptions.ToDescription(ref builder);

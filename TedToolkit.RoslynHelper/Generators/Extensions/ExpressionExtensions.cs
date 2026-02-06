@@ -242,7 +242,9 @@ public static class ExpressionExtensions
         public MemberAccessExpression Sub(string right)
         {
             if (right is null)
+            {
                 throw new ArgumentNullException(nameof(right));
+            }
 
             return new(expression, right.ToSimpleName());
         }

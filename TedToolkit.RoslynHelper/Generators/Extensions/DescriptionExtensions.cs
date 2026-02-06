@@ -40,7 +40,9 @@ public static class DescriptionExtensions
         internal void ToDescription(ref SourceBuilder builder)
         {
             foreach (var descriptionItem in descriptions)
+            {
                 descriptionItem.ToDescription(ref builder);
+            }
         }
     }
 #pragma warning restore S2325

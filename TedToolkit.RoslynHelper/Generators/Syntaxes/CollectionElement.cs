@@ -23,7 +23,9 @@ public sealed class CollectionElement(IExpression expression) :
     public void ToCode(ref SourceBuilder builder)
     {
         if (IsSpread)
+        {
             builder.Append("..");
+        }
 
         expression.ToCode(ref builder);
     }

@@ -50,7 +50,9 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
         {
             builder.AppendLine();
             if (isNotStart)
+            {
                 builder.AppendLine();
+            }
 
             member.ToCode(ref builder);
             isNotStart = true;

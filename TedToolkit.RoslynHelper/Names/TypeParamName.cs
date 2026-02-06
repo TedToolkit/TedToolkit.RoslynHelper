@@ -8,6 +8,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using TedToolkit.RoslynHelper.Extensions;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -68,24 +69,38 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
             var constraints = new List<TypeParameterConstraintSyntax>();
 
             if (Symbol.HasReferenceTypeConstraint)
+            {
                 constraints.Add(ClassOrStructConstraint(SyntaxKind.ClassConstraint));
+            }
 
             if (Symbol.HasUnmanagedTypeConstraint)
+            {
                 constraints.Add(TypeConstraint(IdentifierName("unmanaged")));
+            }
             else if (Symbol.HasValueTypeConstraint)
+            {
                 constraints.Add(ClassOrStructConstraint(SyntaxKind.StructConstraint));
+            }
 
             if (Symbol.HasNotNullConstraint)
+            {
                 constraints.Add(TypeConstraint(IdentifierName("notnull")));
+            }
 
             foreach (var constraintType in Symbol.ConstraintTypes)
+            {
                 constraints.Add(TypeConstraint(ParseTypeName(constraintType.GetName().FullName)));
+            }
 
             if (Symbol.HasConstructorConstraint)
+            {
                 constraints.Add(ConstructorConstraint());
+            }
 
             if (constraints.Count is 0)
+            {
                 return null;
+            }
 
             return TypeParameterConstraintClause(
                 IdentifierName(Prefix + Symbol.Name),

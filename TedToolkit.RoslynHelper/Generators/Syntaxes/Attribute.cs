@@ -50,14 +50,18 @@ public sealed class Attribute(DataType type) :
     public static Attribute FromSymbol(AttributeData attribute, Compilation? compilation = null)
     {
         if (attribute?.AttributeClass is null)
+        {
             throw new ArgumentNullException(nameof(attribute));
+        }
 
         var result = new Attribute(DataType.FromSymbol(attribute.AttributeClass, compilation));
 
         foreach (var attributeConstructorArgument in attribute.ConstructorArguments)
         {
             if (GetArgument(attributeConstructorArgument, compilation) is { } argument)
+            {
                 result.AddArgument(new Argument(argument));
+            }
         }
 
         foreach (var attributeNamedArgument in attribute.NamedArguments)
@@ -81,19 +85,25 @@ public sealed class Attribute(DataType type) :
 
             case TypedConstantKind.Primitive:
                 if (argument.Value is string str)
+                {
                     return str.ToLiteral();
+                }
 
                 return argument.Value?.ToString().ToSimpleName();
 
             case TypedConstantKind.Enum:
                 if (argument.Type is not { } symbol)
+                {
                     return null;
+                }
 
                 return argument.Value!.ToString().ToSimpleName().Cast(DataType.FromSymbol(symbol, compilation));
 
             case TypedConstantKind.Type:
                 if (argument.Value is not Type type)
+                {
                     return null;
+                }
 
                 return "typeof".ToSimpleName().Invoke().AddArgument(
                     new Argument(DataType.FromType(type).Type));
@@ -103,7 +113,9 @@ public sealed class Attribute(DataType type) :
                 foreach (var argumentValue in argument.Values)
                 {
                     if (GetArgument(argumentValue, compilation) is { } item)
+                    {
                         collection.AddElement(new CollectionElement(item));
+                    }
                 }
 
                 return collection;

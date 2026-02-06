@@ -53,7 +53,9 @@ public static class DefaultExtensions
         internal void AddDefault(ref SourceBuilder builder)
         {
             if (instance.Default is null)
+            {
                 return;
+            }
 
             builder.Append(" = ");
             instance.Default.ToCode(ref builder);

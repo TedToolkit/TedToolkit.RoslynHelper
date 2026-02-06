@@ -50,7 +50,9 @@ public sealed class Property(DataType type, string identifier) :
         this.AddAccessors(ref builder);
 
         if (Default is null)
+        {
             return;
+        }
 
         this.AddDefault(ref builder);
         builder.Append(';');

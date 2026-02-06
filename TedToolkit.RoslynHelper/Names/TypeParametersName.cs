@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.CodeAnalysis;
+
 using TedToolkit.RoslynHelper.Extensions;
 
 namespace TedToolkit.RoslynHelper.Names;
