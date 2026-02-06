@@ -25,9 +25,9 @@ public sealed class DataType(IExpression type) :
     ICref
 {
     /// <summary>
-    /// Gets or sets the Type.
+    /// Gets the Type.
     /// </summary>
-    public IExpression Type { get; set; } = type;
+    public IExpression Type { get; private set; } = type;
 
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
