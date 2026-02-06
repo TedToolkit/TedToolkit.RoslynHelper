@@ -22,7 +22,9 @@ public sealed class Extension(Parameter parameter) :
         parameter.ToRoot().ToDescription(ref builder);
         builder.Append("extension");
         this.AddTypeParameters(ref builder);
+        builder.Append('(');
         parameter.ToCode(ref builder);
+        builder.Append(')');
         this.AddTypeParameterConstraints(ref builder);
         this.AddMembers(ref builder);
     }
