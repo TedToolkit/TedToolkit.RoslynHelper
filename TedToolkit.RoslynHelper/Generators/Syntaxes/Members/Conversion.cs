@@ -17,6 +17,7 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
     IMember,
     IStatementOwner,
     IRootDescription,
+    IStorageKind,
     IAttributes,
     IOwner
 {
@@ -46,6 +47,8 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
 
         builder.Append('(');
 
+        this.AddStorageKind(ref builder);
+
         if (isFrom)
         {
             type.ToCode(ref builder);
@@ -71,4 +74,7 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
     /// <inheritdoc/>
     public List<Attribute> Attributes
         => field ??= [];
+
+    /// <inheritdoc/>
+    public StorageKind StorageKind { get; set; }
 }
