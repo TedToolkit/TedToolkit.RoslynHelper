@@ -8,6 +8,7 @@
 using System.Text;
 
 using Microsoft.CodeAnalysis;
+
 using TedToolkit.RoslynHelper.Extensions;
 
 namespace TedToolkit.RoslynHelper.Names;
@@ -66,7 +67,9 @@ public class MethodName : TypeParametersName<IMethodSymbol>
         {
             var stringBuilder = new StringBuilder();
             if (p.Symbol.ScopedKind is not ScopedKind.None)
+            {
                 stringBuilder.Append("scoped ");
+            }
 
             switch (p.Symbol.RefKind)
             {

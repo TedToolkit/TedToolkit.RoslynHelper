@@ -41,7 +41,9 @@ public static class AttributesExtensions
         public TItem AddGeneratorAttribute(Type type)
         {
             if (type is null)
+            {
                 throw new ArgumentNullException(nameof(type));
+            }
 
             return instance.AddGeneratorAttribute(type.GetToolName(), type.GetVersion());
         }
@@ -77,7 +79,9 @@ public static class AttributesExtensions
         internal void AddAttributes(ref SourceBuilder builder)
         {
             if (instance.Attributes.Count == 0)
+            {
                 return;
+            }
 
             foreach (var attribute in instance.Attributes.AsSpan())
             {

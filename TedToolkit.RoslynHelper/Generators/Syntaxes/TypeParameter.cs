@@ -64,7 +64,9 @@ public sealed class TypeParameter(string identifier) :
     internal void ToConstraint(ref SourceBuilder builder)
     {
         if (Constraints.Count is 0)
+        {
             return;
+        }
 
         builder.AppendLine();
         builder.Append("\twhere ");
@@ -75,7 +77,9 @@ public sealed class TypeParameter(string identifier) :
         foreach (var constraint in Constraints)
         {
             if (isNotStart)
+            {
                 builder.Append(", ");
+            }
 
             constraint.ToCode(ref builder);
 
@@ -93,30 +97,46 @@ public sealed class TypeParameter(string identifier) :
     public static TypeParameter FromSymbol(ITypeParameterSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
+        {
             throw new ArgumentNullException(nameof(symbol));
+        }
 
         var result = new TypeParameter(symbol.Name);
 
         foreach (var symbolConstraintType in symbol.ConstraintTypes)
+        {
             result.AddConstraint(DataType.FromSymbol(symbolConstraintType, compilation));
+        }
 
         if (symbol.AllowsRefLikeType)
+        {
             result.AddRefStructConstraint();
+        }
 
         if (symbol.HasConstructorConstraint)
+        {
             result.AddNewConstraint();
+        }
 
         if (symbol.HasNotNullConstraint)
+        {
             result.AddNotNullConstraint();
+        }
 
         if (symbol.HasReferenceTypeConstraint)
+        {
             result.AddClassConstraint();
+        }
 
         if (symbol.HasUnmanagedTypeConstraint)
+        {
             result.AddUnmanagedConstraint();
+        }
 
         if (symbol.HasValueTypeConstraint)
+        {
             result.AddStructConstraint();
+        }
 
         return result;
     }
@@ -143,7 +163,9 @@ public sealed class TypeParameter(string identifier) :
     public TypeParameter AddConstraint(DataType constraint)
     {
         if (constraint is null)
+        {
             throw new ArgumentNullException(nameof(constraint));
+        }
 
         Constraints.Add(constraint.Type);
         return this;

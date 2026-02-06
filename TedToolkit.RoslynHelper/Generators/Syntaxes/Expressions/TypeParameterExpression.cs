@@ -20,14 +20,18 @@ public sealed class TypeParameterExpression(IExpression expression, params DataT
     {
         expression.ToCode(ref builder);
         if (types.Length is 0)
+        {
             return;
+        }
 
         builder.Append('<');
         var isNotStart = false;
         foreach (var type in types)
         {
             if (isNotStart)
+            {
                 builder.Append(", ");
+            }
 
             type.ToCode(ref builder);
             isNotStart = true;
@@ -41,14 +45,18 @@ public sealed class TypeParameterExpression(IExpression expression, params DataT
     {
         expression.ToCode(ref builder);
         if (types.Length is 0)
+        {
             return;
+        }
 
         builder.Append('{');
         var isNotStart = false;
         foreach (var type in types)
         {
             if (isNotStart)
+            {
                 builder.Append(", ");
+            }
 
             type.ToCode(ref builder);
             isNotStart = true;

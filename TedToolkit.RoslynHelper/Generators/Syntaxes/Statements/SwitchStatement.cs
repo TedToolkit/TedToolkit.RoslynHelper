@@ -26,7 +26,9 @@ public sealed class SwitchStatement(IExpression expression) :
         foreach (var switchSection in Sections)
         {
             if (isNotStart)
+            {
                 builder.AppendLine();
+            }
 
             switchSection.ToCode(ref builder);
             isNotStart = true;

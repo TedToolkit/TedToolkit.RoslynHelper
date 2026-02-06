@@ -32,7 +32,9 @@ public static class StaticExtensions
         internal void AddStatic(ref SourceBuilder builder)
         {
             if (!instance.IsStatic)
+            {
                 return;
+            }
 
             builder.Append("static ");
         }

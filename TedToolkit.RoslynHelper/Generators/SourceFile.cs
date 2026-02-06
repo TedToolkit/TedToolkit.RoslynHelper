@@ -29,12 +29,16 @@ public class SourceFile()
     public void Generate(scoped in SourceProductionContext context, string fileName)
     {
         if (context.CancellationToken.IsCancellationRequested)
+        {
             return;
+        }
 
         var code = ToCode();
 
         if (context.CancellationToken.IsCancellationRequested)
+        {
             return;
+        }
 
         context.AddSource(ZString.Concat(fileName, ".g.cs"), code);
     }
@@ -138,7 +142,9 @@ public class SourceFile()
     public SourceFile AddAttribute(Syntaxes.Attribute attribute)
     {
         if (attribute is null)
+        {
             throw new ArgumentNullException(nameof(attribute));
+        }
 
         attribute.Modifier = AttributeModifier.ASSEMBLY;
         Attributes.Add(attribute);

@@ -35,7 +35,9 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
         this.AddArgumentsNoSkip(ref builder);
 
         if (Variables.Count is 0)
+        {
             return;
+        }
 
         builder.BeginBlock();
 

@@ -18,7 +18,9 @@ public sealed class DescriptionTypeParam(string typePramName, params IReadOnlyLi
     public void ToDescription(ref SourceBuilder builder)
     {
         if (descriptions.Count == 0)
+        {
             return;
+        }
 
         builder.Append("/// <typeparam name=\"");
         builder.Append(typePramName);

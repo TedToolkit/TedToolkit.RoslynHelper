@@ -111,7 +111,9 @@ public static class AccessibilityExtensions
         internal void AddAccessibility(ref SourceBuilder builder)
         {
             if (instance.Accessibility is Accessibility.NONE)
+            {
                 return;
+            }
 
             builder.Append(instance.Accessibility switch
             {

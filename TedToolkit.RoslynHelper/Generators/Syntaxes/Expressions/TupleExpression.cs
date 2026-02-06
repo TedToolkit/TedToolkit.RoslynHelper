@@ -12,7 +12,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 public sealed class TupleExpression : IExpression
 {
-    private readonly List<(DataType Type, string Identifier)> _items = [];
+    private readonly List<IExpression> _items = [];
 
     /// <summary>
     /// Add the item.
@@ -22,7 +22,18 @@ public sealed class TupleExpression : IExpression
     /// <returns>self.</returns>
     public TupleExpression AddItem(DataType dataType, string identifier = "")
     {
-        _items.Add((dataType, identifier));
+        _items.Add(new VariableExpression(dataType, identifier));
+        return this;
+    }
+
+    /// <summary>
+    /// Add the item.
+    /// </summary>
+    /// <param name="expression">identifier.</param>
+    /// <returns>self.</returns>
+    public TupleExpression AddItem(IExpression expression)
+    {
+        _items.Add(expression);
         return this;
     }
 
@@ -31,18 +42,14 @@ public sealed class TupleExpression : IExpression
     {
         builder.Append('(');
         var isNotStart = false;
-        foreach (var (dataType, identifier) in _items.AsSpan())
+        foreach (var expression in _items.AsSpan())
         {
             if (isNotStart)
-                builder.Append(", ");
-
-            dataType.ToCode(ref builder);
-
-            if (!string.IsNullOrEmpty(identifier))
             {
-                builder.AppendSpace();
-                builder.Append(identifier);
+                builder.Append(", ");
             }
+
+            expression.ToCode(ref builder);
 
             isNotStart = true;
         }

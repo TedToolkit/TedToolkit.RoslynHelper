@@ -32,10 +32,14 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     {
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
+        {
             parameter.ToRoot().ToDescription(ref builder);
+        }
 
         foreach (var typeParameter in TypeParameters)
+        {
             typeParameter.ToRoot().ToDescription(ref builder);
+        }
 
         returnType?.ToRoot().ToDescription(ref builder);
 
@@ -48,9 +52,13 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddPartial(ref builder);
 
         if (returnType is not null)
+        {
             returnType.ToCode(ref builder);
+        }
         else
+        {
             builder.Append("void");
+        }
 
         builder.Append(' ');
 
@@ -60,9 +68,13 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddTypeParameterConstraints(ref builder);
 
         if (IsPartial)
+        {
             this.AddStatements(ref builder);
+        }
         else
+        {
             this.AddStatementsNoSkip(ref builder);
+        }
     }
 
     /// <inheritdoc/>

@@ -98,7 +98,9 @@ public static class PolymorphismExtensions
         internal void AddPolymorphism(ref SourceBuilder builder)
         {
             if (instance.Polymorphism is Polymorphism.NONE)
+            {
                 return;
+            }
 
             builder.Append(instance.Polymorphism switch
             {

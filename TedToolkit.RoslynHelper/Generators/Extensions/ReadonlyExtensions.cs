@@ -32,7 +32,9 @@ public static class ReadonlyExtensions
         internal void AddReadonly(ref SourceBuilder builder)
         {
             if (!instance.IsReadonly)
+            {
                 return;
+            }
 
             builder.Append("readonly ");
         }

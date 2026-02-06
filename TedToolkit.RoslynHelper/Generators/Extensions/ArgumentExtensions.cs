@@ -33,7 +33,9 @@ public static class ArgumentExtensions
         internal void AddArguments(ref SourceBuilder builder)
         {
             if (instance.Arguments.Count == 0)
+            {
                 return;
+            }
 
             instance.AddArgumentsNoSkip(ref builder);
         }
@@ -51,7 +53,9 @@ public static class ArgumentExtensions
             foreach (var attribute in instance.Arguments.AsSpan())
             {
                 if (isNotStart)
+                {
                     builder.Append(", ");
+                }
 
                 attribute.ToCode(ref builder);
                 isNotStart = true;

@@ -32,7 +32,9 @@ public static class ConstExtensions
         internal void AddConst(ref SourceBuilder builder)
         {
             if (!instance.IsConst)
+            {
                 return;
+            }
 
             builder.Append("const ");
         }

@@ -32,13 +32,17 @@ public static class TypeParametersExtensions
         internal void AddTypeParameterConstraints(ref SourceBuilder builder)
         {
             foreach (var instanceTypeParameter in instance.TypeParameters)
+            {
                 instanceTypeParameter.ToConstraint(ref builder);
+            }
         }
 
         internal void AddTypeParameters(ref SourceBuilder builder)
         {
             if (instance.TypeParameters.Count is 0)
+            {
                 return;
+            }
 
             instance.AddTypeParametersNoSkip(ref builder);
         }
@@ -50,9 +54,13 @@ public static class TypeParametersExtensions
             foreach (var parameter in instance.TypeParameters)
             {
                 if (isNotStart)
+                {
                     builder.AppendLine(',');
+                }
                 else
+                {
                     builder.AppendLine();
+                }
 
                 builder.Append('\t');
                 parameter.ToCode(ref builder);

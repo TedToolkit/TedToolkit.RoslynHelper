@@ -57,7 +57,9 @@ public static class GeneralExtensions
         public string ToValidLiteral()
         {
             foreach (var keyValuePair in _specialChars)
+            {
                 value = value.Replace(keyValuePair.Key.ToString(), keyValuePair.Value);
+            }
 
             return value;
         }
@@ -72,7 +74,9 @@ public static class GeneralExtensions
         public string ToValidLiteral()
         {
             if (_specialChars.TryGetValue(value, out var result))
+            {
                 return result;
+            }
 
             return value.ToString();
         }
@@ -251,7 +255,9 @@ public static class GeneralExtensions
     public static string GetAlias(this ITypeSymbol typeSymbol, Compilation? compilation = null)
     {
         if (compilation is null || typeSymbol?.ContainingAssembly is not { } assembly)
+        {
             return "global";
+        }
 
         foreach (var reference in compilation.References)
         {

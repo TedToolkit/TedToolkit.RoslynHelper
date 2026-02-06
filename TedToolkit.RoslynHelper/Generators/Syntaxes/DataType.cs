@@ -110,10 +110,16 @@ public sealed class DataType(IExpression type) :
         this.AddStorageKind(ref builder);
         Type.ToCode(ref builder);
         if (IsArray)
+        {
             builder.Append("[]");
+        }
 
-        if (PointCounter > 0)
-            builder.Append('*', PointCounter);
+        if (PointCounter <= 0)
+        {
+            return;
+        }
+
+        builder.Append('*', PointCounter);
     }
 
     /// <summary>
@@ -136,21 +142,31 @@ public sealed class DataType(IExpression type) :
     public static DataType FromSymbol(ITypeSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
+        {
             throw new ArgumentNullException(nameof(symbol));
+        }
 
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
+        {
             return FromSymbol(nullableType.TypeArguments[0], compilation).Null;
+        }
 
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
+        {
             return new(symbol.Name.ToSimpleName());
+        }
 
         var name = ZString.Concat(symbol.GetAlias(compilation), "::", symbol.FullName);
         if (symbol is not INamedTypeSymbol { IsGenericType: true, } namedType)
+        {
             return new(name.ToSimpleName());
+        }
 
         var index = name.IndexOf('<');
         if (index < 0)
+        {
             return new(name.ToSimpleName());
+        }
 
         return new(name.Substring(0, index).ToSimpleName()
             .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, compilation)).ToArray()));
@@ -184,21 +200,31 @@ public sealed class DataType(IExpression type) :
     public static DataType FromType(Type type, string alias = "global")
     {
         if (type is null)
+        {
             throw new ArgumentNullException(nameof(type));
+        }
 
         if (_typeAlias.TryGetValue(type, out var s))
+        {
             return s();
+        }
 
         if (type.IsPointer)
+        {
             return FromType(type.GetElementType()!).Pointer;
+        }
 
         if (type.IsArray)
+        {
             return FromType(type.GetElementType()!).Array;
+        }
 
         if (type.IsGenericType)
         {
             if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
                 return FromType(Nullable.GetUnderlyingType(type)!).Null;
+            }
 
             return new(SimpleType()
                 .Generic([
@@ -216,10 +242,14 @@ public sealed class DataType(IExpression type) :
             var name = new SimpleNameExpression(type.Name.Split('`')[0].Replace("&", ""));
 
             if (type.DeclaringType is not null)
+            {
                 return new MemberAccessExpression(FromType(type.DeclaringType).Type, name);
+            }
 
             if (string.IsNullOrEmpty(type.Namespace))
+            {
                 return AddAlias(name);
+            }
 
             return AddAlias(new MemberAccessExpression(new SimpleNameExpression(type.Namespace), name));
         }
@@ -227,7 +257,9 @@ public sealed class DataType(IExpression type) :
         IExpression AddAlias(IExpression expression)
         {
             if (string.IsNullOrEmpty(alias))
+            {
                 return expression;
+            }
 
             return new AliasExpression(alias, expression);
         }

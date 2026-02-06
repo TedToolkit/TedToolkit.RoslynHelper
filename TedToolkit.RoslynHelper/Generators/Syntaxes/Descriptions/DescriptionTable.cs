@@ -25,7 +25,9 @@ public sealed class DescriptionTable(IDescriptionItem termHeader, IDescriptionIt
         builder.AppendLine("/// <list type=\"table\">");
         AppendHeader(ref builder, termHeader, descriptionHeader);
         foreach (var (term, description) in Items)
+        {
             AppendItem(ref builder, term, description);
+        }
 
         builder.AppendLine("/// </list>");
     }

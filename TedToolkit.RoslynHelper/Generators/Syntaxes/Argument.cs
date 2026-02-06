@@ -47,17 +47,27 @@ public sealed class Argument(IExpression variable) :
     public static Argument FromInfo(ParameterInfo info)
     {
         if (info is null)
+        {
             throw new ArgumentNullException(nameof(info));
+        }
 
         var basicExpression = new Argument(info.Name.ToSimpleName());
 
         if (!info.ParameterType.IsByRef)
+        {
             return basicExpression;
+        }
         else if (info.IsOut)
+        {
             return basicExpression.Out;
+        }
         else if (info.IsIn)
+        {
             return basicExpression.In;
+        }
         else
+        {
             return basicExpression.Ref;
+        }
     }
 }

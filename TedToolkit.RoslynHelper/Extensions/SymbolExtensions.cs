@@ -62,7 +62,9 @@ public static class SymbolExtensions
     public static MethodName GetName(this IMethodSymbol symbol)
     {
         if (symbol is null)
+        {
             throw new ArgumentNullException(nameof(symbol));
+        }
 
         return new(symbol);
     }
@@ -76,7 +78,9 @@ public static class SymbolExtensions
     public static ParameterName GetName(this IParameterSymbol symbol)
     {
         if (symbol is null)
+        {
             throw new ArgumentNullException(nameof(symbol));
+        }
 
         return new(symbol);
     }
@@ -106,7 +110,9 @@ public static class SymbolExtensions
     public static IReadOnlyDictionary<ISymbol?, IMethodSymbol[]> GetAllExtensionMethods(this Compilation compilation)
     {
         if (compilation is null)
+        {
             throw new ArgumentNullException(nameof(compilation));
+        }
 
         return compilation.GlobalNamespace.GetAllStaticClasses()
             .SelectMany(c => c.GetMembers())
@@ -133,19 +139,25 @@ public static class SymbolExtensions
     public static IEnumerable<INamedTypeSymbol> GetAllTypes(this INamespaceSymbol namespaceSymbol)
     {
         if (namespaceSymbol is null)
+        {
             throw new ArgumentNullException(nameof(namespaceSymbol));
+        }
 
         return GetAllTypesPrivate(namespaceSymbol);
 
         IEnumerable<INamedTypeSymbol> GetAllTypesPrivate(INamespaceSymbol namespaceSymbol)
         {
             foreach (var typeMember in namespaceSymbol.GetTypeMembers())
+            {
                 yield return typeMember;
+            }
 
             foreach (var nestedNamespace in namespaceSymbol.GetNamespaceMembers())
             {
                 foreach (var nestTypeMember in GetAllTypesPrivate(nestedNamespace))
+                {
                     yield return nestTypeMember;
+                }
             }
         }
     }
@@ -159,13 +171,19 @@ public static class SymbolExtensions
     public static ITypeSymbol ReplaceWithNestedOriginalDefinition(this ITypeSymbol symbol)
     {
         if (symbol is null)
+        {
             throw new ArgumentNullException(nameof(symbol));
+        }
 
         if (symbol is not INamedTypeSymbol { IsGenericType: true, } named)
+        {
             return symbol;
+        }
 
         if (named.TypeArguments.All(t => t.TypeKind is TypeKind.TypeParameter))
+        {
             return symbol.OriginalDefinition;
+        }
 
         var newArgs = named.TypeArguments
             .Select(ReplaceWithNestedOriginalDefinition)

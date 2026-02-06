@@ -111,7 +111,9 @@ public static class StorageKindExtensions
         internal void AddStorageKind(ref SourceBuilder builder)
         {
             if (instance.StorageKind is StorageKind.NONE)
+            {
                 return;
+            }
 
             builder.Append(instance.StorageKind switch
             {

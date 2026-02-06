@@ -17,7 +17,9 @@ public sealed class DescriptionReturns(params IReadOnlyList<IDescriptionItem> de
     public void ToDescription(ref SourceBuilder builder)
     {
         if (descriptions.Count == 0)
+        {
             return;
+        }
 
         builder.AppendLine("/// <returns>");
         descriptions.ToDescription(ref builder);

@@ -8,6 +8,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using TedToolkit.RoslynHelper.Extensions;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -58,7 +59,9 @@ public class ParameterName : BaseName<IParameterSymbol>
             var param = Parameter(Identifier(Name)).WithType(IdentifierName(Type.FullName));
 
             if (Symbol.ScopedKind is not ScopedKind.None)
+            {
                 param = param.AddModifiers(Token(SyntaxKind.ScopedKeyword));
+            }
 
             switch (Symbol.RefKind)
             {
@@ -76,10 +79,14 @@ public class ParameterName : BaseName<IParameterSymbol>
             }
 
             if (Symbol.IsParams)
+            {
                 param = param.AddModifiers(Token(SyntaxKind.ParamsKeyword));
+            }
 
             if (DefaultValueExpression is { } defaultExpression)
+            {
                 param = param.WithDefault(EqualsValueClause(defaultExpression));
+            }
 
             return param;
         }
@@ -94,13 +101,17 @@ public class ParameterName : BaseName<IParameterSymbol>
     private static ExpressionSyntax? GetDefaultValueExpression(IParameterSymbol parameter)
     {
         if (!parameter.HasExplicitDefaultValue)
+        {
             return null;
+        }
 
         var value = parameter.ExplicitDefaultValue;
         var type = parameter.Type;
 
         if (value is null)
+        {
             return LiteralExpression(SyntaxKind.DefaultLiteralExpression);
+        }
 
         switch (type.SpecialType)
         {
