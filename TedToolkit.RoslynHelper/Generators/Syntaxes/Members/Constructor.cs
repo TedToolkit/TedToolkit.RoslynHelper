@@ -16,6 +16,7 @@ public sealed class Constructor :
     IStatementOwner,
     IRootDescription,
     IAttributes,
+    IStatic,
     IUnsafe,
     IPartial,
     IParameters,
@@ -32,7 +33,7 @@ public sealed class Constructor :
 
         this.AddAttributes(ref builder);
         this.AddAccessibility(ref builder);
-
+        this.AddStatic(ref builder);
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);
 
@@ -72,6 +73,9 @@ public sealed class Constructor :
 
     /// <inheritdoc/>
     public bool IsPartial { get; set; }
+
+    /// <inheritdoc/>
+    public bool IsStatic { get; set; }
 
     /// <summary>
     ///  Gets or sets initializer.
