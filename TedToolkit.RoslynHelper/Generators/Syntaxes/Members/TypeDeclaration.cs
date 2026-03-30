@@ -51,12 +51,16 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
         this.AddReadonly(ref builder);
         this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
+        if (type is TypeDeclarationType.REF_STRUCT)
+        {
+            builder.Append("ref ");
+        }
+
         this.AddPartial(ref builder);
         builder.Append(type switch
         {
             TypeDeclarationType.CLASS => "class ",
-            TypeDeclarationType.STRUCT => "struct ",
-            TypeDeclarationType.REF_STRUCT => "ref struct ",
+            TypeDeclarationType.STRUCT or TypeDeclarationType.REF_STRUCT => "struct ",
             TypeDeclarationType.RECORD => "record ",
             TypeDeclarationType.RECORD_STRUCT => "record struct ",
             TypeDeclarationType.INTERFACE => "interface ",
