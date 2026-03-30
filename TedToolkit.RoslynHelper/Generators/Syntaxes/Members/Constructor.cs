@@ -25,6 +25,11 @@ public sealed class Constructor :
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
+        if (string.IsNullOrEmpty(Owner))
+        {
+            throw new InvalidOperationException("Owner is null or empty.");
+        }
+
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
         {
