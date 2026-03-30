@@ -31,9 +31,19 @@ public sealed class Extension(Parameter parameter) :
 
     /// <inheritdoc />
     public List<IMember> Members
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public List<TypeParameter> TypeParameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

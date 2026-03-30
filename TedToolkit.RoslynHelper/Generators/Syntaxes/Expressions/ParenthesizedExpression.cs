@@ -24,5 +24,7 @@ public class ParenthesizedExpression(IExpression expression) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

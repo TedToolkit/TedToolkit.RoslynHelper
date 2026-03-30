@@ -164,5 +164,10 @@ public sealed class Attribute(DataType type) :
 
     /// <inheritdoc />
     public List<Argument> Arguments
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

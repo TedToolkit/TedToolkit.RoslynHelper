@@ -39,7 +39,12 @@ public class TypeName : TypeParametersName<ITypeSymbol>
     ///     Gets the safe name.
     /// </summary>
     public string SafeName
-        => _lazySafeName.Value;
+    {
+        get
+        {
+            return _lazySafeName.Value;
+        }
+    }
 
     private static string GetHashName(string input, int count)
     {

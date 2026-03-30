@@ -26,7 +26,9 @@ public static class SourceComposer
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SourceFile File()
-        => new();
+    {
+        return new();
+    }
 
     /// <summary>
     /// Create a namespace.
@@ -35,7 +37,9 @@ public static class SourceComposer
     /// <returns>namespace.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NameSpace NameSpace(IExpression nameSpace)
-        => new(nameSpace);
+    {
+        return new(nameSpace);
+    }
 
     /// <summary>
     /// Create a namespace.
@@ -44,7 +48,9 @@ public static class SourceComposer
     /// <returns>namespace.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NameSpace NameSpace(in ReadOnlySpan<string> nameSpace)
-        => new(nameSpace);
+    {
+        return new(nameSpace);
+    }
 
     /// <summary>
     /// Create a namespace.
@@ -54,7 +60,9 @@ public static class SourceComposer
     /// <exception cref="ArgumentNullException">the namespace is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NameSpace NameSpace(string nameSpace)
-        => new(nameSpace);
+    {
+        return new(nameSpace);
+    }
 
     /// <summary>
     /// Create an argument by parameter info.
@@ -63,7 +71,9 @@ public static class SourceComposer
     /// <returns>argument.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Argument Argument(ParameterInfo parameterInfo)
-        => Syntaxes.Argument.FromInfo(parameterInfo);
+    {
+        return Syntaxes.Argument.FromInfo(parameterInfo);
+    }
 
     /// <summary>
     /// Create an argument.
@@ -72,7 +82,9 @@ public static class SourceComposer
     /// <returns>argument.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Argument Argument(IExpression variable)
-        => new(variable);
+    {
+        return new(variable);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -82,7 +94,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter<T>(string identifier)
-        => Parameter(typeof(T), identifier);
+    {
+        return Parameter(typeof(T), identifier);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -92,7 +106,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(Type type, string identifier)
-        => new(type, identifier);
+    {
+        return new(type, identifier);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -102,7 +118,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(DataType type, string identifier)
-        => new(type, identifier);
+    {
+        return new(type, identifier);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -112,7 +130,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(IParameterSymbol parameterSymbol, Compilation? compilation = null)
-        => Syntaxes.Parameter.FromSymbol(parameterSymbol, compilation);
+    {
+        return Syntaxes.Parameter.FromSymbol(parameterSymbol, compilation);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -123,7 +143,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(IParameterSymbol parameterSymbol, DataType type, Compilation? compilation = null)
-        => Syntaxes.Parameter.FromSymbol(parameterSymbol, type, compilation);
+    {
+        return Syntaxes.Parameter.FromSymbol(parameterSymbol, type, compilation);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -133,7 +155,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(ParameterInfo parameterInfo, string alias = "global")
-        => Syntaxes.Parameter.FromInfo(parameterInfo, alias);
+    {
+        return Syntaxes.Parameter.FromInfo(parameterInfo, alias);
+    }
 
     /// <summary>
     /// Create the parameter.
@@ -143,7 +167,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Parameter Parameter(ParameterInfo parameterInfo, DataType type)
-        => Syntaxes.Parameter.FromInfo(parameterInfo, type);
+    {
+        return Syntaxes.Parameter.FromInfo(parameterInfo, type);
+    }
 
     /// <summary>
     /// Create an attribute.
@@ -164,7 +190,9 @@ public static class SourceComposer
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Syntaxes.Attribute Attribute(DataType type)
-        => new(type);
+    {
+        return new(type);
+    }
 
     /// <summary>
     /// Create an attribute.
@@ -174,7 +202,9 @@ public static class SourceComposer
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Syntaxes.Attribute Attribute(AttributeData data, Compilation? compilation = null)
-        => Syntaxes.Attribute.FromSymbol(data, compilation);
+    {
+        return Syntaxes.Attribute.FromSymbol(data, compilation);
+    }
 
     /// <summary>
     /// Create the returnType.
@@ -183,7 +213,9 @@ public static class SourceComposer
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReturnType ReturnType(DataType type)
-        => new(type);
+    {
+        return new(type);
+    }
 
     /// <summary>
     /// Create a type parameter.
@@ -192,7 +224,9 @@ public static class SourceComposer
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeParameter TypeParameter(string identifier)
-        => new(identifier);
+    {
+        return new(identifier);
+    }
 
     /// <summary>
     /// Create a type parameter.
@@ -202,7 +236,9 @@ public static class SourceComposer
     /// <returns>attribute.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeParameter TypeParameter(ITypeParameterSymbol symbol, Compilation? compilation = null)
-        => Syntaxes.TypeParameter.FromSymbol(symbol, compilation);
+    {
+        return Syntaxes.TypeParameter.FromSymbol(symbol, compilation);
+    }
 
     /// <summary>
     /// Create an extension.
@@ -211,6 +247,8 @@ public static class SourceComposer
     /// <returns>extension.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Extension Extension(Parameter parameter)
-        => new(parameter);
+    {
+        return new(parameter);
+    }
 }
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type

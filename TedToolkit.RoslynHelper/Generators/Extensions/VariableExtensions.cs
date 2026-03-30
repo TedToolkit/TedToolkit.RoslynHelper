@@ -27,7 +27,10 @@ public static class VariableExtensions
         public SimpleNameExpression Name
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(instance.Variable);
+            get
+            {
+                return new(instance.Variable);
+            }
         }
     }
 }

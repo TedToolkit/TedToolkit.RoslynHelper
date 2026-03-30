@@ -17,7 +17,12 @@ public sealed class InvocationExpression(IExpression member) :
 {
     /// <inheritdoc />
     public List<Argument> Arguments
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -28,5 +33,7 @@ public sealed class InvocationExpression(IExpression member) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

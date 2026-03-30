@@ -96,7 +96,12 @@ public class ParameterName : BaseName<IParameterSymbol>
     ///     Gets the default value expression.
     /// </summary>
     public ExpressionSyntax? DefaultValueExpression
-        => GetDefaultValueExpression(Symbol);
+    {
+        get
+        {
+            return GetDefaultValueExpression(Symbol);
+        }
+    }
 
     private static ExpressionSyntax? GetDefaultValueExpression(IParameterSymbol parameter)
     {

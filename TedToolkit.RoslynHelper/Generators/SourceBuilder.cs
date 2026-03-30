@@ -40,21 +40,27 @@ public record struct SourceBuilder : IDisposable
     /// <inheritdoc />
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
-        => _stringBuilder.Dispose();
+    {
+        _stringBuilder.Dispose();
+    }
 
     /// <summary>
     /// Indent.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Indent()
-        => _indentCount++;
+    {
+        _indentCount++;
+    }
 
     /// <summary>
     /// Dedent.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dedent()
-        => _indentCount--;
+    {
+        _indentCount--;
+    }
 
     /// <inheritdoc cref="Utf16ValueStringBuilder.AppendLine()"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -85,24 +91,32 @@ public record struct SourceBuilder : IDisposable
     /// <inheritdoc cref="Utf16ValueStringBuilder.Append(string)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(string value)
-        => _stringBuilder.Append(value);
+    {
+        _stringBuilder.Append(value);
+    }
 
     /// <inheritdoc cref="Utf16ValueStringBuilder.Append(char)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(char value)
-        => _stringBuilder.Append(value);
+    {
+        _stringBuilder.Append(value);
+    }
 
     /// <inheritdoc cref="Utf16ValueStringBuilder.Append(char, int)"/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(char value, int repeatCount)
-        => _stringBuilder.Append(value, repeatCount);
+    {
+        _stringBuilder.Append(value, repeatCount);
+    }
 
     /// <summary>
     /// AppendSpace.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AppendSpace()
-        => _stringBuilder.Append(' ');
+    {
+        _stringBuilder.Append(' ');
+    }
 
     /// <summary>
     /// Begin a block.
@@ -131,5 +145,7 @@ public record struct SourceBuilder : IDisposable
     /// </summary>
     /// <returns>codes.</returns>
     public string ToCode()
-        => _stringBuilder.ToString();
+    {
+        return _stringBuilder.ToString();
+    }
 }

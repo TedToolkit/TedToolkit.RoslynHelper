@@ -25,5 +25,7 @@ public sealed class AliasExpression(string alias, IExpression expression) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

@@ -40,13 +40,22 @@ public sealed class ReturnType(DataType type) :
 
     /// <inheritdoc />
     public List<IDescriptionItem> Descriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public IRootDescriptionItem ToRoot()
-        => new DescriptionReturns(Descriptions);
+    {
+        return new DescriptionReturns(Descriptions);
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => type.ToCode(ref builder);
+    {
+        type.ToCode(ref builder);
+    }
 }

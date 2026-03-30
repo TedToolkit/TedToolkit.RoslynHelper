@@ -25,5 +25,7 @@ public sealed class MemberAccessExpression(IExpression left, IExpression right) 
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

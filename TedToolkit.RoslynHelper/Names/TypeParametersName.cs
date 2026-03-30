@@ -34,11 +34,21 @@ public abstract class TypeParametersName<T> : BaseName<T>, ITypeParametersName
 
     /// <inheritdoc />
     public bool HasTypeParameters
-        => TypeParameters.Count > 0;
+    {
+        get
+        {
+            return TypeParameters.Count > 0;
+        }
+    }
 
     /// <inheritdoc />
     public IReadOnlyList<TypeParamName> TypeParameters
-        => _lazyTypeParameters.Value;
+    {
+        get
+        {
+            return _lazyTypeParameters.Value;
+        }
+    }
 
     /// <summary>
     /// Get the type parameters.

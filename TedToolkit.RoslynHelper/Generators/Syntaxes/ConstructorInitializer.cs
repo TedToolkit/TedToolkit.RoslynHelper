@@ -17,7 +17,12 @@ public sealed class ConstructorInitializer(bool isBase) :
 {
     /// <inheritdoc />
     public List<Argument> Arguments
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

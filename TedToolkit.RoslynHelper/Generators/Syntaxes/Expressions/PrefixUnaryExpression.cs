@@ -25,5 +25,7 @@ public sealed class PrefixUnaryExpression(string @operator, IExpression expressi
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

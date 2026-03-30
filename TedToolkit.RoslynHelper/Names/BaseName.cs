@@ -46,27 +46,57 @@ public abstract class BaseName<T> : IName<T>
 
     /// <inheritdoc />
     public string Name
-        => Symbol.Name;
+    {
+        get
+        {
+            return Symbol.Name;
+        }
+    }
 
     /// <inheritdoc />
     public string MiniName
-        => _lazyMiniName.Value;
+    {
+        get
+        {
+            return _lazyMiniName.Value;
+        }
+    }
 
     /// <inheritdoc />
     public string FullNameNoGlobal
-        => _lazyFullNameNoGlobal.Value;
+    {
+        get
+        {
+            return _lazyFullNameNoGlobal.Value;
+        }
+    }
 
     /// <inheritdoc />
     public string FullName
-        => _lazyFullName.Value;
+    {
+        get
+        {
+            return _lazyFullName.Value;
+        }
+    }
 
     /// <inheritdoc />
     public string FullNameNull
-        => _lazyFullNameNull.Value;
+    {
+        get
+        {
+            return _lazyFullNameNull.Value;
+        }
+    }
 
     /// <inheritdoc />
     public string SummaryName
-        => _lazySummaryName.Value;
+    {
+        get
+        {
+            return _lazySummaryName.Value;
+        }
+    }
 
     /// <summary>
     /// Get the summary name.
@@ -79,5 +109,7 @@ public abstract class BaseName<T> : IName<T>
     }
 
     private static string ToSummary(string name)
-        => name.Replace('<', '{').Replace('>', '}');
+    {
+        return name.Replace('<', '{').Replace('>', '}');
+    }
 }

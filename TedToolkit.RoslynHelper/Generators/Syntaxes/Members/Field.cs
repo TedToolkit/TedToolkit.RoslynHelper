@@ -44,7 +44,12 @@ public sealed class Field(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public bool IsStatic { get; set; }
@@ -57,11 +62,21 @@ public sealed class Field(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
 
     /// <inheritdoc />
     public IExpression? Default { get; set; }

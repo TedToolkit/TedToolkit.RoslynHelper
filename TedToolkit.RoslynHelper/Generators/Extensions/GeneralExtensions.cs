@@ -48,7 +48,9 @@ public static class GeneralExtensions
         /// </summary>
         /// <returns>argument Name.</returns>
         public string ToValidIdentifier()
-            => _keywords.Contains(value) ? ZString.Concat('@', value) : value;
+        {
+            return _keywords.Contains(value) ? ZString.Concat('@', value) : value;
+        }
 
         /// <summary>
         /// To the valid literal.
@@ -242,7 +244,9 @@ public static class GeneralExtensions
         /// </summary>
         /// <returns>version.</returns>
         public string GetVersion()
-            => value.Assembly.GetName().Version.ToString();
+        {
+            return value.Assembly.GetName().Version.ToString();
+        }
     }
 #pragma warning restore S2325, CA1034
 

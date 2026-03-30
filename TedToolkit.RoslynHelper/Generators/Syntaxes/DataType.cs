@@ -69,7 +69,10 @@ public sealed class DataType(IExpression type) :
     public ObjectCreationExpression New
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => new(this);
+        get
+        {
+            return new(this);
+        }
     }
 
     /// <summary>
@@ -178,7 +181,9 @@ public sealed class DataType(IExpression type) :
     /// <param name="value">value.</param>
     /// <returns>result.</returns>
     public static implicit operator DataType(Type value)
-        => FromType(value);
+    {
+        return FromType(value);
+    }
 
     /// <summary>
     /// From Type.
@@ -188,7 +193,9 @@ public sealed class DataType(IExpression type) :
     /// <returns>Expression.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DataType FromType<T>(string alias = "global")
-        => FromType(typeof(T), alias);
+    {
+        return FromType(typeof(T), alias);
+    }
 
     /// <summary>
     /// From the type.
@@ -269,103 +276,188 @@ public sealed class DataType(IExpression type) :
     /// Gets <see langword="var"/>.
     /// </summary>
     public static DataType Var
-        => new(new SimpleNameExpression("var"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("var"));
+        }
+    }
 #pragma warning disable CA1720
     /// <summary>
     /// Gets <see langword="string"/>.
     /// </summary>
     public static DataType String
-        => new(new SimpleNameExpression("string"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("string"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="char"/>.
     /// </summary>
     public static DataType Char
-        => new(new SimpleNameExpression("char"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("char"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="byte"/>.
     /// </summary>
     public static DataType Byte
-        => new(new SimpleNameExpression("byte"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("byte"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="sbyte"/>.
     /// </summary>
     public static DataType Sbyte
-        => new(new SimpleNameExpression("sbyte"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("sbyte"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="short"/>.
     /// </summary>
     public static DataType Short
-        => new(new SimpleNameExpression("short"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("short"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="ushort"/>.
     /// </summary>
     public static DataType Ushort
-        => new(new SimpleNameExpression("ushort"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("ushort"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="int"/>.
     /// </summary>
     public static DataType Int
-        => new(new SimpleNameExpression("int"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("int"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="uint"/>.
     /// </summary>
     public static DataType Uint
-        => new(new SimpleNameExpression("uint"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("uint"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="long"/>.
     /// </summary>
     public static DataType Long
-        => new(new SimpleNameExpression("long"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("long"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="ulong"/>.
     /// </summary>
     public static DataType Ulong
-        => new(new SimpleNameExpression("ulong"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("ulong"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="bool"/>.
     /// </summary>
     public static DataType Bool
-        => new(new SimpleNameExpression("bool"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("bool"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="double"/>.
     /// </summary>
     public static DataType Double
-        => new(new SimpleNameExpression("double"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("double"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="float"/>.
     /// </summary>
     public static DataType Float
-        => new(new SimpleNameExpression("float"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("float"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="decimal"/>.
     /// </summary>
     public static DataType Decimal
-        => new(new SimpleNameExpression("decimal"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("decimal"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="object"/>.
     /// </summary>
     public static DataType Object
-        => new(new SimpleNameExpression("object"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("object"));
+        }
+    }
 
     /// <summary>
     /// Gets <see langword="void"/>.
     /// </summary>
     public static DataType Void
-        => new(new SimpleNameExpression("void"));
+    {
+        get
+        {
+            return new(new SimpleNameExpression("void"));
+        }
+    }
 #pragma warning restore CA1720
 
     private static readonly Dictionary<Type, Func<DataType>> _typeAlias = new()
@@ -390,5 +482,7 @@ public sealed class DataType(IExpression type) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => Type.ToCref(ref builder);
+    {
+        Type.ToCref(ref builder);
+    }
 }

@@ -55,7 +55,9 @@ public class MethodName : TypeParametersName<IMethodSymbol>
 
     /// <inheritdoc/>
     private protected override IEnumerable<ITypeParameterSymbol> GetTypeParameters(IMethodSymbol symbol)
-        => symbol.TypeParameters;
+    {
+        return symbol.TypeParameters;
+    }
 
     /// <inheritdoc/>
     private protected override string GetSummaryName()

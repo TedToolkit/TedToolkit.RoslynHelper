@@ -19,11 +19,21 @@ public sealed class CatchClause(DataType dataType, string? identifier = null) :
 {
     /// <inheritdoc/>
     public string Variable
-        => identifier?.ToValidIdentifier() ?? "";
+    {
+        get
+        {
+            return identifier?.ToValidIdentifier() ?? "";
+        }
+    }
 
     /// <inheritdoc/>
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
