@@ -12,14 +12,14 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// </summary>
 /// <param name="dataType">data type.</param>
 /// <param name="identifier">identifier.</param>
-public sealed class CatchClause(DataType dataType, string identifier) :
+public sealed class CatchClause(DataType dataType, string? identifier = null) :
     IStatementOwner,
     IVariable,
     IToCode
 {
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+        => identifier?.ToValidIdentifier() ?? "";
 
     /// <inheritdoc/>
     public List<IStatement> Statements
@@ -30,8 +30,12 @@ public sealed class CatchClause(DataType dataType, string identifier) :
     {
         builder.Append("catch(");
         dataType.ToCode(ref builder);
-        builder.Append(' ');
-        builder.Append(Variable);
+        if (!string.IsNullOrEmpty(Variable))
+        {
+            builder.Append(' ');
+            builder.Append(Variable);
+        }
+
         builder.Append(')');
         this.AddStatements(ref builder);
     }
