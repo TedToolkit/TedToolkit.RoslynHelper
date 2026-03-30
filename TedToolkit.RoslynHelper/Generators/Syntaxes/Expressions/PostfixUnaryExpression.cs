@@ -25,5 +25,7 @@ public sealed class PostfixUnaryExpression(IExpression expression, string @opera
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

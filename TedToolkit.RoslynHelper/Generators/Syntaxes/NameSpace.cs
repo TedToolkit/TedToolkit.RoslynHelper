@@ -19,7 +19,12 @@ public sealed class NameSpace(IExpression name) :
 {
     /// <inheritdoc />
     public List<IMember> Members
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NameSpace"/> class.

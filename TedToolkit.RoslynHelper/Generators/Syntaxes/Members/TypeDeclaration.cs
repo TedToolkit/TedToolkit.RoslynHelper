@@ -106,7 +106,12 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
 
     /// <inheritdoc />
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Gets the base DataTypes.
@@ -158,23 +163,43 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
 
     /// <inheritdoc />
     public List<IMember> Members
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }
 
     /// <inheritdoc />
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public List<Parameter> Parameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public Polymorphism Polymorphism { get; set; }
 
     /// <inheritdoc />
     public List<TypeParameter> TypeParameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

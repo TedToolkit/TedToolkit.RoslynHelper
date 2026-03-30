@@ -26,5 +26,10 @@ public sealed class UsingStatement(IExpression expression) :
 
     /// <inheritdoc />
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

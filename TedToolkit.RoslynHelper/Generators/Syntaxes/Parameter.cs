@@ -272,15 +272,27 @@ public sealed class Parameter(DataType type, string identifier) :
 
     /// <inheritdoc />
     public List<IDescriptionItem> Descriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public IRootDescriptionItem ToRoot()
-        => new DescriptionParam(Variable, Descriptions);
+    {
+        return new DescriptionParam(Variable, Descriptions);
+    }
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
 
     /// <inheritdoc/>
     public IExpression? Default { get; set; }
@@ -308,7 +320,12 @@ public sealed class Parameter(DataType type, string identifier) :
 
     /// <inheritdoc />
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Gets or sets parameter Kind.

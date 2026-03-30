@@ -17,7 +17,12 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
 {
     /// <inheritdoc />
     public List<Argument> Arguments
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
@@ -55,7 +60,9 @@ public sealed class ObjectCreationExpression(DataType? dataType = null) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 
     /// <summary>
     /// Gets some variables.

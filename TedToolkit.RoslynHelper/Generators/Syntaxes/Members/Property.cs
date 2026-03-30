@@ -27,7 +27,12 @@ public sealed class Property(DataType type, string identifier) :
 {
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
 
     /// <inheritdoc />
     public Accessibility Accessibility { get; set; }
@@ -69,15 +74,30 @@ public sealed class Property(DataType type, string identifier) :
 
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public List<Accessor> Accessors
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }

@@ -16,7 +16,12 @@ public sealed class FinallyClause :
 {
     /// <inheritdoc/>
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)

@@ -105,7 +105,9 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
-        => obj is MethodSignature other && Equals(other);
+    {
+        return obj is MethodSignature other && Equals(other);
+    }
 
     /// <inheritdoc />
     public override int GetHashCode()
@@ -126,7 +128,9 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     /// <param name="right">right.</param>
     /// <returns>result.</returns>
     public static bool operator ==(in MethodSignature left, in MethodSignature right)
-        => left.Equals(right);
+    {
+        return left.Equals(right);
+    }
 
     /// <summary>
     /// Not Equal.
@@ -135,5 +139,7 @@ public readonly struct MethodSignature(IMethodSymbol methodSymbol) : IEquatable<
     /// <param name="right">right.</param>
     /// <returns>result.</returns>
     public static bool operator !=(in MethodSignature left, in MethodSignature right)
-        => !(left == right);
+    {
+        return !(left == right);
+    }
 }

@@ -26,5 +26,10 @@ public sealed class IfStatement(IExpression expression) :
 
     /// <inheritdoc/>
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

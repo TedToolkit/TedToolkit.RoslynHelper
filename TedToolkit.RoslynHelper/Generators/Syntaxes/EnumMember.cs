@@ -19,11 +19,21 @@ public sealed class EnumMember(string identifier, IExpression? value = null) :
 {
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

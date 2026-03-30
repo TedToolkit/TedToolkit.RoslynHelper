@@ -54,17 +54,37 @@ public sealed class Indexer(DataType type) :
 
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Accessor> Accessors
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Parameter> Parameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

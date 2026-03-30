@@ -19,7 +19,9 @@ public sealed class Custom(SourceBuilderHandler action) :
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => action(ref builder);
+    {
+        action(ref builder);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Custom"/> class.

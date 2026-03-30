@@ -57,7 +57,12 @@ public class TypeParamName : BaseName<ITypeParameterSymbol>, ITypeParamName
     ///     Gets the Syntax name.
     /// </summary>
     public string SyntaxName
-        => Prefix + Symbol.Name;
+    {
+        get
+        {
+            return Prefix + Symbol.Name;
+        }
+    }
 
     /// <summary>
     /// Gets constraint.

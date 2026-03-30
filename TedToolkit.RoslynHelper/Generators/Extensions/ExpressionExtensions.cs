@@ -29,7 +29,9 @@ public static class ExpressionExtensions
         /// <returns>expression.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TypeParameterExpression Generic(params DataType[] types)
-            => new(expression, types);
+        {
+            return new(expression, types);
+        }
 
         /// <summary>
         /// Gets make Null.
@@ -37,7 +39,10 @@ public static class ExpressionExtensions
         public NullExpression Null
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -46,7 +51,10 @@ public static class ExpressionExtensions
         public NotExpression Not
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -55,7 +63,10 @@ public static class ExpressionExtensions
         public RefExpression Ref
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -64,7 +75,10 @@ public static class ExpressionExtensions
         public RefReadonlyExpression RefReadonly
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -73,7 +87,10 @@ public static class ExpressionExtensions
         public ParenthesizedExpression Wrap
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -82,7 +99,10 @@ public static class ExpressionExtensions
         public ParenthesizedExpression Parenthesized
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -91,7 +111,10 @@ public static class ExpressionExtensions
         public ReturnStatement Return
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -100,7 +123,10 @@ public static class ExpressionExtensions
         public IfStatement If
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -109,7 +135,10 @@ public static class ExpressionExtensions
         public ObjectCreationExpression New
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(new DataType(expression));
+            get
+            {
+                return new(new DataType(expression));
+            }
         }
 
         /// <summary>
@@ -118,7 +147,10 @@ public static class ExpressionExtensions
         public ThrowExpression Throw
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -127,7 +159,10 @@ public static class ExpressionExtensions
         public UsingStatement Using
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => new(expression);
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
@@ -138,7 +173,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ForEachStatement ForEach(scoped in DataType type, string identifier)
-            => new(type, identifier, expression);
+        {
+            return new(type, identifier, expression);
+        }
 
         /// <summary>
         /// For each.
@@ -148,7 +185,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ForEachStatement ForEach(Type type, string identifier)
-            => new(DataType.FromType(type), identifier, expression);
+        {
+            return new(DataType.FromType(type), identifier, expression);
+        }
 
         /// <summary>
         /// For each.
@@ -158,7 +197,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ForEachStatement ForEach<T>(string identifier)
-            => new(DataType.FromType<T>(), identifier, expression);
+        {
+            return new(DataType.FromType<T>(), identifier, expression);
+        }
 
         /// <summary>
         /// Invoke.
@@ -166,7 +207,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public InvocationExpression Invoke()
-            => new(expression);
+        {
+            return new(expression);
+        }
 
         /// <summary>
         /// Cast.
@@ -175,7 +218,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CastExpression Cast(scoped in DataType type)
-            => new(type, expression);
+        {
+            return new(type, expression);
+        }
 
         /// <summary>
         /// Cast.
@@ -184,7 +229,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CastExpression Cast(Type type)
-            => new(DataType.FromType(type), expression);
+        {
+            return new(DataType.FromType(type), expression);
+        }
 
         /// <summary>
         /// Cast.
@@ -193,7 +240,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CastExpression Cast<T>()
-            => new(DataType.FromType<T>(), expression);
+        {
+            return new(DataType.FromType<T>(), expression);
+        }
 
         /// <summary>
         /// Postfix.
@@ -202,7 +251,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PostfixUnaryExpression Postfix(string @operator)
-            => new(expression, @operator);
+        {
+            return new(expression, @operator);
+        }
 
         /// <summary>
         /// Prefix.
@@ -211,7 +262,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PrefixUnaryExpression Prefix(string @operator)
-            => new(@operator, expression);
+        {
+            return new(@operator, expression);
+        }
 
         /// <summary>
         /// Prefix.
@@ -221,7 +274,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BinaryExpression Operator(string @operator, IExpression right)
-            => new(@operator, expression, right);
+        {
+            return new(@operator, expression, right);
+        }
 
         /// <summary>
         /// Create the sub items.
@@ -230,7 +285,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MemberAccessExpression Sub(IExpression right)
-            => new(expression, right);
+        {
+            return new(expression, right);
+        }
 
         /// <summary>
         /// Create the sub items.
@@ -260,7 +317,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
 
         /// <summary>
         /// To Expression.
@@ -268,7 +327,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SimpleNameExpression ToSimpleName()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -281,7 +342,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -294,7 +357,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -307,7 +372,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -320,7 +387,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -333,7 +402,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -346,7 +417,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -359,7 +432,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -372,7 +447,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -385,7 +462,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LiteralExpression ToLiteral()
-            => new(value);
+        {
+            return new(value);
+        }
     }
 
 #pragma warning disable CA1034
@@ -399,7 +478,9 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MemberAccessExpression ToExpression()
-            => new(DataType.FromType<TEnum>().Type, value.ToString().ToSimpleName());
+        {
+            return new(DataType.FromType<TEnum>().Type, value.ToString().ToSimpleName());
+        }
     }
 
 #pragma warning disable CA1034
@@ -412,6 +493,8 @@ public static class ExpressionExtensions
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IExpression ToExpression()
-            => DataType.FromType(type).Type;
+        {
+            return DataType.FromType(type).Type;
+        }
     }
 }

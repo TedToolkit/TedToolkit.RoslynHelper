@@ -40,7 +40,12 @@ public sealed class Accessor(AccessorType type) :
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
@@ -50,7 +55,12 @@ public sealed class Accessor(AccessorType type) :
 
     /// <inheritdoc/>
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }

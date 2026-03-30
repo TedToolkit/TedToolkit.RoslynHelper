@@ -20,11 +20,15 @@ public sealed class LiteralExpression : IExpression
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => builder.Append(_value);
+    {
+        builder.Append(_value);
+    }
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -32,7 +36,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(string value)
-        => _value = ZString.Concat('"', value?.ToValidLiteral(), '"');
+    {
+        _value = ZString.Concat('"', value?.ToValidLiteral(), '"');
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -40,7 +46,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(char value)
-        => _value = ZString.Concat('\'', value.ToValidLiteral(), '\'');
+    {
+        _value = ZString.Concat('\'', value.ToValidLiteral(), '\'');
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -48,7 +56,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(byte value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -56,7 +66,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(sbyte value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -64,7 +76,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(short value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -72,7 +86,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(ushort value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -80,7 +96,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(int value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -88,7 +106,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(uint value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -96,7 +116,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(long value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -104,7 +126,9 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(ulong value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
@@ -112,51 +136,75 @@ public sealed class LiteralExpression : IExpression
     /// </summary>
     /// <param name="value">value.</param>
     public LiteralExpression(bool value)
-        => _value = value.ToString(CultureInfo.InvariantCulture);
+    {
+        _value = value.ToString(CultureInfo.InvariantCulture);
+    }
 #pragma warning disable CA2225
 
     /// <inheritdoc cref="LiteralExpression(char)"/>
     public static implicit operator LiteralExpression(char value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(string)"/>
     public static implicit operator LiteralExpression(string value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(byte)"/>
     public static implicit operator LiteralExpression(byte value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(sbyte)"/>
     public static implicit operator LiteralExpression(sbyte value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(short)"/>
     public static implicit operator LiteralExpression(short value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(ushort)"/>
     public static implicit operator LiteralExpression(ushort value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(int)"/>
     public static implicit operator LiteralExpression(int value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(uint)"/>
     public static implicit operator LiteralExpression(uint value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(long)"/>
     public static implicit operator LiteralExpression(long value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(ulong)"/>
     public static implicit operator LiteralExpression(ulong value)
-        => new(value);
+    {
+        return new(value);
+    }
 
     /// <inheritdoc cref="LiteralExpression(bool)"/>
     public static implicit operator LiteralExpression(bool value)
-        => new(value);
+    {
+        return new(value);
+    }
 #pragma warning restore CA2225
 }

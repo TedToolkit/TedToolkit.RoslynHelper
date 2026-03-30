@@ -79,11 +79,21 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc/>
     public List<Parameter> Parameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
@@ -102,16 +112,31 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc />
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }
 
     /// <inheritdoc />
     public List<TypeParameter> TypeParameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

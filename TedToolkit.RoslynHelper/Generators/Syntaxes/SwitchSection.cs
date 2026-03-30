@@ -35,7 +35,12 @@ public sealed class SwitchSection :
 
     /// <inheritdoc />
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Gets the labels.

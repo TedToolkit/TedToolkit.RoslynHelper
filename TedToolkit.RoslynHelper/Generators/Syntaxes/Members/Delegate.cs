@@ -57,11 +57,21 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc/>
     public List<Parameter> Parameters
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
@@ -71,5 +81,10 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

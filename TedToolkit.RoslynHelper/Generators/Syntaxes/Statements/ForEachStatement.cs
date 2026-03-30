@@ -33,9 +33,19 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
 
     /// <inheritdoc/>
     public List<IStatement> Statements
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

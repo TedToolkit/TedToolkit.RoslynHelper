@@ -43,7 +43,9 @@ public static class SymbolExtensions
     /// <param name="symbol">Symbol.</param>
     /// <returns>Name.</returns>
     public static TypeName GetName(this ITypeSymbol symbol)
-        => new(symbol);
+    {
+        return new(symbol);
+    }
 
     /// <summary>
     ///     Get the type name.
@@ -51,7 +53,9 @@ public static class SymbolExtensions
     /// <param name="symbol">Symbol.</param>
     /// <returns>Name.</returns>
     public static TypeParamName GetName(this ITypeParameterSymbol symbol)
-        => new(symbol);
+    {
+        return new(symbol);
+    }
 
     /// <summary>
     ///     Get the type name.
@@ -91,7 +95,9 @@ public static class SymbolExtensions
     /// <param name="symbols">Symbols.</param>
     /// <returns>result.</returns>
     public static IEnumerable<TypeParamName> GetNames(this IEnumerable<ITypeParameterSymbol> symbols)
-        => symbols.Select(GetName);
+    {
+        return symbols.Select(GetName);
+    }
 
     /// <summary>
     ///     Get the type name.
@@ -99,7 +105,9 @@ public static class SymbolExtensions
     /// <param name="symbols">Symbols.</param>
     /// <returns>result.</returns>
     public static IEnumerable<ParameterName> GetNames(this IEnumerable<IParameterSymbol> symbols)
-        => symbols.Select(GetName);
+    {
+        return symbols.Select(GetName);
+    }
 
     /// <summary>
     ///     Get the extension methods for.
@@ -128,7 +136,9 @@ public static class SymbolExtensions
     /// <param name="namespaceSymbol">namespace.</param>
     /// <returns>result.</returns>
     public static IEnumerable<INamedTypeSymbol> GetAllStaticClasses(this INamespaceSymbol namespaceSymbol)
-        => namespaceSymbol.GetAllTypes().Where(t => t.IsStatic && t.TypeKind == TypeKind.Class);
+    {
+        return namespaceSymbol.GetAllTypes().Where(t => t.IsStatic && t.TypeKind == TypeKind.Class);
+    }
 
     /// <summary>
     ///     Get all types in a namespace.

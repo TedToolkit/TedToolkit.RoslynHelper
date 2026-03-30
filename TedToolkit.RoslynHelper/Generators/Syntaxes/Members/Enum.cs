@@ -66,7 +66,12 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
 
     /// <inheritdoc/>
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Gets the enum members.
@@ -90,5 +95,10 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
 
     /// <inheritdoc/>
     public List<IRootDescriptionItem> RootDescriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 }

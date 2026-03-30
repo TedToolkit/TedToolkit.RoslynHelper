@@ -37,7 +37,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Class(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.CLASS);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.CLASS);
+    }
 
     /// <summary>
     /// Create a <see langword="struct"/>.
@@ -46,7 +48,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Struct(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.STRUCT);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.STRUCT);
+    }
 
     /// <summary>
     /// Create a <see langword="ref"/> <see langword="struct"/>.
@@ -55,7 +59,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration RefStruct(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.REF_STRUCT);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.REF_STRUCT);
+    }
 
     /// <summary>
     /// Create a <see langword="record"/>.
@@ -64,7 +70,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Record(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.RECORD);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.RECORD);
+    }
 
     /// <summary>
     /// Create a <see langword="record"/> <see langword="struct"/>.
@@ -73,7 +81,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration RecordStruct(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.RECORD_STRUCT);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.RECORD_STRUCT);
+    }
 
     /// <summary>
     /// Create a <see langword="interface"/>.
@@ -82,7 +92,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>class.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Interface(string identifier)
-        => TypeDeclaration(identifier, TypeDeclarationType.INTERFACE);
+    {
+        return TypeDeclaration(identifier, TypeDeclarationType.INTERFACE);
+    }
 
     private static TypeDeclaration TypeDeclaration(string identifier, TypeDeclarationType type)
     {
@@ -113,7 +125,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Event Event<T>(string identifier)
-        => Event(typeof(T), identifier);
+    {
+        return Event(typeof(T), identifier);
+    }
 
     /// <summary>
     /// Create the Field.
@@ -137,7 +151,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Field Field<T>(string identifier)
-        => Field(typeof(T), identifier);
+    {
+        return Field(typeof(T), identifier);
+    }
 
     /// <summary>
     /// Create the Accessor.
@@ -160,7 +176,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>parameter.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Property Property<T>(string identifier)
-        => Property(DataType.FromType<T>(), identifier);
+    {
+        return Property(DataType.FromType<T>(), identifier);
+    }
 
     /// <summary>
     /// Create the property.
@@ -317,7 +335,9 @@ public static class SourceComposer<TGenerator>
     /// <returns>indexer.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Indexer Indexer<T>()
-        => Indexer(DataType.FromType<T>());
+    {
+        return Indexer(DataType.FromType<T>());
+    }
 
     /// <summary>
     /// Create an indexer.

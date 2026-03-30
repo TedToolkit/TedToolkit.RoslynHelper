@@ -28,6 +28,8 @@ public static class RootDescriptionExtensions
         }
 
         internal void AddDescriptions(ref SourceBuilder builder)
-            => instance.RootDescriptions.ToDescription(ref builder);
+        {
+            instance.RootDescriptions.ToDescription(ref builder);
+        }
     }
 }

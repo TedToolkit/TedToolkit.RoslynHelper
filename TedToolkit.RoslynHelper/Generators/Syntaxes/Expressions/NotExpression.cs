@@ -22,5 +22,7 @@ public sealed class NotExpression(IExpression expression) : IExpression
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }

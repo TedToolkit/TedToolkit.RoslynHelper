@@ -49,11 +49,18 @@ public sealed class VariableExpression(DataType type, string identifier) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 
     /// <inheritdoc/>
     public string Variable
-        => identifier.ToValidIdentifier();
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
 
     /// <inheritdoc/>
     public bool IsConst { get; set; }

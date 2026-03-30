@@ -24,19 +24,36 @@ public sealed class TypeParameter(string identifier) :
 {
     /// <inheritdoc />
     public List<IDescriptionItem> Descriptions
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <inheritdoc />
     public IRootDescriptionItem ToRoot()
-        => new DescriptionTypeParam(Variable, Descriptions);
+    {
+        return new DescriptionTypeParam(Variable, Descriptions);
+    }
 
     /// <inheritdoc/>
     public string Variable
-        => identifier;
+    {
+        get
+        {
+            return identifier;
+        }
+    }
 
     /// <inheritdoc />
     public List<Attribute> Attributes
-        => field ??= [];
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
 
     /// <summary>
     /// Gets constraints.

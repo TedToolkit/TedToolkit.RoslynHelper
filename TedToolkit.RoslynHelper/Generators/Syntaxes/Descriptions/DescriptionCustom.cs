@@ -19,7 +19,9 @@ public class DescriptionCustom(SourceBuilderHandler handler) :
 {
     /// <inheritdoc />
     public void ToDescription(ref SourceBuilder builder)
-        => handler(ref builder);
+    {
+        handler(ref builder);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DescriptionCustom"/> class.

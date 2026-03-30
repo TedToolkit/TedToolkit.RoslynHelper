@@ -18,7 +18,9 @@ public sealed class CustomExpression(SourceBuilderHandler action) :
 {
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
-        => action(ref builder);
+    {
+        action(ref builder);
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CustomExpression"/> class.
@@ -32,5 +34,7 @@ public sealed class CustomExpression(SourceBuilderHandler action) :
 
     /// <inheritdoc />
     public void ToCref(ref SourceBuilder builder)
-        => ToCode(ref builder);
+    {
+        ToCode(ref builder);
+    }
 }
