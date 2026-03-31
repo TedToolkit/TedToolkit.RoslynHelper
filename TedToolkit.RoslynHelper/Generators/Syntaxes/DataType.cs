@@ -211,6 +211,8 @@ public sealed class DataType(IExpression type) :
             throw new ArgumentNullException(nameof(type));
         }
 
+        type = type.IsByRef ? type.GetElementType() ?? type : type;
+
         if (_typeAlias.TryGetValue(type, out var s))
         {
             return s();
