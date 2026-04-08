@@ -19,7 +19,7 @@ public interface ITypeParametersName
     bool HasTypeParameters { get; }
 
     /// <summary>
-    ///     Gets get the type parameters symbol.
+    ///     Gets the type parameters symbol.
     /// </summary>
     IReadOnlyList<TypeParamName> TypeParameters { get; }
 }

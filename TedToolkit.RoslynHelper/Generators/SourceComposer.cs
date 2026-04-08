@@ -23,7 +23,7 @@ public static class SourceComposer
     /// <summary>
     /// Create a file.
     /// </summary>
-    /// <returns>class.</returns>
+    /// <returns>file.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SourceFile File()
     {

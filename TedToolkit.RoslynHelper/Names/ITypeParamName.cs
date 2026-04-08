@@ -26,7 +26,7 @@ public interface ITypeParamName
     string SyntaxName { get; }
 
     /// <summary>
-    ///     Gets tHe Constraint clause.
+    ///     Gets the constraint clause.
     /// </summary>
     TypeParameterConstraintClauseSyntax? ConstraintClause { get; }
 }

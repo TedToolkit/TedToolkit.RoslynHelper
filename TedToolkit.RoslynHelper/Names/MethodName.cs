@@ -80,11 +80,11 @@ public class MethodName : TypeParametersName<IMethodSymbol>
                     break;
 
                 case RefKind.Out:
-                    stringBuilder.Append("in ");
+                    stringBuilder.Append("out ");
                     break;
 
                 case RefKind.In:
-                    stringBuilder.Append("out ");
+                    stringBuilder.Append("in ");
                     break;
             }
 

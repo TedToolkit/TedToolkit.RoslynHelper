@@ -22,7 +22,7 @@ public static class VariableExtensions
 #pragma warning restore CA1034
     {
         /// <summary>
-        /// Gets get the name.
+        /// Gets the name.
         /// </summary>
         public SimpleNameExpression Name
         {
