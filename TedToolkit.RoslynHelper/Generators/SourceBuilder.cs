@@ -22,7 +22,7 @@ public record struct SourceBuilder : IDisposable
     private Utf16ValueStringBuilder _stringBuilder;
 
     /// <summary>
-    /// The cound of the indent.
+    /// The count of the indent.
     /// </summary>
     private byte _indentCount;
 

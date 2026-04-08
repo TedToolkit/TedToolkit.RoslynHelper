@@ -11,7 +11,7 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// The Conversion things.
 /// </summary>
 /// <param name="type">Type.</param>
-/// <param name="isFrom">Is form.</param>
+/// <param name="isFrom">Is from.</param>
 /// <param name="isImplicit">is implicit.</param>
 public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
     IMember,

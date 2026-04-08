@@ -45,7 +45,7 @@ public static class SourceComposer<TGenerator>
     /// Create a <see langword="struct"/>.
     /// </summary>
     /// <param name="identifier">identifier.</param>
-    /// <returns>class.</returns>
+    /// <returns>struct.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Struct(string identifier)
     {
@@ -56,7 +56,7 @@ public static class SourceComposer<TGenerator>
     /// Create a <see langword="ref"/> <see langword="struct"/>.
     /// </summary>
     /// <param name="identifier">identifier.</param>
-    /// <returns>class.</returns>
+    /// <returns>ref struct.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration RefStruct(string identifier)
     {
@@ -67,7 +67,7 @@ public static class SourceComposer<TGenerator>
     /// Create a <see langword="record"/>.
     /// </summary>
     /// <param name="identifier">identifier.</param>
-    /// <returns>class.</returns>
+    /// <returns>record.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Record(string identifier)
     {
@@ -78,7 +78,7 @@ public static class SourceComposer<TGenerator>
     /// Create a <see langword="record"/> <see langword="struct"/>.
     /// </summary>
     /// <param name="identifier">identifier.</param>
-    /// <returns>class.</returns>
+    /// <returns>record struct.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration RecordStruct(string identifier)
     {
@@ -89,7 +89,7 @@ public static class SourceComposer<TGenerator>
     /// Create a <see langword="interface"/>.
     /// </summary>
     /// <param name="identifier">identifier.</param>
-    /// <returns>class.</returns>
+    /// <returns>interface.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static TypeDeclaration Interface(string identifier)
     {
@@ -108,7 +108,7 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="type">type.</param>
     /// <param name="identifier">identifier.</param>
-    /// <returns>parameter.</returns>
+    /// <returns>event.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Event Event(DataType type, string identifier)
     {
@@ -122,7 +122,7 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
     /// <param name="identifier">identifier.</param>
-    /// <returns>parameter.</returns>
+    /// <returns>event.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Event Event<T>(string identifier)
     {
@@ -134,7 +134,7 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <param name="type">type.</param>
     /// <param name="identifier">identifier.</param>
-    /// <returns>parameter.</returns>
+    /// <returns>field.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Field Field(DataType type, string identifier)
     {
@@ -148,7 +148,7 @@ public static class SourceComposer<TGenerator>
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
     /// <param name="identifier">identifier.</param>
-    /// <returns>parameter.</returns>
+    /// <returns>field.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Field Field<T>(string identifier)
     {
@@ -159,7 +159,7 @@ public static class SourceComposer<TGenerator>
     /// Create the Accessor.
     /// </summary>
     /// <param name="type">accessor type.</param>
-    /// <returns>parameter.</returns>
+    /// <returns>accessor.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Accessor Accessor(AccessorType type)
     {
@@ -172,8 +172,8 @@ public static class SourceComposer<TGenerator>
     /// Create the property.
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
-    /// <param name="identifier">parameter name.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="identifier">property name.</param>
+    /// <returns>property.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Property Property<T>(string identifier)
     {
@@ -183,9 +183,9 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the property.
     /// </summary>
-    /// <param name="type">return returnType.</param>
-    /// <param name="identifier">parameter name.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="type">return type.</param>
+    /// <param name="identifier">property name.</param>
+    /// <returns>property.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Property Property(DataType type, string identifier)
     {
@@ -197,8 +197,8 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the conversion.
     /// </summary>
-    /// <param name="type">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="type">return type.</param>
+    /// <returns>conversion.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Conversion ImplicitConversionTo(DataType type)
     {
@@ -210,8 +210,8 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the conversion.
     /// </summary>
-    /// <param name="type">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="type">return type.</param>
+    /// <returns>conversion.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Conversion ImplicitConversionFrom(DataType type)
     {
@@ -223,8 +223,8 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the conversion.
     /// </summary>
-    /// <param name="type">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="type">return type.</param>
+    /// <returns>conversion.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Conversion ExplicitConversionTo(DataType type)
     {
@@ -236,8 +236,8 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the conversion.
     /// </summary>
-    /// <param name="type">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="type">return type.</param>
+    /// <returns>conversion.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Conversion ExplicitConversionFrom(DataType type)
     {
@@ -249,9 +249,9 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create the method.
     /// </summary>
-    /// <param name="identifier">parameter name.</param>
-    /// <param name="returnType">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="identifier">method name.</param>
+    /// <param name="returnType">return type.</param>
+    /// <returns>method.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Method Method(string identifier, ReturnType? returnType = null)
     {
@@ -261,11 +261,11 @@ public static class SourceComposer<TGenerator>
     }
 
     /// <summary>
-    /// Create the method.
+    /// Create the delegate.
     /// </summary>
-    /// <param name="identifier">parameter name.</param>
-    /// <param name="returnType">return returnType.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="identifier">delegate name.</param>
+    /// <param name="returnType">return type.</param>
+    /// <returns>delegate.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Syntaxes.Delegate Delegate(string identifier, ReturnType? returnType = null)
     {
@@ -277,7 +277,7 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create a constructor.
     /// </summary>
-    /// <returns>parameter.</returns>
+    /// <returns>constructor.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Constructor Constructor()
     {
@@ -290,8 +290,8 @@ public static class SourceComposer<TGenerator>
     /// Create an operator.
     /// </summary>
     /// <param name="returnType">return type.</param>
-    /// <param name="identifier">parameter name.</param>
-    /// <returns>parameter.</returns>
+    /// <param name="identifier">operator name.</param>
+    /// <returns>operator.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Operator Operator(ReturnType returnType, string identifier)
     {
@@ -304,7 +304,7 @@ public static class SourceComposer<TGenerator>
     /// Create the Enum.
     /// </summary>
     /// <param name="identifier">enum name.</param>
-    /// <param name="dataType">return type.</param>
+    /// <param name="dataType">underlying type.</param>
     /// <returns>enum.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Syntaxes.Enum Enum(string identifier, DataType? dataType = null)
@@ -317,7 +317,7 @@ public static class SourceComposer<TGenerator>
     /// <summary>
     /// Create an enum member.
     /// </summary>
-    /// <param name="identifier">enum name.</param>
+    /// <param name="identifier">member name.</param>
     /// <param name="value">default value.</param>
     /// <returns>enum member.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
