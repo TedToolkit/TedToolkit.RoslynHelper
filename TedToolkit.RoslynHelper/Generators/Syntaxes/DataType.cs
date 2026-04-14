@@ -154,6 +154,17 @@ public sealed class DataType(IExpression type) :
             return FromSymbol(nullableType.TypeArguments[0], compilation).Null;
         }
 
+        if (symbol is INamedTypeSymbol { IsTupleType: true, } tupleType)
+        {
+            var tupleExpression = new TupleExpression();
+            foreach (var tupleTypeTupleElement in tupleType.TupleElements)
+            {
+                tupleExpression.AddItem(FromSymbol(tupleTypeTupleElement.Type, compilation), tupleTypeTupleElement.Name);
+            }
+
+            return new(tupleExpression);
+        }
+
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
         {
             return new(symbol.Name.ToSimpleName());
