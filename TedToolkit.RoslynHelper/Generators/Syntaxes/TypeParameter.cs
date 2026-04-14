@@ -120,26 +120,6 @@ public sealed class TypeParameter(string identifier) :
 
         var result = new TypeParameter(symbol.Name);
 
-        foreach (var symbolConstraintType in symbol.ConstraintTypes)
-        {
-            result.AddConstraint(DataType.FromSymbol(symbolConstraintType, compilation));
-        }
-
-        if (symbol.AllowsRefLikeType)
-        {
-            result.AddRefStructConstraint();
-        }
-
-        if (symbol.HasConstructorConstraint)
-        {
-            result.AddNewConstraint();
-        }
-
-        if (symbol.HasNotNullConstraint)
-        {
-            result.AddNotNullConstraint();
-        }
-
         if (symbol.HasReferenceTypeConstraint)
         {
             result.AddClassConstraint();
@@ -153,6 +133,26 @@ public sealed class TypeParameter(string identifier) :
         if (symbol.HasValueTypeConstraint)
         {
             result.AddStructConstraint();
+        }
+
+        if (symbol.HasNotNullConstraint)
+        {
+            result.AddNotNullConstraint();
+        }
+
+        foreach (var symbolConstraintType in symbol.ConstraintTypes)
+        {
+            result.AddConstraint(DataType.FromSymbol(symbolConstraintType, compilation));
+        }
+
+        if (symbol.HasConstructorConstraint)
+        {
+            result.AddNewConstraint();
+        }
+
+        if (symbol.AllowsRefLikeType)
+        {
+            result.AddRefStructConstraint();
         }
 
         return result;
