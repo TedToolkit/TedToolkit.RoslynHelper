@@ -41,13 +41,13 @@ public sealed class Attribute(DataType type) :
     }
 
     /// <summary>
-    /// Add a named attribute to the attribute.
+    /// Add a named argument to the attribute.
     /// </summary>
     /// <param name="name">name.</param>
     /// <param name="argument">argument.</param>
     /// <returns>self.</returns>
     /// <exception cref="ArgumentNullException">name is null.</exception>
-    public Attribute AddNamedAttribute(string name, IExpression argument)
+    public Attribute AddNamedArgument(string name, IExpression argument)
     {
         if (name is null)
         {
