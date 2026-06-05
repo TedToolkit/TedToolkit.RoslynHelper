@@ -10,8 +10,9 @@ namespace TedToolkit.RoslynHelper.Generators.Syntaxes;
 /// <summary>
 /// Code.
 /// </summary>
+/// <param name="block">is a block</param>
 /// <param name="descriptions">Descriptions.</param>
-public sealed class DescriptionCode(params IReadOnlyList<IDescriptionItem> descriptions) : IDescriptionItem
+public sealed class DescriptionCode(bool block, params IReadOnlyList<IDescriptionItem> descriptions) : IDescriptionItem
 {
     /// <inheritdoc />
     public void ToDescription(ref SourceBuilder builder)
@@ -21,8 +22,8 @@ public sealed class DescriptionCode(params IReadOnlyList<IDescriptionItem> descr
             return;
         }
 
-        builder.AppendLine("/// <code>");
+        builder.AppendLine(block ? "/// <code>" : "/// <c>");
         descriptions.ToDescription(ref builder);
-        builder.AppendLine("/// </code>");
+        builder.AppendLine(block ? "/// </code>" : "/// </c>");
     }
 }
