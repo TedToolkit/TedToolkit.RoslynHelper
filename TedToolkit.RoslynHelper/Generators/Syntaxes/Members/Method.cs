@@ -50,6 +50,10 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);
+        if (IsExtern)
+        {
+            builder.Append("extern ");
+        }
 
         if (returnType is not null)
         {
@@ -67,7 +71,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddParametersNoSkip(ref builder);
         this.AddTypeParameterConstraints(ref builder);
 
-        if (IsPartial)
+        if (IsPartial || IsExtern)
         {
             this.AddStatements(ref builder);
         }
@@ -130,6 +134,23 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc />
     public bool IsReadonly { get; set; }
+
+    /// <summary>
+    /// If it is marked as extern
+    /// </summary>
+    public bool IsExtern { get; set; }
+
+    /// <summary>
+    /// Gets <see langword="extern"/>.
+    /// </summary>
+    public Method Extern
+    {
+        get
+        {
+            this.IsExtern = true;
+            return this;
+        }
+    }
 
     /// <inheritdoc />
     public List<TypeParameter> TypeParameters
