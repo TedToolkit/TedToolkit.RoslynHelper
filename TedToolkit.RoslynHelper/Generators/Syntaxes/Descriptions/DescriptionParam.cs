@@ -23,7 +23,7 @@ public sealed class DescriptionParam(string pramName, params IReadOnlyList<IDesc
         }
 
         builder.Append("/// <param name=\"");
-        builder.Append(pramName);
+        builder.Append(pramName.Replace("@", ""));
         builder.AppendLine("\">");
         descriptions.ToDescription(ref builder);
         builder.AppendLine("/// </param>");
