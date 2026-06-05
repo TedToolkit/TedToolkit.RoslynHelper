@@ -41,6 +41,24 @@ public sealed class Attribute(DataType type) :
     }
 
     /// <summary>
+    /// Add a named attribute to the attribute.
+    /// </summary>
+    /// <param name="name">name.</param>
+    /// <param name="argument">argument.</param>
+    /// <returns>self.</returns>
+    /// <exception cref="ArgumentNullException">name is null.</exception>
+    public Attribute AddNamedAttribute(string name, IExpression argument)
+    {
+        if (name is null)
+        {
+            throw new ArgumentNullException(nameof(name));
+        }
+
+        Arguments.Add(new Argument(name.ToSimpleName().Operator("=", argument)));
+        return this;
+    }
+
+    /// <summary>
     /// Create from a symbol.
     /// </summary>
     /// <param name="attribute">attribute data.</param>
