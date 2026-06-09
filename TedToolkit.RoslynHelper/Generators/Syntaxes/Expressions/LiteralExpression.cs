@@ -137,7 +137,7 @@ public sealed class LiteralExpression : IExpression
     /// <param name="value">value.</param>
     public LiteralExpression(bool value)
     {
-        _value = value.ToString(CultureInfo.InvariantCulture);
+        _value = (value ? "true" : "false").ToString(CultureInfo.InvariantCulture);
     }
 #pragma warning disable CA2225
 
