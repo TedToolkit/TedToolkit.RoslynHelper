@@ -142,17 +142,23 @@ public sealed class Parameter(DataType type, string identifier) :
 
         if (parameterSymbol.HasExplicitDefaultValue)
         {
-            if (parameterSymbol.ExplicitDefaultValue is not { } defaultValue)
+            switch (parameterSymbol.ExplicitDefaultValue)
             {
-                parameter.AddDefault();
-            }
-            else if (parameterSymbol.Type.SpecialType is SpecialType.System_String)
-            {
-                parameter.AddDefault(defaultValue.ToString().ToLiteral());
-            }
-            else
-            {
-                parameter.AddDefault(defaultValue.ToString().ToSimpleName());
+                case string str:
+                    parameter.AddDefault(str.ToLiteral());
+                    break;
+
+                case bool b:
+                    parameter.AddDefault(b.ToLiteral());
+                    break;
+
+                case { } obj:
+                    parameter.AddDefault(obj.ToString().ToSimpleName());
+                    break;
+
+                default:
+                    parameter.AddDefault();
+                    break;
             }
         }
 

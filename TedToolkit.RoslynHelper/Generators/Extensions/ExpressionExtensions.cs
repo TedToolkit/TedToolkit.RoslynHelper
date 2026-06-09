@@ -308,6 +308,21 @@ public static class ExpressionExtensions
     }
 
 #pragma warning disable CA1034
+    extension(bool value)
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// To Expression.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LiteralExpression ToLiteral()
+        {
+            return new(value);
+        }
+    }
+
+#pragma warning disable CA1034
     extension(string value)
 #pragma warning restore CA1034
     {
