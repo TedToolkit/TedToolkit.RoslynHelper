@@ -276,4 +276,22 @@ public static class GeneralExtensions
 
         return "global";
     }
+
+    /// <summary>
+    /// Generate to the codes.
+    /// </summary>
+    /// <param name="item">the code item.</param>
+    /// <returns>code</returns>
+    /// <exception cref="ArgumentNullException">The item is null.</exception>
+    public static string ToCode(this IToCode item)
+    {
+        if (item is null)
+        {
+            throw new ArgumentNullException(nameof(item));
+        }
+
+        var builder = new SourceBuilder();
+        item.ToCode(ref builder);
+        return builder.ToCode();
+    }
 }
