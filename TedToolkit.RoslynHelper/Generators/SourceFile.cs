@@ -71,7 +71,9 @@ public class SourceFile()
             foreach (var attribute in Attributes)
             {
                 builder.AppendLine();
+                builder.Append('[');
                 attribute.ToCode(ref builder);
+                builder.Append(']');
             }
 
             foreach (var nameSpace in NameSpaces)
