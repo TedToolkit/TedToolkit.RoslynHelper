@@ -1,7 +1,6 @@
 using System.Reflection;
 
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Tests;
 

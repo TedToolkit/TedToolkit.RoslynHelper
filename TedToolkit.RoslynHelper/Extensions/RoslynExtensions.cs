@@ -7,7 +7,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace TedToolkit.RoslynHelper.Extensions;
+namespace TedToolkit.RoslynHelper;
 
 /// <summary>
 ///     The default Roslyn Extensions.

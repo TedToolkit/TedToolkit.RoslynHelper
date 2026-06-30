@@ -3,14 +3,11 @@ using BenchmarkDotNet.Attributes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using TedToolkit.RoslynHelper.Extensions;
-using TedToolkit.RoslynHelper.Generators;
-
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 using static TedToolkit.RoslynHelper.Extensions.SyntaxExtensions;
-using static TedToolkit.RoslynHelper.Generators.SourceComposer;
-using static TedToolkit.RoslynHelper.Generators.SourceComposer<TedToolkit.RoslynHelper.Benchmarks.RoslynRunner>;
+using static TedToolkit.RoslynHelper.SourceComposer;
+using static TedToolkit.RoslynHelper.SourceComposer<TedToolkit.RoslynHelper.Benchmarks.RoslynRunner>;
 
 namespace TedToolkit.RoslynHelper.Benchmarks;
 

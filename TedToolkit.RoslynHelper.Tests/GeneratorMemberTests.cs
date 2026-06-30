@@ -1,5 +1,7 @@
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes;
+
+using Delegate = TedToolkit.RoslynHelper.Syntaxes.Delegate;
+using Enum = TedToolkit.RoslynHelper.Syntaxes.Enum;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -48,7 +50,7 @@ internal sealed class GeneratorMemberTests
             .AddStatement(1.ToLiteral().Return);
         var partialMethod = new Method("Partial").Partial;
         var externMethod = new Method("Import").Extern;
-        var @delegate = new TedToolkit.RoslynHelper.Generators.Syntaxes.Delegate("Handler", new ReturnType(DataType.Bool))
+        var @delegate = new Delegate("Handler", new ReturnType(DataType.Bool))
             .Public
             .Unsafe
             .AddParameter(new Parameter(DataType.String, "message"));
@@ -121,7 +123,7 @@ internal sealed class GeneratorMemberTests
     [Test]
     public async Task Should_render_enum_and_extension_members()
     {
-        var @enum = new TedToolkit.RoslynHelper.Generators.Syntaxes.Enum("State", DataType.Int).Public
+        var @enum = new Enum("State", DataType.Int).Public
             .AddEnumMember(new EnumMember("Ready", 1.ToLiteral()))
             .AddEnumMember(new EnumMember("Done"));
         var extension = new Extension(new Parameter(DataType.String, "text").This)

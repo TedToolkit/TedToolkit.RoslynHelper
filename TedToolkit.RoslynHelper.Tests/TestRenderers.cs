@@ -1,6 +1,3 @@
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
-
 namespace TedToolkit.RoslynHelper.Tests;
 
 internal static class TestRenderers

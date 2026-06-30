@@ -1,8 +1,5 @@
 using System.Reflection;
 
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
-
 namespace TedToolkit.RoslynHelper.Tests;
 
 using static SourceComposer;
