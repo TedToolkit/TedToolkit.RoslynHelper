@@ -1,4 +1,5 @@
 using TedToolkit.RoslynHelper.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -64,5 +65,31 @@ internal sealed class GeneratorStatementTests
 
         await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
             "switch (value)\n{\n\tcase 1:\n\t\tbreak;\n\t\n\tdefault:\n\t\treturn;\n}");
+    }
+
+    /// <summary>
+    /// Verifies that the simple statement wrapper can be surrounded by conditional compilation.
+    /// </summary>
+    [Test]
+    public async Task Should_render_conditional_compilation_statement()
+    {
+        var statement = new Statement("work".ToSimpleName())
+            .AddCondition(PreprocessorExpression.Debug);
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo("#if DEBUG\nwork;\n#endif");
+    }
+
+    /// <summary>
+    /// Verifies that block-based statements can also be surrounded by conditional compilation.
+    /// </summary>
+    [Test]
+    public async Task Should_render_conditional_compilation_block_statement()
+    {
+        var statement = new IfStatement("ready".ToSimpleName())
+            .AddCondition(PreprocessorExpression.Debug)
+            .AddStatement("work".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "#if DEBUG\nif (ready)\n{\n\twork;\n}\n#endif");
     }
 }

@@ -11,11 +11,11 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// Try statement.
 /// </summary>
 public sealed class TryStatement :
-    IStatement,
+    ConditionalCompilationStatement,
     IStatementOwner
 {
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteStatement(ref SourceBuilder builder)
     {
         builder.Append("try");
         this.AddStatements(ref builder);

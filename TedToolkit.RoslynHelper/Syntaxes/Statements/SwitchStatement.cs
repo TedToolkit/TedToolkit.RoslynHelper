@@ -12,10 +12,10 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="expression">expression.</param>
 public sealed class SwitchStatement(IExpression expression) :
-    IStatement
+    ConditionalCompilationStatement
 {
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteStatement(ref SourceBuilder builder)
     {
         builder.Append("switch (");
         expression.ToCode(ref builder);

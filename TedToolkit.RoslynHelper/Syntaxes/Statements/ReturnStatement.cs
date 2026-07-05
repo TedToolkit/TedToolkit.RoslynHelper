@@ -11,10 +11,10 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// The return statement.
 /// </summary>
 /// <param name="expression">expression.</param>
-public sealed class ReturnStatement(IExpression? expression = null) : IStatement
+public sealed class ReturnStatement(IExpression? expression = null) : ConditionalCompilationStatement
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteStatement(ref SourceBuilder builder)
     {
         if (expression is null)
         {

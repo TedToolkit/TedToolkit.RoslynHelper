@@ -17,6 +17,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     IUnsafe,
     IStatic,
     IPartial,
+    IConditionalCompilation,
     IMember,
     IMemberOwner,
     IAttributes,
@@ -34,6 +35,7 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        this.AddConditionalCompilationStart(ref builder);
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
         {
@@ -94,10 +96,14 @@ public sealed class TypeDeclaration(string identifier, TypeDeclarationType type)
 
         this.AddTypeParameterConstraints(ref builder);
         this.AddMembers(ref builder);
+        this.AddConditionalCompilationEnd(ref builder);
     }
 
     /// <inheritdoc />
     public Accessibility Accessibility { get; set; }
+
+    /// <inheritdoc />
+    public Syntaxes.Preprocessors.PreprocessorExpression? Condition { get; set; }
 
     /// <inheritdoc />
     public bool IsUnsafe { get; set; }

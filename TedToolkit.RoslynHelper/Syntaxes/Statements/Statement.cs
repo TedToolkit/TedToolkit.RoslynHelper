@@ -12,10 +12,10 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="expression">the expression.</param>
 public sealed class Statement(IExpression expression) :
-    IStatement
+    ConditionalCompilationStatement
 {
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteStatement(ref SourceBuilder builder)
     {
         expression.ToCode(ref builder);
         builder.Append(';');

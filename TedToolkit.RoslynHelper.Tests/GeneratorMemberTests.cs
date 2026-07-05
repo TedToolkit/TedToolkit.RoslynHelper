@@ -1,4 +1,5 @@
 using TedToolkit.RoslynHelper.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
 
 using Delegate = TedToolkit.RoslynHelper.Syntaxes.Delegate;
 using Enum = TedToolkit.RoslynHelper.Syntaxes.Enum;
@@ -34,6 +35,20 @@ internal sealed class GeneratorMemberTests
     }
 
     /// <summary>
+    /// Verifies that type declarations can be wrapped in conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_type_declaration_conditional_compilation()
+    {
+        var typeDeclaration = new TypeDeclaration("Sample", TypeDeclarationType.CLASS)
+            .AddCondition(PreprocessorExpression.Debug)
+            .AddMember(new Field(DataType.Int, "count"));
+
+        await Assert.That(TestRenderers.Render(typeDeclaration)).IsEqualTo(
+            "#if DEBUG\nclass Sample\n{\n\tint count;\n}\n#endif");
+    }
+
+    /// <summary>
     /// Verifies that methods render their descriptions, modifiers, parameters, and bodies.
     /// </summary>
     [Test]
@@ -62,6 +77,20 @@ internal sealed class GeneratorMemberTests
         await Assert.That(TestRenderers.Render(partialMethod)).IsEqualTo("partial void Partial();");
         await Assert.That(TestRenderers.Render(externMethod)).IsEqualTo("extern void Import();");
         await Assert.That(TestRenderers.Render(@delegate)).IsEqualTo("public unsafe delegate bool Handler(\n\tstring message);");
+    }
+
+    /// <summary>
+    /// Verifies that methods can be wrapped in conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_method_conditional_compilation()
+    {
+        var method = new Method("Run")
+            .AddCondition(PreprocessorExpression.Debug)
+            .AddStatement("Execute".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(method)).IsEqualTo(
+            "#if DEBUG\nvoid Run()\n{\n\tExecute;\n}\n#endif");
     }
 
     /// <summary>

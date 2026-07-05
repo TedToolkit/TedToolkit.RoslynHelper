@@ -14,12 +14,12 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="identifier">identifier.</param>
 /// <param name="expression">expression.</param>
 public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
-    IStatement,
+    ConditionalCompilationStatement,
     IVariable,
     IStatementOwner
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteStatement(ref SourceBuilder builder)
     {
         builder.Append("foreach (");
         type.ToCode(ref builder);

@@ -16,6 +16,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     IMember,
     IParameters,
     IAttributes,
+    IConditionalCompilation,
     IAccessibility,
     IUnsafe,
     IPartial,
@@ -30,6 +31,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     /// <inheritdoc/>
     public void ToCode(ref SourceBuilder builder)
     {
+        this.AddConditionalCompilationStart(ref builder);
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
         {
@@ -79,6 +81,8 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         {
             this.AddStatementsNoSkip(ref builder);
         }
+
+        this.AddConditionalCompilationEnd(ref builder);
     }
 
     /// <inheritdoc/>
@@ -101,6 +105,9 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
+
+    /// <inheritdoc />
+    public Syntaxes.Preprocessors.PreprocessorExpression? Condition { get; set; }
 
     /// <inheritdoc/>
     public bool IsUnsafe { get; set; }
