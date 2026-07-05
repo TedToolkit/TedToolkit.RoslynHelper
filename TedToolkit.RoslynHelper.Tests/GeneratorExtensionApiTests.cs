@@ -66,6 +66,100 @@ internal sealed class GeneratorExtensionApiTests
     }
 
     /// <summary>
+    /// Verifies that direct-named binary helpers expose the common operators without string literals.
+    /// </summary>
+    [Test]
+    public async Task Should_apply_direct_named_expression_operator_helpers()
+    {
+        var left = "left".ToSimpleName();
+        var right = "right".ToSimpleName();
+        var type = typeof(string).ToExpression();
+
+        await Assert.That(TestRenderers.Render(left.Assign(right))).IsEqualTo("left = right");
+        await Assert.That(TestRenderers.Render(left.AddAssign(right))).IsEqualTo("left += right");
+        await Assert.That(TestRenderers.Render(left.SubtractAssign(right))).IsEqualTo("left -= right");
+        await Assert.That(TestRenderers.Render(left.MultiplyAssign(right))).IsEqualTo("left *= right");
+        await Assert.That(TestRenderers.Render(left.DivideAssign(right))).IsEqualTo("left /= right");
+        await Assert.That(TestRenderers.Render(left.ModuloAssign(right))).IsEqualTo("left %= right");
+        await Assert.That(TestRenderers.Render(left.BitwiseAndAssign(right))).IsEqualTo("left &= right");
+        await Assert.That(TestRenderers.Render(left.BitwiseOrAssign(right))).IsEqualTo("left |= right");
+        await Assert.That(TestRenderers.Render(left.ExclusiveOrAssign(right))).IsEqualTo("left ^= right");
+        await Assert.That(TestRenderers.Render(left.LeftShiftAssign(right))).IsEqualTo("left <<= right");
+        await Assert.That(TestRenderers.Render(left.RightShiftAssign(right))).IsEqualTo("left >>= right");
+        await Assert.That(TestRenderers.Render(left.CoalesceAssign(right))).IsEqualTo("left ??= right");
+        await Assert.That(TestRenderers.Render(left.Add(right))).IsEqualTo("left + right");
+        await Assert.That(TestRenderers.Render(left.Subtract(right))).IsEqualTo("left - right");
+        await Assert.That(TestRenderers.Render(left.Multiply(right))).IsEqualTo("left * right");
+        await Assert.That(TestRenderers.Render(left.Divide(right))).IsEqualTo("left / right");
+        await Assert.That(TestRenderers.Render(left.Modulo(right))).IsEqualTo("left % right");
+        await Assert.That(TestRenderers.Render(left.BitwiseAnd(right))).IsEqualTo("left & right");
+        await Assert.That(TestRenderers.Render(left.BitwiseOr(right))).IsEqualTo("left | right");
+        await Assert.That(TestRenderers.Render(left.ExclusiveOr(right))).IsEqualTo("left ^ right");
+        await Assert.That(TestRenderers.Render(left.LeftShift(right))).IsEqualTo("left << right");
+        await Assert.That(TestRenderers.Render(left.RightShift(right))).IsEqualTo("left >> right");
+        await Assert.That(TestRenderers.Render(left.EqualTo(right))).IsEqualTo("left == right");
+        await Assert.That(TestRenderers.Render(left.NotEqualTo(right))).IsEqualTo("left != right");
+        await Assert.That(TestRenderers.Render(left.GreaterThan(right))).IsEqualTo("left > right");
+        await Assert.That(TestRenderers.Render(left.LessThan(right))).IsEqualTo("left < right");
+        await Assert.That(TestRenderers.Render(left.GreaterThanOrEqualTo(right))).IsEqualTo("left >= right");
+        await Assert.That(TestRenderers.Render(left.LessThanOrEqualTo(right))).IsEqualTo("left <= right");
+        await Assert.That(TestRenderers.Render(left.And(right))).IsEqualTo("left && right");
+        await Assert.That(TestRenderers.Render(left.Or(right))).IsEqualTo("left || right");
+        await Assert.That(TestRenderers.Render(left.Coalesce(right))).IsEqualTo("left ?? right");
+        await Assert.That(TestRenderers.Render(left.RangeTo(right))).IsEqualTo("left .. right");
+        await Assert.That(TestRenderers.Render(left.Is(type))).IsEqualTo("left is string");
+        await Assert.That(TestRenderers.Render(left.As(type))).IsEqualTo("left as string");
+    }
+
+    /// <summary>
+    /// Verifies that direct-named unary and postfix helpers expose the common operators without string literals.
+    /// </summary>
+    [Test]
+    public async Task Should_apply_direct_named_expression_unary_helpers()
+    {
+        var value = "value".ToSimpleName();
+
+        await Assert.That(TestRenderers.Render(value.UnaryPlus())).IsEqualTo("+ value");
+        await Assert.That(TestRenderers.Render(value.Negate())).IsEqualTo("- value");
+        await Assert.That(TestRenderers.Render(value.LogicalNot())).IsEqualTo("!value");
+        await Assert.That(TestRenderers.Render(value.BitwiseNot())).IsEqualTo("~ value");
+        await Assert.That(TestRenderers.Render(value.AddressOf())).IsEqualTo("& value");
+        await Assert.That(TestRenderers.Render(value.PointerIndirection())).IsEqualTo("* value");
+        await Assert.That(TestRenderers.Render(value.IndexFromEnd())).IsEqualTo("^ value");
+        await Assert.That(TestRenderers.Render(value.Await())).IsEqualTo("await value");
+        await Assert.That(TestRenderers.Render(value.SuppressNullableWarning())).IsEqualTo("value !");
+        await Assert.That(TestRenderers.Render(value.PreIncrement())).IsEqualTo("++ value");
+        await Assert.That(TestRenderers.Render(value.PreDecrement())).IsEqualTo("-- value");
+        await Assert.That(TestRenderers.Render(value.PostIncrement())).IsEqualTo("value ++");
+        await Assert.That(TestRenderers.Render(value.PostDecrement())).IsEqualTo("value --");
+    }
+
+    /// <summary>
+    /// Verifies that the operator proxy forwards the overloadable operators to the direct-named helper methods.
+    /// </summary>
+    [Test]
+    public async Task Should_apply_expression_operator_proxy_helpers()
+    {
+        var left = "left".ToSimpleName().Op;
+        var right = "right".ToSimpleName();
+
+        await Assert.That(TestRenderers.Render(+left)).IsEqualTo("+ left");
+        await Assert.That(TestRenderers.Render(-left)).IsEqualTo("- left");
+        await Assert.That(TestRenderers.Render(!left)).IsEqualTo("!left");
+        await Assert.That(TestRenderers.Render(~left)).IsEqualTo("~ left");
+        await Assert.That(TestRenderers.Render(left + right)).IsEqualTo("left + right");
+        await Assert.That(TestRenderers.Render(left - right)).IsEqualTo("left - right");
+        await Assert.That(TestRenderers.Render(left * right)).IsEqualTo("left * right");
+        await Assert.That(TestRenderers.Render(left / right)).IsEqualTo("left / right");
+        await Assert.That(TestRenderers.Render(left % right)).IsEqualTo("left % right");
+        await Assert.That(TestRenderers.Render(left & right)).IsEqualTo("left & right");
+        await Assert.That(TestRenderers.Render(left | right)).IsEqualTo("left | right");
+        await Assert.That(TestRenderers.Render(left ^ right)).IsEqualTo("left ^ right");
+        await Assert.That(TestRenderers.Render(left << 2)).IsEqualTo("left << 2");
+        await Assert.That(TestRenderers.Render(left >> 2)).IsEqualTo("left >> 2");
+    }
+
+    /// <summary>
     /// Verifies that owner extensions append parameters, arguments, members, and statements in insertion order.
     /// </summary>
     [Test]

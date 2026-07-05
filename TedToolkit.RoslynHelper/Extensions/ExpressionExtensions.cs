@@ -245,9 +245,9 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
-        /// Postfix.
+        /// Creates a postfix unary expression, such as <c>value++</c>.
         /// </summary>
-        /// <param name="operator">postfix.</param>
+        /// <param name="operator">The postfix operator.</param>
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PostfixUnaryExpression Postfix(string @operator)
@@ -256,9 +256,9 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
-        /// Prefix.
+        /// Creates a prefix unary expression, such as <c>!value</c>.
         /// </summary>
-        /// <param name="operator">prefix.</param>
+        /// <param name="operator">The prefix operator.</param>
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public PrefixUnaryExpression Prefix(string @operator)
@@ -267,15 +267,531 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
-        /// Prefix.
+        /// Creates a binary expression, such as <c>left + right</c>.
         /// </summary>
-        /// <param name="operator">prefix.</param>
-        /// <param name="right">right.</param>
+        /// <param name="operator">The binary operator.</param>
+        /// <param name="right">The right operand.</param>
         /// <returns>result.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BinaryExpression Operator(string @operator, IExpression right)
         {
             return new(@operator, expression, right);
+        }
+
+        /// <summary>
+        /// Assign. Equivalent to <c>left = right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Assign(IExpression right)
+        {
+            return expression.Operator("=", right);
+        }
+
+        /// <summary>
+        /// Add assign. Equivalent to <c>left += right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression AddAssign(IExpression right)
+        {
+            return expression.Operator("+=", right);
+        }
+
+        /// <summary>
+        /// Subtract assign. Equivalent to <c>left -= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression SubtractAssign(IExpression right)
+        {
+            return expression.Operator("-=", right);
+        }
+
+        /// <summary>
+        /// Multiply assign. Equivalent to <c>left *= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression MultiplyAssign(IExpression right)
+        {
+            return expression.Operator("*=", right);
+        }
+
+        /// <summary>
+        /// Divide assign. Equivalent to <c>left /= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression DivideAssign(IExpression right)
+        {
+            return expression.Operator("/=", right);
+        }
+
+        /// <summary>
+        /// Modulo assign. Equivalent to <c>left %= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression ModuloAssign(IExpression right)
+        {
+            return expression.Operator("%=", right);
+        }
+
+        /// <summary>
+        /// Bitwise and assign. Equivalent to <c>left &= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression BitwiseAndAssign(IExpression right)
+        {
+            return expression.Operator("&=", right);
+        }
+
+        /// <summary>
+        /// Bitwise or assign. Equivalent to <c>left |= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression BitwiseOrAssign(IExpression right)
+        {
+            return expression.Operator("|=", right);
+        }
+
+        /// <summary>
+        /// Exclusive or assign. Equivalent to <c>left ^= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression ExclusiveOrAssign(IExpression right)
+        {
+            return expression.Operator("^=", right);
+        }
+
+        /// <summary>
+        /// Left shift assign. Equivalent to <c>left &lt;&lt;= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression LeftShiftAssign(IExpression right)
+        {
+            return expression.Operator("<<=", right);
+        }
+
+        /// <summary>
+        /// Right shift assign. Equivalent to <c>left &gt;&gt;= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression RightShiftAssign(IExpression right)
+        {
+            return expression.Operator(">>=", right);
+        }
+
+        /// <summary>
+        /// Coalesce assign. Equivalent to <c>left ??= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression CoalesceAssign(IExpression right)
+        {
+            return expression.Operator("??=", right);
+        }
+
+        /// <summary>
+        /// Add. Equivalent to <c>left + right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Add(IExpression right)
+        {
+            return expression.Operator("+", right);
+        }
+
+        /// <summary>
+        /// Subtract. Equivalent to <c>left - right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Subtract(IExpression right)
+        {
+            return expression.Operator("-", right);
+        }
+
+        /// <summary>
+        /// Multiply. Equivalent to <c>left * right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Multiply(IExpression right)
+        {
+            return expression.Operator("*", right);
+        }
+
+        /// <summary>
+        /// Divide. Equivalent to <c>left / right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Divide(IExpression right)
+        {
+            return expression.Operator("/", right);
+        }
+
+        /// <summary>
+        /// Modulo. Equivalent to <c>left % right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Modulo(IExpression right)
+        {
+            return expression.Operator("%", right);
+        }
+
+        /// <summary>
+        /// Bitwise and. Equivalent to <c>left &amp; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression BitwiseAnd(IExpression right)
+        {
+            return expression.Operator("&", right);
+        }
+
+        /// <summary>
+        /// Bitwise or. Equivalent to <c>left | right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression BitwiseOr(IExpression right)
+        {
+            return expression.Operator("|", right);
+        }
+
+        /// <summary>
+        /// Exclusive or. Equivalent to <c>left ^ right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression ExclusiveOr(IExpression right)
+        {
+            return expression.Operator("^", right);
+        }
+
+        /// <summary>
+        /// Left shift. Equivalent to <c>left &lt;&lt; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression LeftShift(IExpression right)
+        {
+            return expression.Operator("<<", right);
+        }
+
+        /// <summary>
+        /// Right shift. Equivalent to <c>left &gt;&gt; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression RightShift(IExpression right)
+        {
+            return expression.Operator(">>", right);
+        }
+
+        /// <summary>
+        /// Equal to. Equivalent to <c>left == right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression EqualTo(IExpression right)
+        {
+            return expression.Operator("==", right);
+        }
+
+        /// <summary>
+        /// Not equal to. Equivalent to <c>left != right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression NotEqualTo(IExpression right)
+        {
+            return expression.Operator("!=", right);
+        }
+
+        /// <summary>
+        /// Greater than. Equivalent to <c>left &gt; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression GreaterThan(IExpression right)
+        {
+            return expression.Operator(">", right);
+        }
+
+        /// <summary>
+        /// Less than. Equivalent to <c>left &lt; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression LessThan(IExpression right)
+        {
+            return expression.Operator("<", right);
+        }
+
+        /// <summary>
+        /// Greater than or equal to. Equivalent to <c>left &gt;= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression GreaterThanOrEqualTo(IExpression right)
+        {
+            return expression.Operator(">=", right);
+        }
+
+        /// <summary>
+        /// Less than or equal to. Equivalent to <c>left &lt;= right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression LessThanOrEqualTo(IExpression right)
+        {
+            return expression.Operator("<=", right);
+        }
+
+        /// <summary>
+        /// And. Equivalent to <c>left &amp;&amp; right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression And(IExpression right)
+        {
+            return expression.Operator("&&", right);
+        }
+
+        /// <summary>
+        /// Or. Equivalent to <c>left || right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Or(IExpression right)
+        {
+            return expression.Operator("||", right);
+        }
+
+        /// <summary>
+        /// Coalesce. Equivalent to <c>left ?? right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Coalesce(IExpression right)
+        {
+            return expression.Operator("??", right);
+        }
+
+        /// <summary>
+        /// Range to. Equivalent to <c>left..right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression RangeTo(IExpression right)
+        {
+            return expression.Operator("..", right);
+        }
+
+        /// <summary>
+        /// Is. Equivalent to <c>left is right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression Is(IExpression right)
+        {
+            return expression.Operator("is", right);
+        }
+
+        /// <summary>
+        /// As. Equivalent to <c>left as right</c>.
+        /// </summary>
+        /// <param name="right">right.</param>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BinaryExpression As(IExpression right)
+        {
+            return expression.Operator("as", right);
+        }
+
+        /// <summary>
+        /// Unary plus. Equivalent to <c>+value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression UnaryPlus()
+        {
+            return expression.Prefix("+");
+        }
+
+        /// <summary>
+        /// Negate. Equivalent to <c>-value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression Negate()
+        {
+            return expression.Prefix("-");
+        }
+
+        /// <summary>
+        /// Logical not. Equivalent to <c>!value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public NotExpression LogicalNot()
+        {
+            return expression.Not;
+        }
+
+        /// <summary>
+        /// Bitwise not. Equivalent to <c>~value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression BitwiseNot()
+        {
+            return expression.Prefix("~");
+        }
+
+        /// <summary>
+        /// Address of. Equivalent to <c>&amp;value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression AddressOf()
+        {
+            return expression.Prefix("&");
+        }
+
+        /// <summary>
+        /// Pointer indirection. Equivalent to <c>*value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression PointerIndirection()
+        {
+            return expression.Prefix("*");
+        }
+
+        /// <summary>
+        /// Index from end. Equivalent to <c>^value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression IndexFromEnd()
+        {
+            return expression.Prefix("^");
+        }
+
+        /// <summary>
+        /// Await. Equivalent to <c>await value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression Await()
+        {
+            return expression.Prefix("await");
+        }
+
+        /// <summary>
+        /// Suppress nullable warning. Equivalent to <c>value!</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PostfixUnaryExpression SuppressNullableWarning()
+        {
+            return expression.Postfix("!");
+        }
+
+        /// <summary>
+        /// Pre increment. Equivalent to <c>++value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression PreIncrement()
+        {
+            return expression.Prefix("++");
+        }
+
+        /// <summary>
+        /// Pre decrement. Equivalent to <c>--value</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PrefixUnaryExpression PreDecrement()
+        {
+            return expression.Prefix("--");
+        }
+
+        /// <summary>
+        /// Post increment. Equivalent to <c>value++</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PostfixUnaryExpression PostIncrement()
+        {
+            return expression.Postfix("++");
+        }
+
+        /// <summary>
+        /// Post decrement. Equivalent to <c>value--</c>.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PostfixUnaryExpression PostDecrement()
+        {
+            return expression.Postfix("--");
+        }
+
+        /// <summary>
+        /// Gets an operator proxy for the overloadable operators.
+        /// </summary>
+        public ExpressionOperatorProxy Op
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return new(expression);
+            }
         }
 
         /// <summary>
