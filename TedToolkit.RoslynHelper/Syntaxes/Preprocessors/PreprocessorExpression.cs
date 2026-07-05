@@ -497,6 +497,46 @@ public abstract class PreprocessorExpression : IToCode
 
 #pragma warning disable CA2225
     /// <summary>
+    /// Converts a symbol string to a preprocessor expression.
+    /// </summary>
+    /// <param name="symbol">symbol name.</param>
+    public static implicit operator PreprocessorExpression(string symbol)
+    {
+        return Symbol(symbol);
+    }
+
+    /// <summary>
+    /// Converts a Boolean literal to a preprocessor expression.
+    /// </summary>
+    /// <param name="value">literal value.</param>
+    public static implicit operator PreprocessorExpression(bool value)
+    {
+        return value ? True : False;
+    }
+
+    /// <summary>
+    /// Supports C# conditional operator binding for expression composition.
+    /// </summary>
+    /// <param name="value">operand.</param>
+    /// <returns><see langword="false"/> so composition continues through operator overloads.</returns>
+    public static bool operator true(PreprocessorExpression value)
+    {
+        _ = value ?? throw new ArgumentNullException(nameof(value));
+        return false;
+    }
+
+    /// <summary>
+    /// Supports C# conditional operator binding for expression composition.
+    /// </summary>
+    /// <param name="value">operand.</param>
+    /// <returns><see langword="false"/> so composition continues through operator overloads.</returns>
+    public static bool operator false(PreprocessorExpression value)
+    {
+        _ = value ?? throw new ArgumentNullException(nameof(value));
+        return false;
+    }
+
+    /// <summary>
     /// Logical not.
     /// </summary>
     /// <param name="value">operand.</param>

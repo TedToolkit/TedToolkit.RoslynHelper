@@ -23,7 +23,7 @@ internal sealed class PreprocessorExpressionTests
     [Test]
     public async Task Should_render_logical_operators_with_csharp_precedence()
     {
-        var expression = !PreprocessorExpression.Symbol("DEBUG") && "TRACE" || false;
+        PreprocessorExpression expression = !PreprocessorExpression.Symbol("DEBUG") && "TRACE" || false;
 
         await Assert.That(TestRenderers.Render(expression))
             .IsEqualTo("!DEBUG && TRACE || false");
@@ -32,9 +32,9 @@ internal sealed class PreprocessorExpressionTests
     [Test]
     public async Task Should_add_parentheses_only_when_required_by_precedence()
     {
-        var andOverOr = (PreprocessorExpression.Symbol("DEBUG") || "TRACE") && "RELEASE";
-        var notOverOr = !(PreprocessorExpression.Symbol("DEBUG") || "TRACE");
-        var samePrecedence = (PreprocessorExpression.Symbol("DEBUG") || "TRACE") || "RELEASE";
+        PreprocessorExpression andOverOr = (PreprocessorExpression.Symbol("DEBUG") || "TRACE") && "RELEASE";
+        PreprocessorExpression notOverOr = !(PreprocessorExpression.Symbol("DEBUG") || "TRACE");
+        PreprocessorExpression samePrecedence = (PreprocessorExpression.Symbol("DEBUG") || "TRACE") || "RELEASE";
 
         await Assert.That(TestRenderers.Render(andOverOr))
             .IsEqualTo("(DEBUG || TRACE) && RELEASE");

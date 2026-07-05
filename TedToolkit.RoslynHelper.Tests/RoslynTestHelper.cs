@@ -9,10 +9,10 @@ namespace TedToolkit.RoslynHelper.Tests;
 
 internal static class RoslynTestHelper
 {
-    private static readonly CSharpParseOptions ParseOptions = CSharpParseOptions.Default
+    private static readonly CSharpParseOptions _parseOptions = CSharpParseOptions.Default
         .WithLanguageVersion(LanguageVersion.Preview);
 
-    private static readonly ImmutableArray<MetadataReference> DefaultReferences = AppContext
+    private static readonly ImmutableArray<MetadataReference> _defaultReferences = AppContext
         .GetData("TRUSTED_PLATFORM_ASSEMBLIES") is string trustedPlatformAssemblies
             ? trustedPlatformAssemblies
                 .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
@@ -26,7 +26,7 @@ internal static class RoslynTestHelper
         string assemblyName = "RoslynHelper.Tests.Dynamic",
         IEnumerable<MetadataReference>? additionalReferences = null)
     {
-        var references = DefaultReferences;
+        var references = _defaultReferences;
         if (additionalReferences is not null)
         {
             references = references.AddRange(additionalReferences);
@@ -34,7 +34,7 @@ internal static class RoslynTestHelper
 
         var compilation = CSharpCompilation.Create(
             assemblyName,
-            [CSharpSyntaxTree.ParseText(source, ParseOptions)],
+            [CSharpSyntaxTree.ParseText(source, _parseOptions)],
             references,
             new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,

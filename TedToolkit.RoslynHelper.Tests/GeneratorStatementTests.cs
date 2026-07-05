@@ -35,6 +35,38 @@ internal sealed class GeneratorStatementTests
     }
 
     /// <summary>
+    /// Verifies that if statements can render chained else-if and else branches.
+    /// </summary>
+    [Test]
+    public async Task Should_render_if_statement_with_else_if_and_else()
+    {
+        var statement = new IfStatement("ready".ToSimpleName())
+            .AddStatement("work".ToSimpleName())
+            .ElseIf("retry".ToSimpleName())
+            .AddStatement("retryWork".ToSimpleName())
+            .Else()
+            .AddStatement("fallback".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "if (ready)\n{\n\twork;\n}\nelse if (retry)\n{\n\tretryWork;\n}\nelse\n{\n\tfallback;\n}");
+    }
+
+    /// <summary>
+    /// Verifies that if statements can render a trailing else branch without else-if branches.
+    /// </summary>
+    [Test]
+    public async Task Should_render_if_statement_with_else_only()
+    {
+        var statement = new IfStatement("ready".ToSimpleName())
+            .AddStatement("work".ToSimpleName())
+            .Else()
+            .AddStatement("fallback".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "if (ready)\n{\n\twork;\n}\nelse\n{\n\tfallback;\n}");
+    }
+
+    /// <summary>
     /// Verifies that try statements combine try, catch, and finally sections in order.
     /// </summary>
     [Test]
@@ -94,6 +126,73 @@ internal sealed class GeneratorStatementTests
     }
 
     /// <summary>
+    /// Verifies that statement conditional compilation blocks render full if/elif/else chains.
+    /// </summary>
+    [Test]
+    public async Task Should_render_statement_conditional_compilation_with_else_if_and_else()
+    {
+        var statement = new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+            .AddStatement("work".ToSimpleName())
+            .ElseIf(PreprocessorExpression.Trace)
+            .AddStatement("trace".ToSimpleName())
+            .Else()
+            .AddStatement("fallback".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "#if DEBUG\nwork;\n#elif TRACE\ntrace;\n#else\nfallback;\n#endif");
+    }
+
+    /// <summary>
+    /// Verifies that statement conditional compilation blocks render an else branch without elif branches.
+    /// </summary>
+    [Test]
+    public async Task Should_render_statement_conditional_compilation_with_else_only()
+    {
+        var statement = new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+            .AddStatement("work".ToSimpleName())
+            .Else()
+            .AddStatement("fallback".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "#if DEBUG\nwork;\n#else\nfallback;\n#endif");
+    }
+
+    /// <summary>
+    /// Verifies that statement conditional compilation blocks reject invalid branch ordering.
+    /// </summary>
+    [Test]
+    public async Task Should_reject_invalid_statement_conditional_compilation_branch_order()
+    {
+        await Assert.That(() => new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+                .Else()
+                .ElseIf(PreprocessorExpression.Trace))
+            .Throws<InvalidOperationException>();
+
+        await Assert.That(() => new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+                .Else()
+                .Else())
+            .Throws<InvalidOperationException>();
+    }
+
+    /// <summary>
+    /// Verifies that statement conditional compilation blocks preserve normal statement rendering within each branch.
+    /// </summary>
+    [Test]
+    public async Task Should_render_multiple_statements_inside_conditional_compilation_branch()
+    {
+        var statement = new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+            .AddStatement("work".ToSimpleName())
+            .AddStatement(new IfStatement("ready".ToSimpleName())
+                .AddStatement("return".ToSimpleName()))
+            .Else()
+            .AddStatement(new ReturnStatement())
+            .AddStatement("fallback".ToSimpleName());
+
+        await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
+            "#if DEBUG\nwork;\nif (ready)\n{\n\treturn;\n}\n#else\nreturn;\nfallback;\n#endif");
+    }
+
+    /// <summary>
     /// Verifies that all concrete statements participate in the shared conditional compilation abstraction.
     /// </summary>
     [Test]
@@ -103,8 +202,9 @@ internal sealed class GeneratorStatementTests
             .Where(type => type is { IsAbstract: false, IsClass: true } &&
                            type.Namespace == typeof(Statement).Namespace &&
                            typeof(IStatement).IsAssignableFrom(type));
-
-        await Assert.That(statementTypes).All().Satisfy(type =>
+        var allSupportConditionalCompilation = statementTypes.All(type =>
             typeof(ConditionalCompilationSyntax).IsAssignableFrom(type));
+
+        await Assert.That(allSupportConditionalCompilation).IsTrue();
     }
 }

@@ -140,23 +140,36 @@ internal sealed class GeneratorExtensionApiTests
     [Test]
     public async Task Should_apply_expression_operator_proxy_helpers()
     {
-        var left = "left".ToSimpleName().Op;
         var right = "right".ToSimpleName();
+        var unaryPlus = TestRenderers.Render(+"left".ToSimpleName().Op);
+        var negate = TestRenderers.Render(-"left".ToSimpleName().Op);
+        var logicalNot = TestRenderers.Render(!"left".ToSimpleName().Op);
+        var bitwiseNot = TestRenderers.Render(~"left".ToSimpleName().Op);
+        var add = TestRenderers.Render("left".ToSimpleName().Op + right);
+        var subtract = TestRenderers.Render("left".ToSimpleName().Op - right);
+        var multiply = TestRenderers.Render("left".ToSimpleName().Op * right);
+        var divide = TestRenderers.Render("left".ToSimpleName().Op / right);
+        var modulo = TestRenderers.Render("left".ToSimpleName().Op % right);
+        var bitwiseAnd = TestRenderers.Render("left".ToSimpleName().Op & right);
+        var bitwiseOr = TestRenderers.Render("left".ToSimpleName().Op | right);
+        var exclusiveOr = TestRenderers.Render("left".ToSimpleName().Op ^ right);
+        var leftShift = TestRenderers.Render("left".ToSimpleName().Op << 2);
+        var rightShift = TestRenderers.Render("left".ToSimpleName().Op >> 2);
 
-        await Assert.That(TestRenderers.Render(+left)).IsEqualTo("+ left");
-        await Assert.That(TestRenderers.Render(-left)).IsEqualTo("- left");
-        await Assert.That(TestRenderers.Render(!left)).IsEqualTo("!left");
-        await Assert.That(TestRenderers.Render(~left)).IsEqualTo("~ left");
-        await Assert.That(TestRenderers.Render(left + right)).IsEqualTo("left + right");
-        await Assert.That(TestRenderers.Render(left - right)).IsEqualTo("left - right");
-        await Assert.That(TestRenderers.Render(left * right)).IsEqualTo("left * right");
-        await Assert.That(TestRenderers.Render(left / right)).IsEqualTo("left / right");
-        await Assert.That(TestRenderers.Render(left % right)).IsEqualTo("left % right");
-        await Assert.That(TestRenderers.Render(left & right)).IsEqualTo("left & right");
-        await Assert.That(TestRenderers.Render(left | right)).IsEqualTo("left | right");
-        await Assert.That(TestRenderers.Render(left ^ right)).IsEqualTo("left ^ right");
-        await Assert.That(TestRenderers.Render(left << 2)).IsEqualTo("left << 2");
-        await Assert.That(TestRenderers.Render(left >> 2)).IsEqualTo("left >> 2");
+        await Assert.That(unaryPlus).IsEqualTo("+ left");
+        await Assert.That(negate).IsEqualTo("- left");
+        await Assert.That(logicalNot).IsEqualTo("!left");
+        await Assert.That(bitwiseNot).IsEqualTo("~ left");
+        await Assert.That(add).IsEqualTo("left + right");
+        await Assert.That(subtract).IsEqualTo("left - right");
+        await Assert.That(multiply).IsEqualTo("left * right");
+        await Assert.That(divide).IsEqualTo("left / right");
+        await Assert.That(modulo).IsEqualTo("left % right");
+        await Assert.That(bitwiseAnd).IsEqualTo("left & right");
+        await Assert.That(bitwiseOr).IsEqualTo("left | right");
+        await Assert.That(exclusiveOr).IsEqualTo("left ^ right");
+        await Assert.That(leftShift).IsEqualTo("left << 2");
+        await Assert.That(rightShift).IsEqualTo("left >> 2");
     }
 
     /// <summary>

@@ -345,7 +345,7 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
-        /// Bitwise and assign. Equivalent to <c>left &= right</c>.
+        /// Bitwise and assign. Equivalent to <c>left &amp;= right</c>.
         /// </summary>
         /// <param name="right">right.</param>
         /// <returns>result.</returns>

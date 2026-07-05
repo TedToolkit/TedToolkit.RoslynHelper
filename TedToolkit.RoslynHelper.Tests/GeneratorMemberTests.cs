@@ -173,6 +173,89 @@ internal sealed class GeneratorMemberTests
     }
 
     /// <summary>
+    /// Verifies that member conditional compilation blocks render full if/elif/else chains.
+    /// </summary>
+    [Test]
+    public async Task Should_render_member_conditional_compilation_with_else_if_and_else()
+    {
+        var block = new ConditionalCompilationMember(PreprocessorExpression.Debug)
+            .AddMember(new Field(DataType.Int, "count"))
+            .ElseIf(PreprocessorExpression.Trace)
+            .AddMember(new Field(DataType.Int, "traceCount"))
+            .Else()
+            .AddMember(new Field(DataType.Int, "fallbackCount"));
+
+        await Assert.That(TestRenderers.Render(block)).IsEqualTo(
+            "#if DEBUG\nint count;\n#elif TRACE\nint traceCount;\n#else\nint fallbackCount;\n#endif");
+    }
+
+    /// <summary>
+    /// Verifies that member conditional compilation blocks render an else branch without elif branches.
+    /// </summary>
+    [Test]
+    public async Task Should_render_member_conditional_compilation_with_else_only()
+    {
+        var block = new ConditionalCompilationMember(PreprocessorExpression.Debug)
+            .AddMember(new Field(DataType.Int, "count"))
+            .Else()
+            .AddMember(new Field(DataType.Int, "fallbackCount"));
+
+        await Assert.That(TestRenderers.Render(block)).IsEqualTo(
+            "#if DEBUG\nint count;\n#else\nint fallbackCount;\n#endif");
+    }
+
+    /// <summary>
+    /// Verifies that member conditional compilation blocks reject invalid branch ordering.
+    /// </summary>
+    [Test]
+    public async Task Should_reject_invalid_member_conditional_compilation_branch_order()
+    {
+        await Assert.That(() => new ConditionalCompilationMember(PreprocessorExpression.Debug)
+                .Else()
+                .ElseIf(PreprocessorExpression.Trace))
+            .Throws<InvalidOperationException>();
+
+        await Assert.That(() => new ConditionalCompilationMember(PreprocessorExpression.Debug)
+                .Else()
+                .Else())
+            .Throws<InvalidOperationException>();
+    }
+
+    /// <summary>
+    /// Verifies that member conditional compilation blocks preserve owner-sensitive nested members.
+    /// </summary>
+    [Test]
+    public async Task Should_propagate_owner_into_member_conditional_compilation_block()
+    {
+        var type = new TypeDeclaration("Widget", TypeDeclarationType.CLASS)
+            .AddMember(new ConditionalCompilationMember(PreprocessorExpression.Debug)
+                .AddMember(new Constructor()
+                    .AddStatement("init".ToSimpleName())));
+
+        await Assert.That(TestRenderers.Render(type)).IsEqualTo(
+            "class Widget\n{\n\t#if DEBUG\n\tWidget()\n\t{\n\t\tinit;\n\t}\n\t#endif\n}");
+    }
+
+    /// <summary>
+    /// Verifies that member conditional compilation blocks preserve member spacing within each branch.
+    /// </summary>
+    [Test]
+    public async Task Should_render_multiple_members_inside_conditional_compilation_branch()
+    {
+        var block = new ConditionalCompilationMember(PreprocessorExpression.Debug)
+            .AddMember(new Field(DataType.Int, "count"))
+            .AddMember(new Property(DataType.String, "Name")
+                .AddAccessor(new Accessor(AccessorType.GET)))
+            .Else()
+            .AddMember(new Field(DataType.Int, "fallbackCount"))
+            .AddMember(new Method("Fallback")
+                .AddStatement("fallbackCount".ToSimpleName().Return));
+
+        await Assert.That(TestRenderers.Render(block)).IsEqualTo(
+            "#if DEBUG\nint count;\n\nstring Name\n{\n\tget;\n}\n#else\nint fallbackCount;\n\nvoid Fallback()\n{\n\treturn fallbackCount;\n}\n#endif");
+    }
+
+    /// <summary>
     /// Verifies that enum and extension members render nested payloads and constraints.
     /// </summary>
     [Test]
@@ -204,8 +287,9 @@ internal sealed class GeneratorMemberTests
             .Where(type => type is { IsAbstract: false, IsClass: true } &&
                            type.Namespace == typeof(TypeDeclaration).Namespace &&
                            typeof(IMember).IsAssignableFrom(type));
-
-        await Assert.That(memberTypes).All().Satisfy(type =>
+        var allSupportConditionalCompilation = memberTypes.All(type =>
             typeof(ConditionalCompilationSyntax).IsAssignableFrom(type));
+
+        await Assert.That(allSupportConditionalCompilation).IsTrue();
     }
 }
