@@ -1,4 +1,7 @@
 using System.Reflection;
+using System.Text;
+
+using TedToolkit.RoslynHelper.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -33,14 +36,36 @@ internal sealed class CoreGeneratorTests
         var code = TestRenderers.Render(
             File()
                 .AddAttribute(Attribute<ObsoleteAttribute>())
+                .AddUsing(Using("System.Text"))
                 .AddNameSpace(NameSpace("Demo.Space")
                     .AddMember(Class("Sample").Public)));
 
         await Assert.That(code).Contains("[assembly:global::System.ObsoleteAttribute]");
+        await Assert.That(code).Contains("using System.Text;");
         await Assert.That(code).Contains("namespace Demo.Space");
         await Assert.That(code).Contains(
             "[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"global::TedToolkit.RoslynHelper.Tests.CoreGeneratorTests\", \"1.0.0.0\")]");
         await Assert.That(code).Contains("public class Sample;");
+    }
+
+    /// <summary>
+    /// Verifies that file-level using directives render before namespace declarations.
+    /// </summary>
+    [Test]
+    public async Task Should_render_file_level_using_directives_before_namespaces()
+    {
+        var code = TestRenderers.Render(
+            File()
+                .AddUsing(Using("System"))
+                .AddUsing(Using(DataType.FromType<StringBuilder>()))
+                .AddNameSpace(NameSpace("Demo.Space")
+                    .AddMember(Class("Sample").Public)));
+
+        await Assert.That(code.IndexOf("using System;", StringComparison.Ordinal)).IsGreaterThan(-1);
+        await Assert.That(code.IndexOf("using static global::System.Text.StringBuilder;", StringComparison.Ordinal))
+            .IsGreaterThan(-1);
+        await Assert.That(code.IndexOf("namespace Demo.Space", StringComparison.Ordinal))
+            .IsGreaterThan(code.IndexOf("using static global::System.Text.StringBuilder;", StringComparison.Ordinal));
     }
 
     /// <summary>

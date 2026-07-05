@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Parameter.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -114,6 +114,10 @@ public sealed class Parameter(DataType type, string identifier) :
                     type = type.ScopedRef;
                     break;
 
+                case RefKind.Out:
+                    type = type.Out;
+                    break;
+
                 case RefKind.In:
                     type = type.ScopedIn;
                     break;
@@ -135,7 +139,9 @@ public sealed class Parameter(DataType type, string identifier) :
         {
             parameter = parameter.Params;
         }
-        else if (parameterSymbol.IsThis)
+        else if (parameterSymbol.IsThis
+                 || (parameterSymbol.Ordinal is 0
+                     && parameterSymbol.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true, }))
         {
             parameter = parameter.This;
         }

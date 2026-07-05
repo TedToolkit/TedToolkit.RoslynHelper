@@ -76,6 +76,12 @@ public class SourceFile()
                 builder.Append(']');
             }
 
+            foreach (var usingDirective in Usings)
+            {
+                builder.AppendLine();
+                usingDirective.ToCode(ref builder);
+            }
+
             foreach (var nameSpace in NameSpaces)
             {
                 builder.AppendLine();
@@ -123,6 +129,14 @@ public class SourceFile()
         => field ??= [];
 
     /// <summary>
+    /// Gets file-level using directives.
+    /// </summary>
+#pragma warning disable S2325
+    public List<UsingDirective> Usings
+#pragma warning restore S2325
+        => field ??= [];
+
+    /// <summary>
     /// Add a name space.
     /// </summary>
     /// <param name="nameSpace">the namespace.</param>
@@ -131,6 +145,24 @@ public class SourceFile()
     public SourceFile AddNameSpace(NameSpace nameSpace)
     {
         NameSpaces.Add(nameSpace);
+        return this;
+    }
+
+    /// <summary>
+    /// Add a file-level using directive.
+    /// </summary>
+    /// <param name="usingDirective">the using directive.</param>
+    /// <returns>result.</returns>
+    /// <exception cref="ArgumentNullException">usingDirective is null.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SourceFile AddUsing(UsingDirective usingDirective)
+    {
+        if (usingDirective is null)
+        {
+            throw new ArgumentNullException(nameof(usingDirective));
+        }
+
+        Usings.Add(usingDirective);
         return this;
     }
 

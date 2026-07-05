@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ExpressionExtensions.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -469,6 +469,51 @@ public static class ExpressionExtensions
 
 #pragma warning disable CA1034
     extension(ulong value)
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// To Expression.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LiteralExpression ToLiteral()
+        {
+            return new(value);
+        }
+    }
+
+#pragma warning disable CA1034
+    extension(float value)
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// To Expression.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LiteralExpression ToLiteral()
+        {
+            return new(value);
+        }
+    }
+
+#pragma warning disable CA1034
+    extension(double value)
+#pragma warning restore CA1034
+    {
+        /// <summary>
+        /// To Expression.
+        /// </summary>
+        /// <returns>result.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LiteralExpression ToLiteral()
+        {
+            return new(value);
+        }
+    }
+
+#pragma warning disable CA1034
+    extension(decimal value)
 #pragma warning restore CA1034
     {
         /// <summary>

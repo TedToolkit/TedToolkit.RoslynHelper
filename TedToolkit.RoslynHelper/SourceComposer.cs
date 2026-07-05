@@ -17,7 +17,6 @@ namespace TedToolkit.RoslynHelper;
 /// <summary>
 /// The Source Composer.
 /// </summary>
-#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 public static class SourceComposer
 {
     /// <summary>
@@ -250,5 +249,45 @@ public static class SourceComposer
     {
         return new(parameter);
     }
+
+    /// <summary>
+    /// Create a file-level using directive.
+    /// </summary>
+    /// <param name="name">the imported namespace or type.</param>
+    /// <returns>using directive.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static UsingDirective Using(IExpression name)
+    {
+        return new(name);
+    }
+
+    /// <summary>
+    /// Create a file-level using directive.
+    /// </summary>
+    /// <param name="name">the imported namespace.</param>
+    /// <returns>using directive.</returns>
+    /// <exception cref="ArgumentNullException">the name is null.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static UsingDirective Using(string name)
+    {
+        return new(name?.ToSimpleName()
+                   ?? throw new ArgumentNullException(nameof(name)));
+    }
+
+    /// <summary>
+    /// Create a file-level using directive.
+    /// </summary>
+    /// <param name="name">the imported namespace or type.</param>
+    /// <returns>using directive.</returns>
+    /// <exception cref="ArgumentNullException">the name is null.</exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static UsingDirective Using(DataType name)
+    {
+        if (name is null)
+        {
+            throw new ArgumentNullException(nameof(name));
+        }
+
+        return new(name.Type) { IsStatic = true, };
+    }
 }
-#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type

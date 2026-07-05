@@ -102,29 +102,34 @@ public sealed class Attribute(DataType type) :
                 return SimpleNameExpression.Null;
 
             case TypedConstantKind.Primitive:
-                if (argument.Value is string str)
-                {
-                    return str.ToLiteral();
-                }
-
-                return argument.Value?.ToString().ToSimpleName();
+                return CreateLiteral(argument.Value);
 
             case TypedConstantKind.Enum:
-                if (argument.Type is not { } symbol)
+                if (argument.Type is not INamedTypeSymbol symbol)
                 {
                     return null;
                 }
 
-                return argument.Value!.ToString().ToSimpleName().Cast(DataType.FromSymbol(symbol, compilation));
+                var constantValue = argument.Value;
+                var fieldSymbol = symbol.GetMembers()
+                    .OfType<IFieldSymbol>()
+                    .SingleOrDefault(field => field.HasConstantValue && Equals(field.ConstantValue, constantValue));
+
+                if (fieldSymbol is null)
+                {
+                    return CreateLiteral(constantValue);
+                }
+
+                return new MemberAccessExpression(DataType.FromSymbol(symbol, compilation).Type, fieldSymbol.Name.ToSimpleName());
 
             case TypedConstantKind.Type:
-                if (argument.Value is not Type type)
+                if (argument.Value is not ITypeSymbol typeSymbol)
                 {
                     return null;
                 }
 
                 return "typeof".ToSimpleName().Invoke().AddArgument(
-                    new Argument(DataType.FromType(type).Type));
+                    new Argument(DataType.FromSymbol(typeSymbol, compilation).Type));
 
             case TypedConstantKind.Array:
                 var collection = new CollectionExpression();
@@ -141,6 +146,29 @@ public sealed class Attribute(DataType type) :
             default:
                 return null;
         }
+    }
+
+    private static IExpression? CreateLiteral(object? value)
+    {
+        return value switch
+        {
+            null => SimpleNameExpression.Null,
+            string str => str.ToLiteral(),
+            char c => c.ToLiteral(),
+            byte b => b.ToLiteral(),
+            sbyte sb => sb.ToLiteral(),
+            short s => s.ToLiteral(),
+            ushort us => us.ToLiteral(),
+            int i => i.ToLiteral(),
+            uint ui => ui.ToLiteral(),
+            long l => l.ToLiteral(),
+            ulong ul => ul.ToLiteral(),
+            float f => f.ToLiteral(),
+            double d => d.ToLiteral(),
+            decimal dec => dec.ToLiteral(),
+            bool boolean => boolean.ToLiteral(),
+            _ => value.ToString()?.ToSimpleName(),
+        };
     }
 
     /// <inheritdoc/>

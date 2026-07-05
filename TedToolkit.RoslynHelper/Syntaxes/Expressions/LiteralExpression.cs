@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LiteralExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -132,6 +132,36 @@ public sealed class LiteralExpression : IExpression
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from float.
+    /// </summary>
+    /// <param name="value">value.</param>
+    public LiteralExpression(float value)
+    {
+        _value = $"{value.ToString("R", CultureInfo.InvariantCulture)}F";
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from double.
+    /// </summary>
+    /// <param name="value">value.</param>
+    public LiteralExpression(double value)
+    {
+        _value = value.ToString("R", CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
+    /// Create from decimal.
+    /// </summary>
+    /// <param name="value">value.</param>
+    public LiteralExpression(decimal value)
+    {
+        _value = $"{value.ToString(CultureInfo.InvariantCulture)}M";
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LiteralExpression"/> class.
     /// Create from bool.
     /// </summary>
     /// <param name="value">value.</param>
@@ -197,6 +227,24 @@ public sealed class LiteralExpression : IExpression
 
     /// <inheritdoc cref="LiteralExpression(ulong)"/>
     public static implicit operator LiteralExpression(ulong value)
+    {
+        return new(value);
+    }
+
+    /// <inheritdoc cref="LiteralExpression(float)"/>
+    public static implicit operator LiteralExpression(float value)
+    {
+        return new(value);
+    }
+
+    /// <inheritdoc cref="LiteralExpression(double)"/>
+    public static implicit operator LiteralExpression(double value)
+    {
+        return new(value);
+    }
+
+    /// <inheritdoc cref="LiteralExpression(decimal)"/>
+    public static implicit operator LiteralExpression(decimal value)
     {
         return new(value);
     }

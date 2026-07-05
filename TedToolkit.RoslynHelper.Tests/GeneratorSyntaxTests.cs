@@ -251,6 +251,30 @@ internal sealed class GeneratorSyntaxTests
     }
 
     /// <summary>
+    /// Verifies that file-level using directives render their namespace targets directly.
+    /// </summary>
+    [Test]
+    public async Task Should_render_file_level_using_directive()
+    {
+        var code = TestRenderers.Render(Using("System.Text"));
+
+        await Assert.That(code).IsEqualTo("using System.Text;");
+    }
+
+    /// <summary>
+    /// Verifies that file-level using directives support the static modifier explicitly and for type targets.
+    /// </summary>
+    [Test]
+    public async Task Should_render_static_file_level_using_directive()
+    {
+        var explicitStatic = TestRenderers.Render(Using("System.Math").Static);
+        var typeStatic = TestRenderers.Render(Using(DataType.FromType<StringComparer>()));
+
+        await Assert.That(explicitStatic).IsEqualTo("using static System.Math;");
+        await Assert.That(typeStatic).IsEqualTo("using static global::System.StringComparer;");
+    }
+
+    /// <summary>
     /// Verifies that variable expressions support const declarations and default assignments.
     /// </summary>
     [Test]

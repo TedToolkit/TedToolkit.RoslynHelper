@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DataType.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -147,6 +147,16 @@ public sealed class DataType(IExpression type) :
             throw new ArgumentNullException(nameof(symbol));
         }
 
+        if (symbol is IArrayTypeSymbol arrayType)
+        {
+            return FromSymbol(arrayType.ElementType, compilation).Array;
+        }
+
+        if (symbol is IPointerTypeSymbol pointerType)
+        {
+            return FromSymbol(pointerType.PointedAtType, compilation).Pointer;
+        }
+
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
         {
             return FromSymbol(nullableType.TypeArguments[0], compilation).Null;
@@ -166,6 +176,17 @@ public sealed class DataType(IExpression type) :
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
         {
             return new(symbol.Name.ToSimpleName());
+        }
+
+        if (_specialTypeAlias.TryGetValue(symbol.SpecialType, out var specialTypeFactory))
+        {
+            var dataType = specialTypeFactory();
+            if (symbol.NullableAnnotation is NullableAnnotation.Annotated)
+            {
+                dataType = dataType.Null;
+            }
+
+            return dataType;
         }
 
         var name = ZString.Concat(symbol.GetAlias(compilation), "::", symbol.FullName);
@@ -489,6 +510,26 @@ public sealed class DataType(IExpression type) :
         { typeof(ulong), () => Ulong },
         { typeof(ushort), () => Ushort },
         { typeof(void), () => Void },
+    };
+
+    private static readonly Dictionary<SpecialType, Func<DataType>> _specialTypeAlias = new()
+    {
+        { SpecialType.System_Boolean, () => Bool },
+        { SpecialType.System_Byte, () => Byte },
+        { SpecialType.System_Char, () => Char },
+        { SpecialType.System_Decimal, () => Decimal },
+        { SpecialType.System_Double, () => Double },
+        { SpecialType.System_Single, () => Float },
+        { SpecialType.System_Int16, () => Short },
+        { SpecialType.System_Int32, () => Int },
+        { SpecialType.System_Int64, () => Long },
+        { SpecialType.System_Object, () => Object },
+        { SpecialType.System_SByte, () => Sbyte },
+        { SpecialType.System_String, () => String },
+        { SpecialType.System_UInt16, () => Ushort },
+        { SpecialType.System_UInt32, () => Uint },
+        { SpecialType.System_UInt64, () => Ulong },
+        { SpecialType.System_Void, () => Void },
     };
 
     /// <inheritdoc />

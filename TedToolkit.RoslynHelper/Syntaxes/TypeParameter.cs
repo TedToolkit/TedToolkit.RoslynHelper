@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TypeParameter.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -122,7 +122,14 @@ public sealed class TypeParameter(string identifier) :
 
         if (symbol.HasReferenceTypeConstraint)
         {
-            result.AddClassConstraint();
+            if (symbol.ReferenceTypeConstraintNullableAnnotation is NullableAnnotation.Annotated)
+            {
+                result.AddClassNullConstraint();
+            }
+            else
+            {
+                result.AddClassConstraint();
+            }
         }
 
         if (symbol.HasUnmanagedTypeConstraint)
