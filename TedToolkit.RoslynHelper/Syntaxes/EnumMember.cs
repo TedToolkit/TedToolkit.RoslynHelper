@@ -27,7 +27,7 @@ public sealed class EnumMember(string identifier, IExpression? value = null) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

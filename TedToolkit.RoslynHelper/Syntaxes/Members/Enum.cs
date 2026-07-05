@@ -7,6 +7,8 @@
 
 using System.Runtime.CompilerServices;
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -17,13 +19,14 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 #pragma warning disable CA1711
 public sealed class Enum(string identifier, DataType? dataType = null) :
 #pragma warning restore CA1711
+    ConditionalCompilationSyntax,
     IAccessibility,
     IMember,
     IAttributes,
     IRootDescription
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
         this.AddAttributes(ref builder);
@@ -65,7 +68,7 @@ public sealed class Enum(string identifier, DataType? dataType = null) :
     public Accessibility Accessibility { get; set; }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

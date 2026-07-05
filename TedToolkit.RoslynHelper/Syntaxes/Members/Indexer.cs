@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -12,6 +14,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="type">data type.</param>
 public sealed class Indexer(DataType type) :
+    ConditionalCompilationSyntax,
     IMember,
     IAccessibility,
     IPartial,
@@ -23,7 +26,7 @@ public sealed class Indexer(DataType type) :
     IAccessors
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
 
@@ -62,7 +65,7 @@ public sealed class Indexer(DataType type) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

@@ -15,5 +15,5 @@ public interface IAttributes
     /// <summary>
     /// Gets attributes.
     /// </summary>
-    List<Syntaxes.Attribute> Attributes { get; }
+    List<Syntaxes.ConditionalItem<Syntaxes.Attribute>> Attributes { get; }
 }

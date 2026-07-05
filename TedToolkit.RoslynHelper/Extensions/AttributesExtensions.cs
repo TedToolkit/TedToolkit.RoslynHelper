@@ -25,10 +25,11 @@ public static class AttributesExtensions
         /// Add attribute.
         /// </summary>
         /// <param name="attribute">attribute.</param>
+        /// <param name="condition">the optional conditional compilation expression.</param>
         /// <returns>the item.</returns>
-        public TItem AddAttribute(Syntaxes.Attribute attribute)
+        public TItem AddAttribute(Syntaxes.Attribute attribute, Syntaxes.Preprocessors.PreprocessorExpression? condition = null)
         {
-            instance.Attributes.Add(attribute);
+            instance.Attributes.Add(new Syntaxes.ConditionalItem<Syntaxes.Attribute>(attribute, condition));
             return instance;
         }
 
@@ -83,12 +84,25 @@ public static class AttributesExtensions
                 return;
             }
 
-            foreach (var attribute in instance.Attributes.AsSpan())
+            foreach (var conditionalAttribute in instance.Attributes.AsSpan())
             {
+                if (conditionalAttribute.Condition is not null)
+                {
+                    builder.Append("#if ");
+                    conditionalAttribute.Condition.ToCode(ref builder);
+                    builder.AppendLine();
+                }
+
                 builder.Append('[');
-                attribute.ToCode(ref builder);
+                conditionalAttribute.Item.ToCode(ref builder);
                 builder.Append(']');
                 builder.AppendLine();
+
+                if (conditionalAttribute.Condition is not null)
+                {
+                    builder.Append("#endif");
+                    builder.AppendLine();
+                }
             }
         }
     }

@@ -5,12 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
 /// The constructor.
 /// </summary>
 public sealed class Constructor :
+    ConditionalCompilationSyntax,
     IMember,
     IAccessibility,
     IStatementOwner,
@@ -23,7 +26,7 @@ public sealed class Constructor :
     IOwner
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         if (string.IsNullOrEmpty(Owner))
         {
@@ -70,7 +73,7 @@ public sealed class Constructor :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

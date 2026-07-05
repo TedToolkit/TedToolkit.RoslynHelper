@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -13,10 +15,10 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="identifier">name.</param>
 /// <param name="returnType">ReturnType.</param>
 public sealed class Method(string identifier, ReturnType? returnType = null) :
+    ConditionalCompilationSyntax,
     IMember,
     IParameters,
     IAttributes,
-    IConditionalCompilation,
     IAccessibility,
     IUnsafe,
     IPartial,
@@ -29,9 +31,8 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     ITypeParameters
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
-        this.AddConditionalCompilationStart(ref builder);
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
         {
@@ -81,8 +82,6 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         {
             this.AddStatementsNoSkip(ref builder);
         }
-
-        this.AddConditionalCompilationEnd(ref builder);
     }
 
     /// <inheritdoc/>
@@ -95,7 +94,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {
@@ -105,9 +104,6 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc/>
     public Accessibility Accessibility { get; set; }
-
-    /// <inheritdoc />
-    public Syntaxes.Preprocessors.PreprocessorExpression? Condition { get; set; }
 
     /// <inheritdoc/>
     public bool IsUnsafe { get; set; }

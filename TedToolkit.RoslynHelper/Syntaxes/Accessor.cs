@@ -39,7 +39,7 @@ public sealed class Accessor(AccessorType type) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

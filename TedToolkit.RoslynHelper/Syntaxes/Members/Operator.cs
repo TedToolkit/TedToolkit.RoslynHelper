@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -13,6 +15,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="returnType">return type.</param>
 /// <param name="operatorName">operator name.</param>
 public sealed class Operator(ReturnType returnType, string operatorName) :
+    ConditionalCompilationSyntax,
     IMember,
     IParameters,
     IAttributes,
@@ -22,7 +25,7 @@ public sealed class Operator(ReturnType returnType, string operatorName) :
     IStatementOwner
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
         this.AddAttributes(ref builder);
@@ -48,7 +51,7 @@ public sealed class Operator(ReturnType returnType, string operatorName) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

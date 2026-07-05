@@ -1,6 +1,7 @@
 using System.Reflection;
 
 using TedToolkit.RoslynHelper.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -24,6 +25,21 @@ internal sealed class GeneratorSyntaxTests
 
         await Assert.That(code).IsEqualTo(
             "[global::System.ObsoleteAttribute]\nprivate readonly unsafe get\n{\n\treturn 10;\n}");
+    }
+
+    /// <summary>
+    /// Verifies that attributes can be wrapped in per-item conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_conditional_attribute_on_accessor()
+    {
+        var code = TestRenderers.Render(
+            new Accessor(AccessorType.GET)
+                .AddAttribute(Attribute<ObsoleteAttribute>(), PreprocessorExpression.Debug)
+                .AddStatement(10.ToLiteral().Return));
+
+        await Assert.That(code).IsEqualTo(
+            "#if DEBUG\n[global::System.ObsoleteAttribute]\n#endif\nget\n{\n\treturn 10;\n}");
     }
 
     /// <summary>

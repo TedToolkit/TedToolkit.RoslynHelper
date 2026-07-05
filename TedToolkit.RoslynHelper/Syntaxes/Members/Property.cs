@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -13,6 +15,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="type">The type.</param>
 /// <param name="identifier">The identifier.</param>
 public sealed class Property(DataType type, string identifier) :
+    ConditionalCompilationSyntax,
     IMember,
     IVariable,
     IAccessibility,
@@ -38,7 +41,7 @@ public sealed class Property(DataType type, string identifier) :
     public Accessibility Accessibility { get; set; }
 
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
 
@@ -82,7 +85,7 @@ public sealed class Property(DataType type, string identifier) :
     }
 
     /// <inheritdoc />
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

@@ -5,16 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
 /// The return statement.
 /// </summary>
 /// <param name="expression">expression.</param>
-public sealed class ReturnStatement(IExpression? expression = null) : ConditionalCompilationStatement
+public sealed class ReturnStatement(IExpression? expression = null) : ConditionalCompilationSyntax, IStatement
 {
     /// <inheritdoc/>
-    protected override void WriteStatement(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         if (expression is null)
         {

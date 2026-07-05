@@ -47,7 +47,7 @@ public sealed class TypeParameter(string identifier) :
     }
 
     /// <inheritdoc />
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

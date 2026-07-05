@@ -49,6 +49,20 @@ internal sealed class GeneratorMemberTests
     }
 
     /// <summary>
+    /// Verifies that base types can be rendered with per-item conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_type_declaration_base_types_with_conditions()
+    {
+        var typeDeclaration = new TypeDeclaration("Sample", TypeDeclarationType.CLASS)
+            .AddBaseType<IDisposable>(condition: PreprocessorExpression.Debug)
+            .AddBaseType(DataType.FromType<IAsyncDisposable>());
+
+        await Assert.That(TestRenderers.Render(typeDeclaration)).IsEqualTo(
+            "class Sample :\n#if DEBUG\n\tglobal::System.IDisposable,\n#endif\n\tglobal::System.IAsyncDisposable;");
+    }
+
+    /// <summary>
     /// Verifies that methods render their descriptions, modifiers, parameters, and bodies.
     /// </summary>
     [Test]
@@ -147,6 +161,18 @@ internal sealed class GeneratorMemberTests
     }
 
     /// <summary>
+    /// Verifies that stateful members can be wrapped in conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_conditional_compilation_for_stateful_members()
+    {
+        var field = new Field(DataType.Int, "count")
+            .AddCondition(PreprocessorExpression.Debug);
+
+        await Assert.That(TestRenderers.Render(field)).IsEqualTo("#if DEBUG\nint count;\n#endif");
+    }
+
+    /// <summary>
     /// Verifies that enum and extension members render nested payloads and constraints.
     /// </summary>
     [Test]
@@ -166,5 +192,20 @@ internal sealed class GeneratorMemberTests
         await Assert.That(TestRenderers.Render(extension)).Contains(">(this string text)");
         await Assert.That(TestRenderers.Render(extension)).Contains("where T: notnull");
         await Assert.That(TestRenderers.Render(extension)).Contains("return text;");
+    }
+
+    /// <summary>
+    /// Verifies that all concrete members participate in the shared conditional compilation abstraction.
+    /// </summary>
+    [Test]
+    public async Task Should_have_all_member_types_derive_from_conditional_compilation_syntax()
+    {
+        var memberTypes = typeof(TypeDeclaration).Assembly.GetTypes()
+            .Where(type => type is { IsAbstract: false, IsClass: true } &&
+                           type.Namespace == typeof(TypeDeclaration).Namespace &&
+                           typeof(IMember).IsAssignableFrom(type));
+
+        await Assert.That(memberTypes).All().Satisfy(type =>
+            typeof(ConditionalCompilationSyntax).IsAssignableFrom(type));
     }
 }

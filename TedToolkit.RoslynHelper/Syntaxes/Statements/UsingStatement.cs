@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -12,11 +14,12 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="expression">expression.</param>
 public sealed class UsingStatement(IExpression expression) :
-    ConditionalCompilationStatement,
+    ConditionalCompilationSyntax,
+    IStatement,
     IStatementOwner
 {
     /// <inheritdoc />
-    protected override void WriteStatement(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         builder.Append("using (");
         expression.ToCode(ref builder);

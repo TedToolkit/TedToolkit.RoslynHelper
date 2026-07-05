@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -14,6 +16,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="isFrom">Is from.</param>
 /// <param name="isImplicit">is implicit.</param>
 public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
+    ConditionalCompilationSyntax,
     IMember,
     IStatementOwner,
     IRootDescription,
@@ -25,7 +28,7 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
     public string Owner { get; set; } = "";
 
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
         this.AddAttributes(ref builder);
@@ -82,7 +85,7 @@ public sealed class Conversion(DataType type, bool isFrom, bool isImplicit) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

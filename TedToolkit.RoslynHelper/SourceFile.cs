@@ -71,9 +71,23 @@ public class SourceFile()
             foreach (var attribute in Attributes)
             {
                 builder.AppendLine();
+
+                if (attribute.Condition is not null)
+                {
+                    builder.Append("#if ");
+                    attribute.Condition.ToCode(ref builder);
+                    builder.AppendLine();
+                }
+
                 builder.Append('[');
-                attribute.ToCode(ref builder);
+                attribute.Item.ToCode(ref builder);
                 builder.Append(']');
+
+                if (attribute.Condition is not null)
+                {
+                    builder.AppendLine();
+                    builder.Append("#endif");
+                }
             }
 
             foreach (var usingDirective in Usings)
@@ -124,7 +138,7 @@ public class SourceFile()
     /// Gets attributes.
     /// </summary>
 #pragma warning disable S2325
-    public List<Syntaxes.Attribute> Attributes
+    public List<ConditionalItem<Syntaxes.Attribute>> Attributes
 #pragma warning restore S2325
         => field ??= [];
 
@@ -170,10 +184,11 @@ public class SourceFile()
     /// Add a name space.
     /// </summary>
     /// <param name="attribute">the attribute.</param>
+    /// <param name="condition">the optional conditional compilation expression.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">attribute is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public SourceFile AddAttribute(Syntaxes.Attribute attribute)
+    public SourceFile AddAttribute(Syntaxes.Attribute attribute, Syntaxes.Preprocessors.PreprocessorExpression? condition = null)
     {
         if (attribute is null)
         {
@@ -181,7 +196,7 @@ public class SourceFile()
         }
 
         attribute.Modifier = AttributeModifier.ASSEMBLY;
-        Attributes.Add(attribute);
+        Attributes.Add(new ConditionalItem<Syntaxes.Attribute>(attribute, condition));
         return this;
     }
 }

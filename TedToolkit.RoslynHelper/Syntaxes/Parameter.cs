@@ -331,7 +331,7 @@ public sealed class Parameter(DataType type, string identifier) :
     }
 
     /// <inheritdoc />
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

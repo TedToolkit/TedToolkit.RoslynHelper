@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -15,6 +17,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 #pragma warning disable CA1711
 public sealed class Delegate(string identifier, ReturnType? returnType = null) :
 #pragma warning restore CA1711
+    ConditionalCompilationSyntax,
     IMember,
     IParameters,
     IAttributes,
@@ -23,7 +26,7 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
     IRootDescription
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
         foreach (var parameter in Parameters)
@@ -65,7 +68,7 @@ public sealed class Delegate(string identifier, ReturnType? returnType = null) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

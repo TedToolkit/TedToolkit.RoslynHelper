@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -12,12 +14,13 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="parameter">parameter.</param>
 public sealed class Extension(Parameter parameter) :
+    ConditionalCompilationSyntax,
     IMember,
     IMemberOwner,
     ITypeParameters
 {
     /// <inheritdoc />
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         parameter.ToRoot().ToDescription(ref builder);
         builder.Append("extension");

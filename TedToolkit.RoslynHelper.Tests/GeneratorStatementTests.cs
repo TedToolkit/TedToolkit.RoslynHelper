@@ -92,4 +92,19 @@ internal sealed class GeneratorStatementTests
         await Assert.That(TestRenderers.Render(statement)).IsEqualTo(
             "#if DEBUG\nif (ready)\n{\n\twork;\n}\n#endif");
     }
+
+    /// <summary>
+    /// Verifies that all concrete statements participate in the shared conditional compilation abstraction.
+    /// </summary>
+    [Test]
+    public async Task Should_have_all_statement_types_derive_from_conditional_compilation_syntax()
+    {
+        var statementTypes = typeof(Statement).Assembly.GetTypes()
+            .Where(type => type is { IsAbstract: false, IsClass: true } &&
+                           type.Namespace == typeof(Statement).Namespace &&
+                           typeof(IStatement).IsAssignableFrom(type));
+
+        await Assert.That(statementTypes).All().Satisfy(type =>
+            typeof(ConditionalCompilationSyntax).IsAssignableFrom(type));
+    }
 }

@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -13,6 +15,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="type">event type.</param>
 /// <param name="identifier">identifier.</param>
 public sealed class Event(DataType type, string identifier) :
+    ConditionalCompilationSyntax,
     IMember,
     IVariable,
     IAccessibility,
@@ -24,7 +27,7 @@ public sealed class Event(DataType type, string identifier) :
     IAccessors
 {
     /// <inheritdoc/>
-    public void ToCode(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         this.AddDescriptions(ref builder);
 
@@ -72,7 +75,7 @@ public sealed class Event(DataType type, string identifier) :
     }
 
     /// <inheritdoc/>
-    public List<Attribute> Attributes
+    public List<ConditionalItem<Attribute>> Attributes
     {
         get
         {

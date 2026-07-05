@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
@@ -14,12 +16,13 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="identifier">identifier.</param>
 /// <param name="expression">expression.</param>
 public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
-    ConditionalCompilationStatement,
+    ConditionalCompilationSyntax,
+    IStatement,
     IVariable,
     IStatementOwner
 {
     /// <inheritdoc/>
-    protected override void WriteStatement(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         builder.Append("foreach (");
         type.ToCode(ref builder);

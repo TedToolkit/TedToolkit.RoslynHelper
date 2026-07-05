@@ -5,17 +5,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
 /// <summary>
 /// Try statement.
 /// </summary>
 public sealed class TryStatement :
-    ConditionalCompilationStatement,
+    ConditionalCompilationSyntax,
+    IStatement,
     IStatementOwner
 {
     /// <inheritdoc />
-    protected override void WriteStatement(ref SourceBuilder builder)
+    protected override void WriteSyntax(ref SourceBuilder builder)
     {
         builder.Append("try");
         this.AddStatements(ref builder);

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 
 using TedToolkit.RoslynHelper.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
@@ -46,6 +47,20 @@ internal sealed class CoreGeneratorTests
         await Assert.That(code).Contains(
             "[global::System.CodeDom.Compiler.GeneratedCodeAttribute(\"global::TedToolkit.RoslynHelper.Tests.CoreGeneratorTests\", \"1.0.0.0\")]");
         await Assert.That(code).Contains("public class Sample;");
+    }
+
+    /// <summary>
+    /// Verifies that file-level attributes can be wrapped in conditional compilation directives.
+    /// </summary>
+    [Test]
+    public async Task Should_render_file_with_conditional_attributes()
+    {
+        var code = TestRenderers.Render(
+            File()
+                .AddAttribute(Attribute<ObsoleteAttribute>(), PreprocessorExpression.Debug)
+                .AddNameSpace(NameSpace("Demo.Space")));
+
+        await Assert.That(code).Contains("#if DEBUG\n[assembly:global::System.ObsoleteAttribute]\n#endif");
     }
 
     /// <summary>
