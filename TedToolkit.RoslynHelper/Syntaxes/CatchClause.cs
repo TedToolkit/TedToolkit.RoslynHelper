@@ -1,0 +1,52 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="CatchClause.cs" company="TedToolkit">
+// Copyright (c) TedToolkit. All rights reserved.
+// Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace TedToolkit.RoslynHelper.Syntaxes;
+
+/// <summary>
+/// The catch clause.
+/// </summary>
+/// <param name="dataType">data type.</param>
+/// <param name="identifier">identifier.</param>
+public sealed class CatchClause(DataType dataType, string? identifier = null) :
+    IStatementOwner,
+    IVariable,
+    IToCode
+{
+    /// <inheritdoc/>
+    public string Variable
+    {
+        get
+        {
+            return identifier?.ToValidIdentifier() ?? "";
+        }
+    }
+
+    /// <inheritdoc/>
+    public List<IStatement> Statements
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
+
+    /// <inheritdoc/>
+    public void ToCode(ref SourceBuilder builder)
+    {
+        builder.Append("catch(");
+        dataType.ToCode(ref builder);
+        if (!string.IsNullOrEmpty(Variable))
+        {
+            builder.Append(' ');
+            builder.Append(Variable);
+        }
+
+        builder.Append(')');
+        this.AddStatements(ref builder);
+    }
+}

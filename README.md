@@ -1,206 +1,86 @@
 # TedToolkit.RoslynHelper
 
-A fluent API library for programmatically generating C# source code, designed for use in Roslyn incremental source generators and analyzers.
+Developer README for maintaining this repository.
 
-[![NuGet](https://img.shields.io/nuget/v/TedToolkit.RoslynHelper)](https://www.nuget.org/packages/TedToolkit.RoslynHelper)
-[![License: LGPL-3.0-or-later](https://img.shields.io/badge/license-LGPL--3.0--or--later-blue)](COPYING.LESSER)
+If you only want to consume the package, read [TedToolkit.RoslynHelper/README.md](TedToolkit.RoslynHelper/README.md). That file is also the NuGet package README.
 
-## Features
+## Repository Scope
 
-- **Fluent Code Generation** - Chainable API to build classes, structs, records, interfaces, enums, delegates, and more
-- **Full C# Member Support** - Methods, properties, fields, events, constructors, indexers, operators, and conversions
-- **Expression & Statement Builders** - Compose expressions (literals, binary ops, casts, invocations, object creation) and statements (if, foreach, switch, try-catch, using, return)
-- **XML Documentation** - Generate `///` doc comments (summary, param, returns, remarks, exception, example, etc.)
-- **Type System** - Handle generics, nullable types, pointers, ref/scoped parameters, and nested types
-- **High Performance** - Built on [ZString](https://github.com/Cysharp/ZString) for allocation-efficient string building
-- **Roslyn Integration** - Targets `netstandard2.0`, distributable as an analyzer component in NuGet packages
-- **Automatic `GeneratedCodeAttribute`** - Tracks which generator produced the code
+This repository contains a Roslyn-oriented C# source generation helper library targeting `netstandard2.0`. It is intended to be referenced by source generators, analyzers, or other code generation pipelines.
 
-## Installation
+Current projects in the repository:
 
-```xml
-<ItemGroup>
-    <PackageReference Include="TedToolkit.RoslynHelper" Version="1.0.0" />
-</ItemGroup>
+- `TedToolkit.RoslynHelper`
+  Main library.
+- `TedToolkit.RoslynHelper.Tests`
+  Test project covering member generation, expressions, statements, conditional compilation, Roslyn symbol conversion, and end-to-end composition.
+- `TedToolkit.RoslynHelper.Benchmarks`
+  Benchmark project.
+- `Build`
+  Build orchestration project.
+- `externals/TedToolkit`
+  Shared external props and build configuration.
+
+## README Split
+
+- Root [README.md](README.md)
+  Developer-facing documentation for this repository.
+- Project [TedToolkit.RoslynHelper/README.md](TedToolkit.RoslynHelper/README.md)
+  Consumer-facing documentation and NuGet package README.
+
+These two files should not duplicate each other.
+
+## What The Library Actually Supports
+
+Based on the current code and tests, the library presently supports:
+
+- Generating `class`, `struct`, `record`, `record struct`, `interface`, `enum`, and `delegate`
+- Generating `field`, `property`, `event`, `indexer`, `constructor`, `method`, `operator`, and `conversion`
+- Generating expressions and statements
+  Including `return`, `if/else`, `foreach`, `switch`, `try/catch/finally`, and `using`
+- Generating XML documentation comments
+- Generating conditional compilation structures
+  Including file-level, member-level, and statement-level `#if / #elif / #else / #endif`
+- Converting Roslyn symbols
+  Including `ITypeSymbol`, `IParameterSymbol`, `AttributeData`, and type parameter constraints
+- Automatically adding `GeneratedCodeAttribute` through `SourceComposer<TGenerator>`
+
+## Common Commands
+
+```powershell
+dotnet build TedToolkit.RoslynHelper.slnx -c Release
+dotnet test TedToolkit.RoslynHelper.Tests/TedToolkit.RoslynHelper.Tests.csproj -c Release
+dotnet run --project TedToolkit.RoslynHelper.Benchmarks/TedToolkit.RoslynHelper.Benchmarks.csproj -c Release
 ```
 
-## Quick Start
+For most maintenance work, the first two commands are enough.
 
-```csharp
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
+## Packaging Constraints
 
-using static SourceComposer;
-using static SourceComposer<MyGenerator>;
+Current packaging behavior comes from [TedToolkit.RoslynHelper.csproj](TedToolkit.RoslynHelper/TedToolkit.RoslynHelper.csproj) and [NugetPackage.props](externals/TedToolkit/props/NugetPackage.props):
 
-// Build a source file with a class
-var code = File()
-    .AddNameSpace(NameSpace("MyApp.Models")
-        .AddMember(Class("Person").Public.Partial
-            .AddMember(Property<string>("Name").Public
-                .AddAccessor(Accessor(AccessorType.GET))
-                .AddAccessor(Accessor(AccessorType.SET)))
-            .AddMember(Property<int>("Age").Public
-                .AddAccessor(Accessor(AccessorType.GET))
-                .AddAccessor(Accessor(AccessorType.SET)))
-            .AddMember(Method("Greet", ReturnType(DataType.String)).Public
-                .AddStatement("$\"Hello, I'm {Name}\"".ToSimpleName().Return))))
-    .ToCode();
-```
+- The package targets `netstandard2.0`
+- NuGet package generation is enabled in `Release`
+- `TedToolkit.RoslynHelper/README.md` is used as `PackageReadmeFile`
+- The main DLL, `ZString.dll`, and `System.Memory.dll` are packed into `analyzers/dotnet/cs`
 
-## Usage Examples
+That means:
 
-### Type Declarations
+- The project README must stay consumer-focused
+- The NuGet README examples should stay short and immediately usable
+- Public capability claims should be grounded in the current API and tests, not assumptions
 
-```csharp
-// Class with modifiers
-Class("MyClass").Public.Static.Unsafe.Partial
+## Documentation Rules
 
-// Struct, record, interface
-Struct("MyStruct").Public
-Record("MyRecord").Public
-Interface("IMyInterface").Public
+When updating documentation for this repository:
 
-// With base types and generics
-Class("MyList").Public
-    .AddBaseType<IDisposable>()
-    .AddTypeParameter(TypeParameter("T").In
-        .AddNewConstraint()
-        .AddConstraint<IComparable>())
-```
-
-### Members
-
-```csharp
-// Method
-Method("Calculate", ReturnType(DataType.Int)).Public
-    .AddParameter(Parameter<int>("x"))
-    .AddParameter(Parameter<int>("y"))
-    .AddStatement("x + y".ToSimpleName().Return)
-
-// Property with default value
-Property<long>("Count").Internal
-    .AddAccessor(Accessor(AccessorType.GET))
-    .AddDefault(10.ToLiteral())
-
-// Field
-Field<long>("_count").Private.Readonly
-
-// Event
-Event<Action<int>>("ItemChanged").Public
-
-// Constructor with initializer
-Constructor().Public
-    .AddInitializer(new ConstructorInitializer(false))
-
-// Delegate
-Delegate("MyCallback").Public
-
-// Enum with members
-Enum("Status").Public
-    .AddEnumMember(EnumMember("Active"))
-    .AddEnumMember(EnumMember("Inactive"))
-```
-
-### Expressions
-
-```csharp
-// Literals
-10.ToLiteral()
-"hello".ToLiteral()
-
-// Simple name
-"myVariable".ToSimpleName()
-
-// Object creation
-new ObjectCreationExpression(DataType.FromType<int>())
-    .AddArgument(Argument(10.ToLiteral()))
-
-// Collections
-new CollectionExpression()
-    .AddElement(new ObjectCreationExpression(DataType.FromType<int>()))
-```
-
-### Statements
-
-```csharp
-// ForEach
-new ForEachStatement(DataType.Var, "item", new SimpleNameExpression("source"))
-
-// Variable declaration
-new VariableExpression(DataType.Int, "count")
-    .AddDefault(10.ToLiteral())
-
-// Switch
-new SwitchStatement("value".ToSimpleName())
-    .AddSection(new SwitchSection()
-        .AddLabel(new SwitchLabel(1.ToLiteral()))
-        .AddStatement("break".ToSimpleName()))
-```
-
-### XML Documentation
-
-```csharp
-Class("MyClass").Public
-    .AddRootDescription(new DescriptionSummary(
-        new DescriptionText("This is my class.")))
-    .AddMember(Method("DoWork").Public
-        .AddParameter(Parameter<int>("count")
-            .AddDescription(new DescriptionText("Number of iterations."))))
-```
-
-### Parameters
-
-```csharp
-// Typed parameter with default
-Parameter<int>("item").AddDefault(10.ToLiteral())
-
-// Scoped in parameter
-Parameter(DataType.Int.ScopedIn, "item").This
-
-// Nullable parameter
-Parameter(DataType.Int.Null.ScopedIn, "item")
-
-// From Roslyn symbols
-Parameter(parameterSymbol, compilation)
-```
-
-### Attributes
-
-```csharp
-Method("Method")
-    .AddAttribute(Attribute<MethodImplAttribute>()
-        .AddArgument(Argument(MethodImplOptions.AggressiveInlining.ToExpression())))
-```
-
-## Project Structure
-
-```
-TedToolkit.RoslynHelper/           Main library (netstandard2.0)
-  Extensions/                      Roslyn symbol/syntax helper extensions
-  Generators/
-    Syntaxes/                      Code generation syntax nodes
-      Members/                     Type declarations, methods, properties, etc.
-      Expressions/                 Expression builders
-      Statements/                  Statement builders (if, foreach, switch, etc.)
-      Descriptions/                XML documentation comment builders
-    Interfaces/                    Fluent API interfaces
-    Enums/                         Modifier and type enums
-  Names/                           Type naming system
-TedToolkit.RoslynHelper.Tests/     Unit tests (TUnit)
-TedToolkit.RoslynHelper.Benchmarks/ Performance benchmarks (BenchmarkDotNet)
-Build/                             Build orchestration
-```
-
-## Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) | 5.0.0 | Roslyn compiler APIs |
-| [ZString](https://github.com/Cysharp/ZString) | 2.6.0 | High-performance string building |
-| [System.Memory](https://www.nuget.org/packages/System.Memory) | 4.6.3 | `Span<T>` / `ReadOnlySpan<T>` support |
+- Only describe capabilities that exist now
+- Prefer examples that match tested APIs
+- Do not describe directories or namespaces that no longer exist
+- Do not document speculative future features as current behavior
+- Keep the project README focused on installation, usage, and fit
+- Keep the root README focused on repository maintenance, verification, and packaging context
 
 ## License
 
-This project is licensed under the [GNU Lesser General Public License v3.0 or later](COPYING.LESSER).
-See [COPYING](COPYING) and [COPYING.LESSER](COPYING.LESSER) for full license text.
+Licensed under [LGPL-3.0-or-later](COPYING.LESSER).

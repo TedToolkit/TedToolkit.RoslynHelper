@@ -1,0 +1,110 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="Property.cs" company="TedToolkit">
+// Copyright (c) TedToolkit. All rights reserved.
+// Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
+namespace TedToolkit.RoslynHelper.Syntaxes;
+
+/// <summary>
+/// The property.
+/// </summary>
+/// <param name="type">The type.</param>
+/// <param name="identifier">The identifier.</param>
+public sealed class Property(DataType type, string identifier) :
+    ConditionalCompilationSyntax,
+    IMember,
+    IVariable,
+    IAccessibility,
+    IPartial,
+    IStatic,
+    IReadonly,
+    IPolymorphism,
+    IRootDescription,
+    IAttributes,
+    IDefault,
+    IAccessors
+{
+    /// <inheritdoc/>
+    public string Variable
+    {
+        get
+        {
+            return identifier.ToValidIdentifier();
+        }
+    }
+
+    /// <inheritdoc />
+    public Accessibility Accessibility { get; set; }
+
+    /// <inheritdoc />
+    protected override void WriteSyntax(ref SourceBuilder builder)
+    {
+        this.AddDescriptions(ref builder);
+
+        this.AddAttributes(ref builder);
+        this.AddAccessibility(ref builder);
+        this.AddStatic(ref builder);
+        this.AddReadonly(ref builder);
+        this.AddPolymorphism(ref builder);
+        this.AddPartial(ref builder);
+
+        type.ToCode(ref builder);
+        builder.Append(' ');
+        builder.Append(identifier.ToValidIdentifier());
+        this.AddAccessors(ref builder);
+
+        if (Default is null)
+        {
+            return;
+        }
+
+        this.AddDefault(ref builder);
+        builder.Append(';');
+    }
+
+    /// <inheritdoc/>
+    public bool IsPartial { get; set; }
+
+    /// <inheritdoc/>
+    public bool IsStatic { get; set; }
+
+    /// <inheritdoc/>
+    public Polymorphism Polymorphism { get; set; }
+
+    /// <inheritdoc/>
+    public List<IRootDescriptionItem> RootDescriptions
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
+
+    /// <inheritdoc />
+    public List<ConditionalItem<Attribute>> Attributes
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
+
+    /// <inheritdoc />
+    public List<Accessor> Accessors
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
+
+    /// <inheritdoc />
+    public bool IsReadonly { get; set; }
+
+    /// <inheritdoc />
+    public IExpression? Default { get; set; }
+}

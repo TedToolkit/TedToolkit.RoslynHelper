@@ -1,102 +1,158 @@
 # TedToolkit.RoslynHelper
 
-A fluent API library for programmatically generating C# source code, designed for use in Roslyn incremental source generators and analyzers.
+A fluent API for generating C# source code, designed for Roslyn source generators, analyzers, and other code generation workflows.
 
-## Features
+## Good Fit
 
-- Fluent, chainable API to build classes, structs, records, interfaces, enums, delegates, and more
-- Full C# member support: methods, properties, fields, events, constructors, indexers, operators, conversions
-- Expression and statement builders (if, foreach, switch, try-catch, using, return)
-- XML documentation comment generation (summary, param, returns, remarks, etc.)
-- Generics, nullable types, pointers, ref/scoped parameters, nested types
-- High-performance string building via [ZString](https://github.com/Cysharp/ZString)
-- Targets `netstandard2.0` - distributable as an analyzer component in NuGet packages
-- Automatic `GeneratedCodeAttribute` tracking
+This library is useful when you want to compose:
+
+- files, namespaces, and type declarations
+- methods, properties, fields, events, indexers, and constructors
+- expressions and statements
+- XML documentation comments
+- conditional compilation blocks
+- code-generation syntax derived from Roslyn symbols
+
+It targets `netstandard2.0` and can be distributed as part of analyzer-oriented packages.
 
 ## Installation
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="TedToolkit.RoslynHelper" Version="1.0.0" />
+  <PackageReference Include="TedToolkit.RoslynHelper" Version="1.0.0" />
 </ItemGroup>
 ```
 
 ## Quick Start
 
 ```csharp
-using TedToolkit.RoslynHelper.Generators;
-using TedToolkit.RoslynHelper.Generators.Syntaxes;
+using TedToolkit.RoslynHelper;
+using TedToolkit.RoslynHelper.Syntaxes;
 
-using static SourceComposer;
-using static SourceComposer<MyGenerator>;
+using static TedToolkit.RoslynHelper.SourceComposer;
 
 var code = File()
-    .AddNameSpace(NameSpace("MyApp.Models")
-        .AddMember(Class("Person").Public.Partial
-            .AddMember(Property<string>("Name").Public
-                .AddAccessor(Accessor(AccessorType.GET))
-                .AddAccessor(Accessor(AccessorType.SET)))
-            .AddMember(Method("Greet", ReturnType(DataType.String)).Public
-                .AddStatement("$\"Hello, I'm {Name}\"".ToSimpleName().Return))))
+    .AddUsing(Using("System"))
+    .AddNameSpace(NameSpace("Demo.Space")
+        .AddMember(Class("Sample").Public
+            .AddMember(
+                new Method("Run")
+                    .Public
+                    .Static
+                    .AddStatement(1.ToLiteral().Return))))
     .ToCode();
 ```
 
-### Type Declarations
+The generated output includes the auto-generated file header, `#pragma warning disable`, plus the using directives, namespaces, and members you add.
+
+## Common Capabilities
+
+### 1. Generate types and members
 
 ```csharp
-Class("MyClass").Public.Static.Unsafe.Partial
-Struct("MyStruct").Public.Readonly
-Record("MyRecord").Public
-Interface("IMyInterface").Public
+using TedToolkit.RoslynHelper.Syntaxes;
 
-// With base types and generic constraints
-Class("MyList").Public
+var typeDeclaration = new TypeDeclaration("Sample", TypeDeclarationType.CLASS)
+    .Public
+    .Partial
     .AddBaseType<IDisposable>()
-    .AddTypeParameter(TypeParameter("T").In
-        .AddNewConstraint()
-        .AddConstraint<IComparable>())
+    .AddMember(new Field(DataType.Int, "count"))
+    .AddMember(
+        new Property(DataType.String, "Name")
+            .AddAccessor(new Accessor(AccessorType.GET)))
+    .AddMember(
+        new Method("Run")
+            .AddStatement("count".ToSimpleName().Return));
 ```
 
-### Members
+Primary declaration types include:
+
+- `TypeDeclaration`
+- `Method`
+- `Property`
+- `Field`
+- `Event`
+- `Indexer`
+- `Constructor`
+- `Operator`
+- `Conversion`
+- `Enum`
+- `Delegate`
+
+### 2. Generate expressions and statements
 
 ```csharp
-// Method with parameters
-Method("Calculate", ReturnType(DataType.Int)).Public
-    .AddParameter(Parameter<int>("x"))
-    .AddParameter(Parameter<int>("y"))
+using TedToolkit.RoslynHelper.Syntaxes;
 
-// Property with default value
-Property<long>("Count").Internal
-    .AddAccessor(Accessor(AccessorType.GET))
-    .AddDefault(10.ToLiteral())
+var statement = new IfStatement("ready".ToSimpleName())
+    .AddStatement("work".ToSimpleName())
+    .Else()
+    .AddStatement("fallback".ToSimpleName());
 
-// Field, event, delegate
-Field<long>("_count").Private.Readonly
-Event<Action<int>>("ItemChanged").Public
-Delegate("MyCallback").Public
-
-// Enum
-Enum("Status").Public
-    .AddEnumMember(EnumMember("Active"))
-    .AddEnumMember(EnumMember("Inactive"))
+var expression = "items".ToSimpleName()
+    .Sub("Count")
+    .Add(1.ToLiteral());
 ```
 
-### XML Documentation
+Common statement types covered by the current library include:
+
+- `Statement`
+- `ReturnStatement`
+- `IfStatement`
+- `ForEachStatement`
+- `UsingStatement`
+- `TryStatement`
+- `SwitchStatement`
+
+### 3. Generate conditional compilation
 
 ```csharp
-Class("MyClass").Public
-    .AddRootDescription(new DescriptionSummary(
-        new DescriptionText("This is my class.")))
+using TedToolkit.RoslynHelper.Syntaxes;
+using TedToolkit.RoslynHelper.Syntaxes.Preprocessors;
+
+var field = new Field(DataType.Int, "count")
+    .AddCondition(PreprocessorExpression.Debug);
+
+var block = new ConditionalCompilationStatement(PreprocessorExpression.Debug)
+    .AddStatement("work".ToSimpleName())
+    .Else()
+    .AddStatement("fallback".ToSimpleName());
 ```
 
-## Dependencies
+This is useful when the generated output needs `#if DEBUG`-style structure.
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) | 5.0.0 | Roslyn compiler APIs |
-| [ZString](https://github.com/Cysharp/ZString) | 2.6.0 | High-performance string building |
-| [System.Memory](https://www.nuget.org/packages/System.Memory) | 4.6.3 | Span/ReadOnlySpan support |
+### 4. Convert Roslyn symbols into generation syntax
+
+```csharp
+using Microsoft.CodeAnalysis;
+using TedToolkit.RoslynHelper;
+
+Parameter parameter = SourceComposer.Parameter(parameterSymbol, compilation);
+var dataType = DataType.FromSymbol(typeSymbol, compilation);
+var attribute = SourceComposer.Attribute(attributeData, compilation);
+var typeParameter = SourceComposer.TypeParameter(typeParameterSymbol, compilation);
+```
+
+This is the main bridge between Roslyn analysis data and generated code composition.
+
+### 5. Stamp generated members with generator metadata
+
+```csharp
+using static TedToolkit.RoslynHelper.SourceComposer<MyGenerator>;
+
+var method = Method("Run")
+    .Public
+    .AddStatement("value".ToSimpleName().Return);
+```
+
+When you create members through `SourceComposer<TGenerator>`, the library automatically adds `GeneratedCodeAttribute`.
+
+## Notes
+
+- This is a code generation helper library, not a full semantic rewriter
+- The main public namespaces used by examples are `TedToolkit.RoslynHelper` and `TedToolkit.RoslynHelper.Syntaxes`
+- It is best suited to composing code first, then emitting it through `ToCode()` or `SourceFile.Generate(...)`
 
 ## License
 
-[LGPL-3.0-or-later](https://github.com/TedToolkit/TedToolkit.RoslynHelper/blob/main/COPYING.LESSER)
+LGPL-3.0-or-later.

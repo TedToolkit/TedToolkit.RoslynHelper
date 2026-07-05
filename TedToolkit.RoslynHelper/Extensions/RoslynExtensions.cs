@@ -7,7 +7,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace TedToolkit.RoslynHelper.Extensions;
+namespace TedToolkit.RoslynHelper;
 
 /// <summary>
 ///     The default Roslyn Extensions.
@@ -44,16 +44,23 @@ public static class RoslynExtensions
         }
     }
 
-    /// <summary>
-    ///     Print a node to string.
-    /// </summary>
-    /// <param name="node">node.</param>
-    /// <returns>string.</returns>
-    [Obsolete("Do not use this method, try to use the generators instead!")]
-    public static string NodeToString(this SyntaxNode node)
+#pragma warning disable CA1034
+    extension(ISymbol symbol)
+#pragma warning restore CA1034
     {
-        using var stringWriter = new StringWriter();
-        node.NormalizeWhitespace().WriteTo(stringWriter);
-        return stringWriter.ToString();
+        /// <summary>
+        /// Gets full name of the symbol.
+        /// </summary>
+#pragma warning disable S2325
+        public string FullName
+#pragma warning restore S2325
+        {
+            get
+            {
+                return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
+                    .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
+                    .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
+            }
+        }
     }
 }
