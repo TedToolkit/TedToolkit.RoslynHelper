@@ -20,6 +20,86 @@ namespace TedToolkit.RoslynHelper;
 public static class GeneralExtensions
 #pragma warning restore CA1708
 {
+    private ref struct Connector : IDisposable
+    {
+        private readonly Func<char, bool> _isConnector;
+
+        private readonly char _defaultConnector;
+
+        private readonly HintNameConnectorType _connectorType;
+
+        private char? _char = null;
+
+        private Utf16ValueStringBuilder _builder = default;
+
+        public Connector(Func<char, bool> isConnector,
+            char defaultConnector,
+            HintNameConnectorType connectorType)
+        {
+            _isConnector = isConnector;
+            _defaultConnector = defaultConnector;
+            _connectorType = connectorType;
+            if (connectorType is not HintNameConnectorType.KEEP_ALL)
+            {
+                return;
+            }
+
+            _builder = ZString.CreateStringBuilder();
+        }
+
+        public void Append(char c)
+        {
+            switch (_connectorType)
+            {
+                case HintNameConnectorType.KEEP_FIRST when _isConnector(c):
+                    _char ??= c;
+                    return;
+
+                case HintNameConnectorType.KEEP_LAST when _isConnector(c):
+                    _char = c;
+                    return;
+
+                case HintNameConnectorType.KEEP_ALL:
+                    _builder.Append(_isConnector(c) ? c : _defaultConnector);
+                    return;
+            }
+        }
+
+        public void Write(ref Utf16ValueStringBuilder builder)
+        {
+            if (_connectorType is HintNameConnectorType.KEEP_ALL)
+            {
+                builder.Append(_builder.AsSpan());
+            }
+            else
+            {
+                builder.Append(_char ?? _defaultConnector);
+            }
+        }
+
+        public void Clear()
+        {
+            if (_connectorType is HintNameConnectorType.KEEP_ALL)
+            {
+                _builder.Clear();
+            }
+            else
+            {
+                _char = null;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_connectorType is not HintNameConnectorType.KEEP_ALL)
+            {
+                return;
+            }
+
+            _builder.Dispose();
+        }
+    }
+
     private static class ArrayAccessor<T>
     {
         public static readonly FieldInfo ItemsField = typeof(List<T>)
@@ -50,6 +130,76 @@ public static class GeneralExtensions
         public string ToValidIdentifier()
         {
             return _keywords.Contains(value) ? ZString.Concat('@', value) : value;
+        }
+
+        /// <summary>
+        /// Converts arbitrary text into a Roslyn hint-name-safe token while preserving dot separators.
+        /// </summary>
+        /// <param name="isValue">Determines which characters should be emitted as-is.</param>
+        /// <param name="defaultConnector">The fallback connector used when a separator run does not include a dot.</param>
+        /// <param name="connectorType">Controls how separator runs are collapsed before writing a connector.</param>
+        /// <returns>Normalized hint name with dot separators preserved.</returns>
+        public string ToHintNameKeepDot(
+            Func<char, bool>? isValue = null,
+            char defaultConnector = '_',
+            HintNameConnectorType connectorType = HintNameConnectorType.KEEP_FIRST)
+        {
+            return value.ToHintName(
+                isValue: isValue,
+                isConnector: static c => c is '.',
+                defaultConnector: defaultConnector,
+                connectorType: connectorType);
+        }
+
+        /// <summary>
+        /// Converts arbitrary text into a Roslyn hint-name-safe token.
+        /// </summary>
+        /// <param name="isValue">Determines which characters should be emitted as-is.</param>
+        /// <param name="isConnector">Determines which separator characters should be preserved when collapsing separator runs.</param>
+        /// <param name="defaultConnector">The fallback connector used when no preserved connector is selected.</param>
+        /// <param name="connectorType">Controls how separator runs are collapsed before writing a connector.</param>
+        /// <returns>Normalized hint name.</returns>
+        public string ToHintName(
+            Func<char, bool>? isValue = null,
+            Func<char, bool>? isConnector = null,
+            char defaultConnector = '_',
+            HintNameConnectorType connectorType = HintNameConnectorType.KEEP_FIRST)
+        {
+            isValue ??= char.IsLetterOrDigit;
+            isConnector ??= _ => false;
+
+            var builder = ZString.CreateStringBuilder();
+            try
+            {
+                var previousWasSeparator = false;
+                using var connector = new Connector(isConnector, defaultConnector, connectorType);
+
+                foreach (var c in value)
+                {
+                    if (isValue(c))
+                    {
+                        if (previousWasSeparator && builder.Length > 0)
+                        {
+                            connector.Write(ref builder);
+                        }
+
+                        connector.Clear();
+                        builder.Append(c);
+                        previousWasSeparator = false;
+                    }
+                    else
+                    {
+                        connector.Append(c);
+                        previousWasSeparator = true;
+                    }
+                }
+
+                return builder.ToString();
+            }
+            finally
+            {
+                builder.Dispose();
+            }
         }
 
         /// <summary>
@@ -95,8 +245,7 @@ public static class GeneralExtensions
         // { '\r', @"\r" },
         // { '\t', @"\t" },
         // { '\v', @"\v" },
-        { '\"', "\\\"" },
-        { '\n', @"\n" },
+        { '\"', "\\\"" }, { '\n', @"\n" },
     };
 
     private static readonly HashSet<string> _keywords = new(StringComparer.Ordinal)

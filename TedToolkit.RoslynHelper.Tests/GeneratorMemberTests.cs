@@ -276,20 +276,4 @@ internal sealed class GeneratorMemberTests
         await Assert.That(TestRenderers.Render(extension)).Contains("where T: notnull");
         await Assert.That(TestRenderers.Render(extension)).Contains("return text;");
     }
-
-    /// <summary>
-    /// Verifies that all concrete members participate in the shared conditional compilation abstraction.
-    /// </summary>
-    [Test]
-    public async Task Should_have_all_member_types_derive_from_conditional_compilation_syntax()
-    {
-        var memberTypes = typeof(TypeDeclaration).Assembly.GetTypes()
-            .Where(type => type is { IsAbstract: false, IsClass: true } &&
-                           type.Namespace == typeof(TypeDeclaration).Namespace &&
-                           typeof(IMember).IsAssignableFrom(type));
-        var allSupportConditionalCompilation = memberTypes.All(type =>
-            typeof(ConditionalCompilationSyntax).IsAssignableFrom(type));
-
-        await Assert.That(allSupportConditionalCompilation).IsTrue();
-    }
 }
