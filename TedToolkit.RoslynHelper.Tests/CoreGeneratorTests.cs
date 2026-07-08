@@ -133,6 +133,75 @@ internal sealed class CoreGeneratorTests
     }
 
     /// <summary>
+    /// 验证普通 HintName 归一化在 KeepFirst 和 KeepLast 下会折叠分隔符，并忽略首尾无效分隔段。
+    /// </summary>
+    [Test]
+    [Arguments("List<string>", "List_string")]
+    [Arguments("Dictionary<string, List<int>>", "Dictionary_string_List_int")]
+    [Arguments(" Demo / Value .g ", "Demo_Value_g")]
+    [Arguments("", "")]
+    [Arguments(" / . ", "")]
+    [Arguments("///Demo///Value///", "Demo_Value")]
+    public async Task Should_collapse_separator_runs_for_keep_first_and_keep_last(
+        string input,
+        string expected)
+    {
+        await Assert.That(input.ToHintName(connectorType: HintNameConnectorType.KEEP_FIRST)).IsEqualTo(expected);
+        await Assert.That(input.ToHintName(connectorType: HintNameConnectorType.KEEP_LAST)).IsEqualTo(expected);
+    }
+
+    /// <summary>
+    /// 验证 KeepAll 会按原始分隔段长度写出默认连接符，而不是继续折叠为单个连接符。
+    /// </summary>
+    [Test]
+    [Arguments("List<string>", "List_string")]
+    [Arguments("Dictionary<string, List<int>>", "Dictionary_string__List_int")]
+    [Arguments(" Demo / Value .g ", "Demo___Value__g")]
+    [Arguments("", "")]
+    [Arguments(" / . ", "")]
+    [Arguments("///Demo///Value///", "Demo___Value")]
+    public async Task Should_project_entire_separator_run_when_connector_type_is_keep_all(
+        string input,
+        string expected)
+    {
+        await Assert.That(input.ToHintName(connectorType: HintNameConnectorType.KEEP_ALL)).IsEqualTo(expected);
+    }
+
+    /// <summary>
+    /// 验证显式 KeepDot 重载会保留点号，并且在首尾点号或自定义值字符场景下保持稳定。
+    /// </summary>
+    [Test]
+    public async Task Should_preserve_dot_separator_when_using_explicit_keep_dot_overload()
+    {
+        await Assert.That(" Demo / Value .g ".ToHintNameKeepDot()).IsEqualTo("Demo_Value.g");
+        await Assert.That(" Demo / Value .g ".ToHintNameKeepDot(defaultConnector: '-', connectorType: HintNameConnectorType.KEEP_ALL))
+            .IsEqualTo("Demo---Value-.g");
+        await Assert.That(".Demo.".ToHintNameKeepDot()).IsEqualTo("Demo");
+        await Assert.That(" / . ".ToHintNameKeepDot()).IsEqualTo(string.Empty);
+        await Assert.That(".demo.file".ToHintNameKeepDot(isValue: static c => char.IsLetter(c) || c is '.')).IsEqualTo(".demo.file");
+    }
+
+    /// <summary>
+    /// 验证混合连接符段会根据连接符保留策略选择首个、末个或全部候选连接符。
+    /// </summary>
+    [Test]
+    public async Task Should_select_expected_connector_when_separator_run_contains_multiple_candidates()
+    {
+        const string input = "Demo.-/Value";
+
+        await Assert.That(input.ToHintName(isConnector: static c => c is '.' or '-', connectorType: HintNameConnectorType.KEEP_FIRST))
+            .IsEqualTo("Demo.Value");
+        await Assert.That(input.ToHintName(isConnector: static c => c is '.' or '-', connectorType: HintNameConnectorType.KEEP_LAST))
+            .IsEqualTo("Demo-Value");
+        await Assert.That(input.ToHintName(isConnector: static c => c is '.' or '-', connectorType: HintNameConnectorType.KEEP_ALL))
+            .IsEqualTo("Demo.-_Value");
+        await Assert.That(" Demo / Value .g ".ToHintName(isConnector: static c => c is '.' or ' ', connectorType: HintNameConnectorType.KEEP_FIRST))
+            .IsEqualTo("Demo Value g");
+        await Assert.That(" Demo / Value .g ".ToHintName(isConnector: static c => c is '.' or ' ', connectorType: HintNameConnectorType.KEEP_ALL))
+            .IsEqualTo("Demo _ Value .g");
+    }
+
+    /// <summary>
     /// Verifies that GetToolName and GetVersion resolve metadata from a generator type.
     /// </summary>
     [Test]
