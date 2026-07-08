@@ -25,7 +25,6 @@ public class SourceFile()
     /// </summary>
     /// <param name="context">context.</param>
     /// <param name="fileName">file name.</param>
-    /// <exception cref="ArgumentNullException">fileName is null.</exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Generate(scoped in SourceProductionContext context, string fileName)
     {
@@ -41,12 +40,7 @@ public class SourceFile()
             return;
         }
 
-        if (fileName is null)
-        {
-            throw new ArgumentNullException(nameof(fileName));
-        }
-
-        context.AddSource(ZString.Concat(fileName.ToHintNameKeepDot(), ".g.cs"), code);
+        context.AddSource(ZString.Concat(fileName, ".g.cs"), code);
     }
 
     /// <summary>
