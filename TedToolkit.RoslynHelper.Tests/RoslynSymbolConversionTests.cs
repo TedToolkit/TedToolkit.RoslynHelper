@@ -105,6 +105,46 @@ public static class Extensions
     }
 
     /// <summary>
+    /// 验证复制未显式提供可选构造参数的特性时不会补出默认参数。
+    /// </summary>
+    [Test]
+    public async Task Should_omit_implicit_optional_attribute_arguments_when_copying_parameter_or_method_attribute()
+    {
+        const string source = """
+using System;
+
+namespace Consumer;
+
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
+public abstract class DocumentationAttribute : Attribute;
+
+public enum ConstDepth
+{
+    ALL,
+}
+
+public sealed class ConstAttribute(ConstDepth depths = ConstDepth.ALL) : DocumentationAttribute;
+
+public class Sample
+{
+    [Const]
+    public void Execute([Const] int value)
+    {
+    }
+}
+""";
+
+        var compilation = RoslynTestHelper.CreateCompilation(source);
+        var method = RoslynTestHelper.GetMethod(compilation, "Consumer.Sample", "Execute");
+        var parameter = method.Parameters.Single();
+
+        await Assert.That(TestRenderers.Render(Attribute(method.GetAttributes().Single(), compilation)))
+            .IsEqualTo("global::Consumer.ConstAttribute");
+        await Assert.That(TestRenderers.Render(Parameter(parameter, compilation)))
+            .IsEqualTo("[global::Consumer.ConstAttribute]\nint @value");
+    }
+
+    /// <summary>
     /// Verifies that Parameter.FromSymbol handles ref-like storage modifiers from Roslyn symbols.
     /// </summary>
     [Test]
