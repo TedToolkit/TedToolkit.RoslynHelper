@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TedToolkit.RoslynHelper.Syntaxes;
 
@@ -74,7 +75,8 @@ public sealed class Attribute(DataType type) :
 
         var result = new Attribute(DataType.FromSymbol(attribute.AttributeClass, compilation));
 
-        foreach (var attributeConstructorArgument in attribute.ConstructorArguments)
+        var constructorArgumentCount = GetExplicitConstructorArgumentCount(attribute);
+        foreach (var attributeConstructorArgument in attribute.ConstructorArguments.Take(constructorArgumentCount))
         {
             if (GetArgument(attributeConstructorArgument, compilation) is { } argument)
             {
@@ -92,6 +94,16 @@ public sealed class Attribute(DataType type) :
         }
 
         return result;
+    }
+
+    private static int GetExplicitConstructorArgumentCount(AttributeData attribute)
+    {
+        if (attribute.ApplicationSyntaxReference?.GetSyntax() is not AttributeSyntax attributeSyntax)
+        {
+            return attribute.ConstructorArguments.Length;
+        }
+
+        return attributeSyntax.ArgumentList?.Arguments.Count(argument => argument.NameEquals is null) ?? 0;
     }
 
     private static IExpression? GetArgument(scoped in TypedConstant argument, Compilation? compilation = null)
