@@ -6,6 +6,21 @@ namespace TedToolkit.RoslynHelper.Tests;
 internal sealed class GeneratorStatementTests
 {
     /// <summary>
+    /// Empty exception-handling bodies must remain blocks rather than empty statements.
+    /// </summary>
+    [Test]
+    public async Task Should_compile_empty_try_catch_and_finally_blocks()
+    {
+        var statement = new TryStatement()
+            .AddCatch(new CatchClause(DataType.FromType<Exception>()))
+            .AddFinally(new FinallyClause());
+        var code = TestRenderers.Render(statement);
+
+        RoslynTestHelper.CreateCompilation("class Sample { void Run() { " + code + " } }");
+        await Assert.That(code).IsEqualTo("try\n{\n}\ncatch(global::System.Exception)\n{\n}\nfinally\n{\n}");
+    }
+
+    /// <summary>
     /// Verifies that statement wrappers add semicolons around raw expressions.
     /// </summary>
     [Test]

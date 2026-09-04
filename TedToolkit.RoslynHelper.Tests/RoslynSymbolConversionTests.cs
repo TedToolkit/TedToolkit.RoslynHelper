@@ -232,6 +232,6 @@ public class Sample;
         var result = TestRenderers.Render(SourceComposer.Attribute(attributeData, compilation));
 
         await Assert.That(result).IsEqualTo(
-            "global::Consumer.DemoAttribute(\"hello\", global::System.DayOfWeek.Friday, typeof(string), [\n\ttypeof(int),\n\ttypeof(global::System.DateTime),\n], 1.5F, 2.5, Enabled = true)");
+            "global::Consumer.DemoAttribute(\"hello\", global::System.DayOfWeek.Friday, typeof(string), [\n\ttypeof(int),\n\ttypeof(global::System.DateTime),\n], 1.5F, 2.5D, Enabled = true)");
     }
 }

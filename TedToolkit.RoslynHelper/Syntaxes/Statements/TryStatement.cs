@@ -21,7 +21,7 @@ public sealed class TryStatement :
     protected override void WriteSyntax(ref SourceBuilder builder)
     {
         builder.Append("try");
-        this.AddStatements(ref builder);
+        this.AddStatementsNoSkip(ref builder);
         foreach (var catchClause in Catches)
         {
             builder.AppendLine();

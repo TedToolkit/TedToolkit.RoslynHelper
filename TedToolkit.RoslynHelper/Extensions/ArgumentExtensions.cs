@@ -30,6 +30,37 @@ public static class ArgumentExtensions
             return instance;
         }
 
+        /// <summary>
+        /// Adds a positional argument expression.
+        /// </summary>
+        /// <param name="argument">The argument expression.</param>
+        /// <returns>The item.</returns>
+        public TItem AddArgument(IExpression argument)
+        {
+            return instance.AddArgument(new Argument(argument));
+        }
+
+        /// <summary>
+        /// Adds positional argument expressions in the supplied order.
+        /// </summary>
+        /// <param name="arguments">The argument expressions.</param>
+        /// <returns>The item.</returns>
+        /// <exception cref="ArgumentNullException">The argument array is null.</exception>
+        public TItem AddArguments(params IExpression[] arguments)
+        {
+            if (arguments is null)
+            {
+                throw new ArgumentNullException(nameof(arguments));
+            }
+
+            foreach (var argument in arguments)
+            {
+                instance.AddArgument(argument);
+            }
+
+            return instance;
+        }
+
         internal void AddArguments(ref SourceBuilder builder)
         {
             if (instance.Arguments.Count == 0)

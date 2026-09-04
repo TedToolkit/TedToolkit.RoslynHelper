@@ -23,6 +23,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
     IUnsafe,
     IPartial,
     IStatic,
+    IAsync,
     IReadonly,
     IPolymorphism,
     IRootDescription,
@@ -52,6 +53,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddReadonly(ref builder);
         this.AddPolymorphism(ref builder);
         this.AddUnsafe(ref builder);
+        this.AddAsyncModifier(ref builder);
         this.AddPartial(ref builder);
         if (IsExtern)
         {
@@ -74,7 +76,7 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
         this.AddParametersNoSkip(ref builder);
         this.AddTypeParameterConstraints(ref builder);
 
-        if (IsPartial || IsExtern)
+        if (IsPartial || IsExtern || Polymorphism is Polymorphism.ABSTRACT)
         {
             this.AddStatements(ref builder);
         }
@@ -113,6 +115,9 @@ public sealed class Method(string identifier, ReturnType? returnType = null) :
 
     /// <inheritdoc />
     public bool IsStatic { get; set; }
+
+    /// <inheritdoc />
+    public bool IsAsync { get; set; }
 
     /// <inheritdoc />
     public Polymorphism Polymorphism { get; set; }
