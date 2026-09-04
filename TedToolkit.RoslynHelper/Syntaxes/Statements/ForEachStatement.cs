@@ -18,12 +18,14 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 public sealed class ForEachStatement(DataType type, string identifier, IExpression expression) :
     ConditionalCompilationSyntax,
     IStatement,
+    IAwait,
     IVariable,
     IStatementOwner
 {
     /// <inheritdoc/>
     protected override void WriteSyntax(ref SourceBuilder builder)
     {
+        this.AddAwait(ref builder);
         builder.Append("foreach (");
         type.ToCode(ref builder);
         builder.Append(' ');
@@ -33,6 +35,9 @@ public sealed class ForEachStatement(DataType type, string identifier, IExpressi
         builder.Append(')');
         this.AddStatements(ref builder);
     }
+
+    /// <inheritdoc />
+    public bool IsAwait { get; set; }
 
     /// <inheritdoc/>
     public string Variable

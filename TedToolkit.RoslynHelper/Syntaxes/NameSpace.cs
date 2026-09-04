@@ -50,9 +50,26 @@ public sealed class NameSpace(IExpression name) :
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
+        ToCode(ref builder, forceBlock: false);
+    }
+
+    /// <summary>
+    /// Writes a namespace, requiring a block when other file-level declarations coexist.
+    /// </summary>
+    /// <param name="builder">The source builder.</param>
+    /// <param name="forceBlock">Whether an empty namespace must retain a block.</param>
+    internal void ToCode(ref SourceBuilder builder, bool forceBlock)
+    {
         builder.Append("namespace ");
         name.ToCode(ref builder);
 
-        this.AddMembers(ref builder);
+        if (forceBlock)
+        {
+            this.AddMembersNoSkip(ref builder);
+        }
+        else
+        {
+            this.AddMembers(ref builder);
+        }
     }
 }

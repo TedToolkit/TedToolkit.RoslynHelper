@@ -40,7 +40,8 @@ public static class Factory
 
         var compilation = RoslynTestHelper.CreateCompilation(source, additionalReferences: [RoslynTestHelper.CreateProjectReference()]);
         var methodSymbol = RoslynTestHelper.GetMethod(compilation, "Consumer.Factory", "Create");
-        var generatedMethod = SourceComposer<EndToEndCompositionTests>.Method(methodSymbol.Name)
+        var generatedMethod = SourceComposer<EndToEndCompositionTests>.Method(methodSymbol.Name,
+                new ReturnType(DataType.FromSymbol(methodSymbol.ReturnType, compilation)))
             .Public
             .Static
             .AddAttribute(SourceComposer.Attribute(methodSymbol.GetAttributes().Single(), compilation))
@@ -53,10 +54,17 @@ public static class Factory
                 .AddNameSpace(NameSpace("Generated")
                     .AddMember(SourceComposer<EndToEndCompositionTests>.Class("Factory")
                         .Public
+                        .Static
                         .AddMember(generatedMethod))));
 
         await Assert.That(code).Contains("[global::Consumer.DemoAttribute(typeof(global::System.Collections.Generic.List<int>))]");
-        await Assert.That(code).Contains("public static void Create<");
+        var generatedCompilation = RoslynTestHelper.CreateCompilation(code,
+            additionalReferences: [RoslynTestHelper.CreateReferenceFromSource(source, "Consumer")]);
+        var generatedSymbol = RoslynTestHelper.GetMethod(generatedCompilation, "Generated.Factory", "Create");
+        await Assert.That(generatedSymbol.ReturnType.Name).IsEqualTo("TResult");
+        await Assert.That(generatedSymbol.IsExtensionMethod).IsTrue();
+        await Assert.That(generatedSymbol.TypeParameters.Single().HasConstructorConstraint).IsTrue();
+        await Assert.That(code).Contains("public static TResult Create<");
         await Assert.That(code).Contains("this string text");
         await Assert.That(code).Contains("bool? enabled = default");
         await Assert.That(code).Contains("where TResult: class, new()");

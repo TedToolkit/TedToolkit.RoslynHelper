@@ -137,7 +137,13 @@ public sealed class LiteralExpression : IExpression
     /// <param name="value">value.</param>
     public LiteralExpression(float value)
     {
-        _value = $"{value.ToString("R", CultureInfo.InvariantCulture)}F";
+        _value = value switch
+        {
+            float.NaN => "global::System.Single.NaN",
+            float.PositiveInfinity => "global::System.Single.PositiveInfinity",
+            float.NegativeInfinity => "global::System.Single.NegativeInfinity",
+            _ => $"{value.ToString("R", CultureInfo.InvariantCulture)}F",
+        };
     }
 
     /// <summary>
@@ -147,7 +153,13 @@ public sealed class LiteralExpression : IExpression
     /// <param name="value">value.</param>
     public LiteralExpression(double value)
     {
-        _value = value.ToString("R", CultureInfo.InvariantCulture);
+        _value = value switch
+        {
+            double.NaN => "global::System.Double.NaN",
+            double.PositiveInfinity => "global::System.Double.PositiveInfinity",
+            double.NegativeInfinity => "global::System.Double.NegativeInfinity",
+            _ => $"{value.ToString("R", CultureInfo.InvariantCulture)}D",
+        };
     }
 
     /// <summary>

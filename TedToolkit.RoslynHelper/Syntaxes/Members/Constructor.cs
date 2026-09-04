@@ -45,7 +45,8 @@ public sealed class Constructor :
         this.AddUnsafe(ref builder);
         this.AddPartial(ref builder);
 
-        builder.Append(Owner);
+        var typeArguments = Owner.IndexOf('<');
+        builder.Append(typeArguments < 0 ? Owner : Owner.Substring(0, typeArguments));
 
         this.AddParametersNoSkip(ref builder);
 

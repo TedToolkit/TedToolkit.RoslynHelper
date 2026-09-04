@@ -212,6 +212,40 @@ public static class ExpressionExtensions
         }
 
         /// <summary>
+        /// Invokes the expression with positional arguments in the supplied order.
+        /// </summary>
+        /// <param name="arguments">The argument expressions.</param>
+        /// <returns>The invocation.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public InvocationExpression Invoke(params IExpression[] arguments)
+        {
+            return expression.Invoke().AddArguments(arguments);
+        }
+
+        /// <summary>
+        /// Calls ConfigureAwait without adding an await expression.
+        /// </summary>
+        /// <param name="continueOnCapturedContext">Whether to continue on the captured context.</param>
+        /// <returns>The configuration invocation.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public InvocationExpression ConfigureAwait(bool continueOnCapturedContext)
+        {
+            return expression.ConfigureAwait(continueOnCapturedContext.ToLiteral());
+        }
+
+        /// <summary>
+        /// Calls ConfigureAwait with a configuration expression.
+        /// Parenthesize a compound receiver before calling this method when required.
+        /// </summary>
+        /// <param name="argument">The configuration argument.</param>
+        /// <returns>The configuration invocation.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public InvocationExpression ConfigureAwait(IExpression argument)
+        {
+            return expression.Sub("ConfigureAwait").Invoke(argument);
+        }
+
+        /// <summary>
         /// Cast.
         /// </summary>
         /// <param name="type">type.</param>

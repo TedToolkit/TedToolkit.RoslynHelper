@@ -27,6 +27,6 @@ public sealed class FinallyClause :
     public void ToCode(ref SourceBuilder builder)
     {
         builder.Append("finally");
-        this.AddStatements(ref builder);
+        this.AddStatementsNoSkip(ref builder);
     }
 }

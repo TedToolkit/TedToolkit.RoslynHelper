@@ -314,6 +314,48 @@ public sealed class DataType(IExpression type) :
             return new(new SimpleNameExpression("var"));
         }
     }
+
+    /// <summary>
+    /// Gets a new representation of System.Threading.Tasks.Task.
+    /// </summary>
+    public static DataType Task
+    {
+        get
+        {
+            return new("global::System.Threading.Tasks.Task");
+        }
+    }
+
+    /// <summary>
+    /// Creates a Task type with the supplied result type.
+    /// </summary>
+    /// <param name="resultType">The result type.</param>
+    /// <returns>The constructed Task type.</returns>
+    public static DataType TaskOf(DataType resultType)
+    {
+        return Task.Generic(resultType);
+    }
+
+    /// <summary>
+    /// Gets a new representation of System.Threading.Tasks.ValueTask.
+    /// </summary>
+    public static DataType ValueTask
+    {
+        get
+        {
+            return new("global::System.Threading.Tasks.ValueTask");
+        }
+    }
+
+    /// <summary>
+    /// Creates a ValueTask type with the supplied result type.
+    /// </summary>
+    /// <param name="resultType">The result type.</param>
+    /// <returns>The constructed ValueTask type.</returns>
+    public static DataType ValueTaskOf(DataType resultType)
+    {
+        return ValueTask.Generic(resultType);
+    }
 #pragma warning disable CA1720
     /// <summary>
     /// Gets <see langword="string"/>.

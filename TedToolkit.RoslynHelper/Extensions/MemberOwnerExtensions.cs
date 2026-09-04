@@ -83,6 +83,11 @@ public static class MemberOwnerExtensions
                 return;
             }
 
+            instance.AddMembersNoSkip(ref builder);
+        }
+
+        internal void AddMembersNoSkip(ref SourceBuilder builder)
+        {
             builder.BeginBlock();
 
             var isNotStart = false;

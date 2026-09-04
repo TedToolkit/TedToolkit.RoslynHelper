@@ -16,16 +16,21 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 public sealed class UsingStatement(IExpression expression) :
     ConditionalCompilationSyntax,
     IStatement,
+    IAwait,
     IStatementOwner
 {
     /// <inheritdoc />
     protected override void WriteSyntax(ref SourceBuilder builder)
     {
+        this.AddAwait(ref builder);
         builder.Append("using (");
         expression.ToCode(ref builder);
         builder.Append(')');
         this.AddStatements(ref builder);
     }
+
+    /// <inheritdoc />
+    public bool IsAwait { get; set; }
 
     /// <inheritdoc />
     public List<IStatement> Statements

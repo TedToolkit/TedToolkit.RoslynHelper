@@ -18,8 +18,29 @@ namespace TedToolkit.RoslynHelper;
 /// <summary>
 /// The source file.
 /// </summary>
-public class SourceFile()
+public class SourceFile() : IMemberOwner
 {
+    /// <summary>
+    /// Gets or sets a value indicating whether the file disables all compiler warnings.
+    /// Defaults to true for compatibility with existing generated files.
+    /// </summary>
+    public bool DisableWarnings { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the nullable annotation and warning context emitted in the file.
+    /// Null preserves the existing behavior of emitting no nullable directive.
+    /// </summary>
+    public NullableContextOptions? NullableContext { get; set; }
+
+    /// <inheritdoc />
+    public List<IMember> Members
+    {
+        get
+        {
+            return field ??= [];
+        }
+    }
+
     /// <summary>
     /// Generate the code.
     /// </summary>
@@ -65,8 +86,18 @@ public class SourceFile()
             builder.AppendLine();
             builder.AppendLine();
 
-            builder.Append("#pragma warning disable");
-            builder.AppendLine();
+            if (DisableWarnings)
+            {
+                builder.AppendLine("#pragma warning disable");
+            }
+
+            AddNullableContext(ref builder);
+
+            foreach (var usingDirective in Usings)
+            {
+                builder.AppendLine();
+                usingDirective.ToCode(ref builder);
+            }
 
             foreach (var attribute in Attributes)
             {
@@ -90,16 +121,16 @@ public class SourceFile()
                 }
             }
 
-            foreach (var usingDirective in Usings)
+            foreach (var member in Members)
             {
                 builder.AppendLine();
-                usingDirective.ToCode(ref builder);
+                member.ToCode(ref builder);
             }
 
             foreach (var nameSpace in NameSpaces)
             {
                 builder.AppendLine();
-                nameSpace.ToCode(ref builder);
+                nameSpace.ToCode(ref builder, forceBlock: Members.Count != 0 || NameSpaces.Count > 1);
             }
 
             return builder.ToCode();
@@ -123,6 +154,30 @@ public class SourceFile()
         finally
         {
             builder.Dispose();
+        }
+    }
+
+    private void AddNullableContext(ref SourceBuilder builder)
+    {
+        switch (NullableContext)
+        {
+            case NullableContextOptions.Disable:
+                builder.AppendLine("#nullable disable");
+                break;
+
+            case NullableContextOptions.Enable:
+                builder.AppendLine("#nullable enable");
+                break;
+
+            case NullableContextOptions.Warnings:
+                builder.AppendLine("#nullable disable");
+                builder.AppendLine("#nullable enable warnings");
+                break;
+
+            case NullableContextOptions.Annotations:
+                builder.AppendLine("#nullable disable");
+                builder.AppendLine("#nullable enable annotations");
+                break;
         }
     }
 

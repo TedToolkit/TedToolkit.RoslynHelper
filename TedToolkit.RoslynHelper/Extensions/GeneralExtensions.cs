@@ -208,12 +208,8 @@ public static class GeneralExtensions
         /// <returns>result.</returns>
         public string ToValidLiteral()
         {
-            foreach (var keyValuePair in _specialChars)
-            {
-                value = value.Replace(keyValuePair.Key.ToString(), keyValuePair.Value);
-            }
-
-            return value;
+            var literal = Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(value, quote: true);
+            return literal.Substring(1, literal.Length - 2);
         }
     }
 
@@ -225,28 +221,10 @@ public static class GeneralExtensions
         /// <returns>result.</returns>
         public string ToValidLiteral()
         {
-            if (_specialChars.TryGetValue(value, out var result))
-            {
-                return result;
-            }
-
-            return value.ToString();
+            var literal = Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(value, quote: true);
+            return literal.Substring(1, literal.Length - 2);
         }
     }
-
-    private static readonly Dictionary<char, string> _specialChars = new()
-    {
-        // { '\'', @"\'" },
-        // { '\\', @"\\" },
-        // { '\0', @"\0" },
-        // { '\a', @"\a" },
-        // { '\b', @"\b" },
-        // { '\f', @"\f" },
-        // { '\r', @"\r" },
-        // { '\t', @"\t" },
-        // { '\v', @"\v" },
-        { '\"', "\\\"" }, { '\n', @"\n" },
-    };
 
     private static readonly HashSet<string> _keywords = new(StringComparer.Ordinal)
     {

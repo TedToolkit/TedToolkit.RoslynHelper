@@ -30,7 +30,7 @@ public sealed class Argument(IExpression variable) :
     {
         if (!string.IsNullOrEmpty(ParameterName))
         {
-            builder.Append(ParameterName);
+            builder.Append(ParameterName.ToValidIdentifier());
             builder.Append(": ");
         }
 

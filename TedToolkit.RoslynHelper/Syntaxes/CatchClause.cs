@@ -47,6 +47,6 @@ public sealed class CatchClause(DataType dataType, string? identifier = null) :
         }
 
         builder.Append(')');
-        this.AddStatements(ref builder);
+        this.AddStatementsNoSkip(ref builder);
     }
 }
