@@ -58,7 +58,9 @@ public static class RoslynExtensions
             get
             {
                 return symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
-                    .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
+                    .WithMiscellaneousOptions(
+                        SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                            | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
                     .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
             }
         }

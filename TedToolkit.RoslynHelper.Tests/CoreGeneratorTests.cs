@@ -182,6 +182,17 @@ internal sealed class CoreGeneratorTests
     }
 
     /// <summary>
+    /// Verifies that default hint-name normalization preserves characters that distinguish valid C# identifiers.
+    /// </summary>
+    [Test]
+    public async Task Should_preserve_csharp_identifier_parts_when_normalizing_hint_names()
+    {
+        await Assert.That("global::Demo.@class".ToHintNameKeepDot()).IsEqualTo("global_Demo.class");
+        await Assert.That("global::Demo._class".ToHintNameKeepDot()).IsEqualTo("global_Demo._class");
+        await Assert.That("global::Demo.e\u0301".ToHintNameKeepDot()).IsEqualTo("global_Demo.e\u0301");
+    }
+
+    /// <summary>
     /// 验证混合连接符段会根据连接符保留策略选择首个、末个或全部候选连接符。
     /// </summary>
     [Test]
