@@ -72,6 +72,25 @@ public class Sample
     }
 
     /// <summary>
+    /// Verifies that symbol-derived type names escape C# keywords in every qualified segment.
+    /// </summary>
+    [Test]
+    public async Task Should_escape_keywords_when_creating_data_type_from_symbol()
+    {
+        const string source = """
+namespace @class;
+
+public sealed class @event;
+""";
+        var compilation = RoslynTestHelper.CreateCompilation(source);
+        var symbol = RoslynTestHelper.GetNamedType(compilation, "class.event");
+
+        var result = TestRenderers.Render(DataType.FromSymbol(symbol, compilation));
+
+        await Assert.That(result).IsEqualTo("global::@class.@event");
+    }
+
+    /// <summary>
     /// Verifies that Parameter.FromSymbol preserves parameter modifiers, defaults, and attributes.
     /// </summary>
     [Test]

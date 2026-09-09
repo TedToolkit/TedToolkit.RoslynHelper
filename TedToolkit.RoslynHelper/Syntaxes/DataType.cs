@@ -175,7 +175,7 @@ public sealed class DataType(IExpression type) :
 
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
         {
-            return new(symbol.Name.ToSimpleName());
+            return new(symbol.Name.ToValidIdentifier().ToSimpleName());
         }
 
         if (_specialTypeAlias.TryGetValue(symbol.SpecialType, out var specialTypeFactory))

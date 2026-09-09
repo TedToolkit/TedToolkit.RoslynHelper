@@ -135,7 +135,10 @@ public static class GeneralExtensions
         /// <summary>
         /// Converts arbitrary text into a Roslyn hint-name-safe token while preserving dot separators.
         /// </summary>
-        /// <param name="isValue">Determines which characters should be emitted as-is.</param>
+        /// <param name="isValue">
+        /// Determines which characters should be emitted as-is. When <see langword="null"/>,
+        /// C# identifier-part characters are emitted as-is.
+        /// </param>
         /// <param name="defaultConnector">The fallback connector used when a separator run does not include a dot.</param>
         /// <param name="connectorType">Controls how separator runs are collapsed before writing a connector.</param>
         /// <returns>Normalized hint name with dot separators preserved.</returns>
@@ -154,7 +157,10 @@ public static class GeneralExtensions
         /// <summary>
         /// Converts arbitrary text into a Roslyn hint-name-safe token.
         /// </summary>
-        /// <param name="isValue">Determines which characters should be emitted as-is.</param>
+        /// <param name="isValue">
+        /// Determines which characters should be emitted as-is. When <see langword="null"/>,
+        /// C# identifier-part characters are emitted as-is.
+        /// </param>
         /// <param name="isConnector">Determines which separator characters should be preserved when collapsing separator runs.</param>
         /// <param name="defaultConnector">The fallback connector used when no preserved connector is selected.</param>
         /// <param name="connectorType">Controls how separator runs are collapsed before writing a connector.</param>
@@ -165,7 +171,7 @@ public static class GeneralExtensions
             char defaultConnector = '_',
             HintNameConnectorType connectorType = HintNameConnectorType.KEEP_FIRST)
         {
-            isValue ??= char.IsLetterOrDigit;
+            isValue ??= Microsoft.CodeAnalysis.CSharp.SyntaxFacts.IsIdentifierPartCharacter;
             isConnector ??= _ => false;
 
             var builder = ZString.CreateStringBuilder();
