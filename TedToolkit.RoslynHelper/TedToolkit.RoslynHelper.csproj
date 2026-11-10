@@ -18,4 +18,9 @@
     <PackageReference Include="System.Memory" />
     <PackageReference Include="ZString" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../.agents/skills/compose-roslyn-source/**/*"
+          Pack="true" PackagePath="skills/compose-roslyn-source/" />
+  </ItemGroup>
 </Project>
