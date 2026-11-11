@@ -73,6 +73,10 @@ internal sealed class PreprocessorExpressionTests
     {
         await Assert.That(TestRenderers.Render(PreprocessorExpression.Net))
             .IsEqualTo("NET");
+        await Assert.That(TestRenderers.Render(PreprocessorExpression.Net110))
+            .IsEqualTo("NET11_0");
+        await Assert.That(TestRenderers.Render(PreprocessorExpression.Net110OrGreater))
+            .IsEqualTo("NET11_0_OR_GREATER");
         await Assert.That(TestRenderers.Render(PreprocessorExpression.Net100))
             .IsEqualTo("NET10_0");
         await Assert.That(TestRenderers.Render(PreprocessorExpression.Net80OrGreater))
