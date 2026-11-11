@@ -282,6 +282,11 @@ public abstract class PreprocessorExpression : IToCode
     public static PreprocessorExpression NetStandard10OrGreater { get; } = Symbol("NETSTANDARD1_0_OR_GREATER");
 
     /// <summary>
+    /// Gets the predefined <c>NET11_0</c> symbol.
+    /// </summary>
+    public static PreprocessorExpression Net110 { get; } = Symbol("NET11_0");
+
+    /// <summary>
     /// Gets the predefined <c>NET10_0</c> symbol.
     /// </summary>
     public static PreprocessorExpression Net100 { get; } = Symbol("NET10_0");
@@ -345,6 +350,11 @@ public abstract class PreprocessorExpression : IToCode
     /// Gets the predefined <c>NETCOREAPP1_0</c> symbol.
     /// </summary>
     public static PreprocessorExpression NetCoreApp10 { get; } = Symbol("NETCOREAPP1_0");
+
+    /// <summary>
+    /// Gets the predefined <c>NET11_0_OR_GREATER</c> symbol.
+    /// </summary>
+    public static PreprocessorExpression Net110OrGreater { get; } = Symbol("NET11_0_OR_GREATER");
 
     /// <summary>
     /// Gets the predefined <c>NET10_0_OR_GREATER</c> symbol.
