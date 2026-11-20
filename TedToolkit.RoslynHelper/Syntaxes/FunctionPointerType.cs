@@ -17,21 +17,20 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 public sealed class FunctionPointerType : IExpression
 {
-    private readonly DataType _returnType;
-
-    private readonly string _callingConvention;
-
-    private readonly List<DataType> _parameterTypes = [];
+    private readonly TypeParameterExpression _signature;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FunctionPointerType"/> class with no parameters.
+    /// Initializes a new instance of the <see cref="FunctionPointerType"/> class.
     /// </summary>
     /// <param name="returnType">The return type. Use <see cref="DataType.Void"/> for no return value.</param>
     /// <param name="callingConvention">The calling convention to emit.</param>
+    /// <param name="parameterTypes">The unnamed parameter types in signature order.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="parameterTypes"/> is null.</exception>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> is undefined.</exception>
     public FunctionPointerType(
         DataType returnType,
-        FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED)
+        FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED,
+        params DataType[] parameterTypes)
         : this(returnType, callingConvention switch
         {
             FunctionPointerCallingConvention.MANAGED => "",
@@ -41,41 +40,23 @@ public sealed class FunctionPointerType : IExpression
             FunctionPointerCallingConvention.THISCALL => " unmanaged[Thiscall]",
             FunctionPointerCallingConvention.FASTCALL => " unmanaged[Fastcall]",
             _ => throw new ArgumentOutOfRangeException(nameof(callingConvention), callingConvention, null),
-        })
+        }, parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes)))
     {
     }
 
-    private FunctionPointerType(DataType returnType, string callingConvention)
+    private FunctionPointerType(DataType returnType, string callingConvention, DataType[] parameterTypes)
     {
-        _returnType = returnType;
-        _callingConvention = callingConvention;
-    }
-
-    /// <summary>
-    /// Appends an unnamed parameter to the signature.
-    /// </summary>
-    /// <param name="type">The parameter type, including any by-reference modifier.</param>
-    /// <returns>The current function pointer type.</returns>
-    public FunctionPointerType AddParameter(DataType type)
-    {
-        _parameterTypes.Add(type);
-        return this;
+        _signature = new SimpleNameExpression($"delegate*{callingConvention}")
+            .Generic([
+                .. parameterTypes,
+                returnType,
+            ]);
     }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        builder.Append("delegate*");
-        builder.Append(_callingConvention);
-        builder.Append('<');
-        foreach (var type in _parameterTypes.AsSpan())
-        {
-            type.ToCode(ref builder);
-            builder.Append(", ");
-        }
-
-        _returnType.ToCode(ref builder);
-        builder.Append('>');
+        _signature.ToCode(ref builder);
     }
 
     /// <inheritdoc />
@@ -102,20 +83,10 @@ public sealed class FunctionPointerType : IExpression
             _ => StorageKind.NONE,
         };
 
-        var pointer = signature.CallingConvention switch
+        var parameterTypes = new DataType[signature.Parameters.Length];
+        for (var index = 0; index < parameterTypes.Length; index++)
         {
-            SignatureCallingConvention.Default => new FunctionPointerType(returnType),
-            SignatureCallingConvention.CDecl => new FunctionPointerType(returnType, FunctionPointerCallingConvention.CDECL),
-            SignatureCallingConvention.StdCall => new FunctionPointerType(returnType, FunctionPointerCallingConvention.STDCALL),
-            SignatureCallingConvention.ThisCall => new FunctionPointerType(returnType, FunctionPointerCallingConvention.THISCALL),
-            SignatureCallingConvention.FastCall => new FunctionPointerType(returnType, FunctionPointerCallingConvention.FASTCALL),
-            SignatureCallingConvention.Unmanaged => new FunctionPointerType(returnType, GetUnmanagedConvention(signature)),
-            _ => throw new NotSupportedException(
-                $"Function pointer calling convention '{signature.CallingConvention.ToString()}' has no C# syntax."),
-        };
-
-        foreach (var parameter in signature.Parameters)
-        {
+            var parameter = signature.Parameters[index];
             var type = DataType.FromSymbol(parameter.Type, compilation);
             type.StorageKind = parameter.RefKind switch
             {
@@ -125,10 +96,20 @@ public sealed class FunctionPointerType : IExpression
                 RefKind.RefReadOnlyParameter => StorageKind.REF_READONLY,
                 _ => StorageKind.NONE,
             };
-            pointer.AddParameter(type);
+            parameterTypes[index] = type;
         }
 
-        return pointer;
+        return signature.CallingConvention switch
+        {
+            SignatureCallingConvention.Default => new(returnType, parameterTypes: parameterTypes),
+            SignatureCallingConvention.CDecl => new(returnType, FunctionPointerCallingConvention.CDECL, parameterTypes),
+            SignatureCallingConvention.StdCall => new(returnType, FunctionPointerCallingConvention.STDCALL, parameterTypes),
+            SignatureCallingConvention.ThisCall => new(returnType, FunctionPointerCallingConvention.THISCALL, parameterTypes),
+            SignatureCallingConvention.FastCall => new(returnType, FunctionPointerCallingConvention.FASTCALL, parameterTypes),
+            SignatureCallingConvention.Unmanaged => new(returnType, GetUnmanagedConvention(signature), parameterTypes),
+            _ => throw new NotSupportedException(
+                $"Function pointer calling convention '{signature.CallingConvention.ToString()}' has no C# syntax."),
+        };
     }
 
     private static string GetUnmanagedConvention(IMethodSymbol signature)

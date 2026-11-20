@@ -377,18 +377,7 @@ public sealed class DataType(IExpression type) :
         FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED,
         params DataType[] parameterTypes)
     {
-        if (parameterTypes is null)
-        {
-            throw new ArgumentNullException(nameof(parameterTypes));
-        }
-
-        var pointer = new FunctionPointerType(returnType, callingConvention);
-        foreach (var parameterType in parameterTypes)
-        {
-            pointer.AddParameter(parameterType);
-        }
-
-        return new(pointer);
+        return new(new FunctionPointerType(returnType, callingConvention, parameterTypes));
     }
 #pragma warning disable CA1720
     /// <summary>

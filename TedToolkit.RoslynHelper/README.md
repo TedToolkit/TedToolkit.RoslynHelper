@@ -151,9 +151,9 @@ var callback = DataType.FunctionPointer(
 
 The returned `DataType` can be used for a field, parameter, or return type. The enum also
 supports `MANAGED` (the default), platform-default `UNMANAGED`, `STDCALL`, `THISCALL`, and
-`FASTCALL`. For incremental composition, use `FunctionPointerType.AddParameter` and wrap the
-finished signature in a `DataType`. `DataType.FromSymbol` preserves named unmanaged modifiers
-such as `SuppressGCTransition` when converting Roslyn function pointer symbols.
+`FASTCALL`. The `FunctionPointerType` syntax object takes the same arguments. `DataType.FromSymbol`
+preserves named unmanaged modifiers such as `SuppressGCTransition` when converting Roslyn
+function pointer symbols.
 
 ### 5. Stamp generated members with generator metadata
 
