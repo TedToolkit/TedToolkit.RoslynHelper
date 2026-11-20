@@ -151,8 +151,8 @@ var callback = DataType.FunctionPointer(
 
 The returned `DataType` can be used for a field, parameter, or return type. The calling convention
 defaults to `SignatureCallingConvention.Default` for managed code. Use `Unmanaged` for the platform
-default, or select `CDecl`, `StdCall`, `ThisCall`, or `FastCall`. `FunctionPointerType` takes the same
-arguments. Parameters allow `ref`, `ref readonly`, `in`, or `out`. The return type allows `ref` or
+default, or select `CDecl`, `StdCall`, `ThisCall`, or `FastCall`. `FunctionPointerTypeExpression` takes
+the same arguments. Parameters allow `ref`, `ref readonly`, `in`, or `out`. The return type allows `ref` or
 `ref readonly`. `DataType.FromSymbol` preserves named unmanaged modifiers such as `SuppressGCTransition`.
 
 ### 5. Stamp generated members with generator metadata

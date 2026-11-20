@@ -43,8 +43,10 @@ internal sealed class RoundTripTests
     public async Task Should_default_to_a_managed_signature_without_parameters()
     {
         var pointer = DataType.FunctionPointer(DataType.Void);
+        var expression = new FunctionPointerTypeExpression(DataType.Void);
 
         await Assert.That(TestRenderers.Render(pointer)).IsEqualTo("delegate*<void>");
+        await Assert.That(TestRenderers.Render(expression)).IsEqualTo("delegate*<void>");
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="FunctionPointerType.cs" company="TedToolkit">
+// <copyright file="FunctionPointerTypeExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
 // </copyright>
@@ -16,14 +16,14 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <summary>
 /// A C# <c>delegate*</c> type with an ordered parameter list and a return type.
 /// </summary>
-public sealed class FunctionPointerType : IExpression
+public sealed class FunctionPointerTypeExpression : IExpression
 {
     private readonly DataType[] _signatureTypes;
 
     private readonly TypeParameterExpression _signature;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FunctionPointerType"/> class.
+    /// Initializes a new instance of the <see cref="FunctionPointerTypeExpression"/> class.
     /// </summary>
     /// <param name="returnType">The return type. Use <see cref="DataType.Void"/> for no return value.</param>
     /// <param name="callingConvention">The calling convention to emit.</param>
@@ -31,7 +31,7 @@ public sealed class FunctionPointerType : IExpression
     /// <exception cref="ArgumentNullException"><paramref name="returnType"/> or <paramref name="parameterTypes"/> is null.</exception>
     /// <exception cref="ArgumentException">A parameter type or the return type is invalid for a function pointer signature.</exception>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> has no C# function pointer syntax.</exception>
-    public FunctionPointerType(
+    public FunctionPointerTypeExpression(
         DataType returnType,
         SignatureCallingConvention callingConvention = SignatureCallingConvention.Default,
         params DataType[] parameterTypes)
@@ -42,7 +42,7 @@ public sealed class FunctionPointerType : IExpression
     {
     }
 
-    private FunctionPointerType(string conventionSpecifier, DataType[] signatureTypes)
+    private FunctionPointerTypeExpression(string conventionSpecifier, DataType[] signatureTypes)
     {
         _signatureTypes = signatureTypes;
         ValidateSignature();
@@ -71,7 +71,7 @@ public sealed class FunctionPointerType : IExpression
     /// <returns>The function pointer type.</returns>
     /// <exception cref="ArgumentException">The signature contains an invalid parameter or return type.</exception>
     /// <exception cref="NotSupportedException">The calling convention or reference modifier has no C# syntax.</exception>
-    internal static FunctionPointerType FromSymbol(IFunctionPointerTypeSymbol symbol, Compilation? compilation)
+    internal static FunctionPointerTypeExpression FromSymbol(IFunctionPointerTypeSymbol symbol, Compilation? compilation)
     {
         var signature = symbol.Signature;
         var convention = signature.CallingConvention;

@@ -34,12 +34,12 @@ public sealed class DataType(IExpression type) :
     {
         get
         {
-            return _type is ArrayTypeExpression array ? array.InnermostLayer.ElementType : _type;
+            return ArrayTypeExpression.Unwrap(_type)?.InnermostLayer.ElementType ?? _type;
         }
 
         private set
         {
-            if (_type is ArrayTypeExpression array)
+            if (ArrayTypeExpression.Unwrap(_type) is { } array)
             {
                 array.InnermostLayer.ElementType = value;
             }
@@ -65,7 +65,7 @@ public sealed class DataType(IExpression type) :
 
         set
         {
-            if (value && _type is not ArrayTypeExpression)
+            if (value && ArrayTypeExpression.Unwrap(_type) is null)
             {
                 _type = new ArrayTypeExpression(_type);
             }
@@ -196,7 +196,7 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IFunctionPointerTypeSymbol functionPointerType)
         {
-            return new(FunctionPointerType.FromSymbol(functionPointerType, compilation));
+            return new(FunctionPointerTypeExpression.FromSymbol(functionPointerType, compilation));
         }
 
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
@@ -253,7 +253,12 @@ public sealed class DataType(IExpression type) :
         var element = elementType.PointCounter > 0
             ? new CustomExpression(elementType.ToCode)
             : elementType._type;
-        var array = new ArrayTypeExpression(element, arrayType.Rank, arrayType.NullableAnnotation is NullableAnnotation.Annotated);
+        IExpression array = new ArrayTypeExpression(element, arrayType.Rank);
+        if (arrayType.NullableAnnotation is NullableAnnotation.Annotated)
+        {
+            array = array.Null;
+        }
+
         return new DataType(array).Array;
     }
 
@@ -424,7 +429,7 @@ public sealed class DataType(IExpression type) :
         SignatureCallingConvention callingConvention = SignatureCallingConvention.Default,
         params DataType[] parameterTypes)
     {
-        return new(new FunctionPointerType(returnType, callingConvention, parameterTypes));
+        return new(new FunctionPointerTypeExpression(returnType, callingConvention, parameterTypes));
     }
 #pragma warning disable CA1720
     /// <summary>

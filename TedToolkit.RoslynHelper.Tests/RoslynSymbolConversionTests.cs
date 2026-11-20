@@ -105,6 +105,29 @@ public class Sample
     }
 
     /// <summary>
+    /// Verifies that the element type can be changed independently of nullable array layers.
+    /// </summary>
+    [Test]
+    public async Task Should_keep_nullable_array_layers_when_changing_the_element_type()
+    {
+        var compilation = RoslynTestHelper.CreateCompilation("""
+            public class Sample
+            {
+                public string[,]?[]? GetValues() => null;
+            }
+            """);
+        var symbol = RoslynTestHelper.GetMethod(compilation, "Sample", "GetValues").ReturnType;
+        var dataType = DataType.FromSymbol(symbol, compilation);
+
+        dataType.IsArray = false;
+        await Assert.That(TestRenderers.Render(dataType)).IsEqualTo("string");
+
+        var nullableElement = dataType.Null;
+        nullableElement.IsArray = true;
+        await Assert.That(TestRenderers.Render(nullableElement)).IsEqualTo("string?[,]?[]?");
+    }
+
+    /// <summary>
     /// Verifies that symbol-derived type names escape C# keywords in every qualified segment.
     /// </summary>
     [Test]

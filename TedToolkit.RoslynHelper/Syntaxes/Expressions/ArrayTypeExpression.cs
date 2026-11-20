@@ -12,8 +12,7 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 /// <param name="elementType">The immediate element type.</param>
 /// <param name="rank">The number of dimensions in this layer.</param>
-/// <param name="isNullable">Whether this array layer is nullable.</param>
-internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1, bool isNullable = false) : IExpression
+internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1) : IExpression
 {
     /// <summary>
     /// Gets or sets the immediate element type.
@@ -21,14 +20,14 @@ internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1,
     internal IExpression ElementType { get; set; } = elementType;
 
     /// <summary>
-    /// Gets the innermost consecutive array layer.
+    /// Gets the innermost array layer through any nullable wrappers.
     /// </summary>
     internal ArrayTypeExpression InnermostLayer
     {
         get
         {
             var layer = this;
-            while (layer.ElementType is ArrayTypeExpression nested)
+            while (Unwrap(layer.ElementType) is { } nested)
             {
                 layer = nested;
             }
@@ -39,13 +38,26 @@ internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1,
 
     private int Rank { get; } = rank;
 
-    private bool IsNullable { get; } = isNullable;
+    /// <summary>
+    /// Finds an array expression, including one wrapped in a nullable modifier.
+    /// </summary>
+    /// <param name="expression">The expression to inspect.</param>
+    /// <returns>The array expression, if present.</returns>
+    internal static ArrayTypeExpression? Unwrap(IExpression expression)
+    {
+        return expression switch
+        {
+            ArrayTypeExpression array => array,
+            NullExpression { Operand: ArrayTypeExpression array, } => array,
+            _ => null,
+        };
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
         var last = this;
-        while (last.ElementType is ArrayTypeExpression { IsNullable: false, } inner)
+        while (last.ElementType is ArrayTypeExpression inner)
         {
             last = inner;
         }
@@ -62,13 +74,6 @@ internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1,
                 break;
             }
         }
-
-        if (!IsNullable)
-        {
-            return;
-        }
-
-        builder.Append('?');
     }
 
     /// <inheritdoc />
