@@ -217,53 +217,43 @@ public sealed class DataType(IExpression type) :
 
     private static DataType FromArraySymbol(IArrayTypeSymbol arrayType, Compilation? compilation)
     {
-        var levels = new List<IArrayTypeSymbol>();
-        ITypeSymbol elementSymbol = arrayType;
-        while (elementSymbol is IArrayTypeSymbol level)
-        {
-            levels.Add(level);
-            elementSymbol = level.ElementType;
-        }
-
-        var elementType = FromSymbol(elementSymbol, compilation);
+        using var suffix = ZString.CreateStringBuilder();
+        var elementType = FromSymbol(AppendArraySuffix(arrayType), compilation);
         var dataType = elementType.PointCounter > 0
             ? new DataType(new CustomExpression(elementType.ToCode))
             : elementType;
-        dataType._arraySuffix = GetArraySuffix(levels);
+        dataType._arraySuffix = suffix.ToString();
         return dataType.Array;
-    }
 
-    private static string GetArraySuffix(List<IArrayTypeSymbol> levels)
-    {
-        using var suffix = ZString.CreateStringBuilder();
-
-        // A nullable array splits the rank specifiers into separate groups. Within each group,
-        // C# writes the outermost rank first, but the group for a nullable element precedes its containing group.
-        var last = levels.Count - 1;
-        while (last >= 0)
+        ITypeSymbol AppendArraySuffix(IArrayTypeSymbol array)
         {
-            var first = last;
-            while (first > 0 && levels[first].NullableAnnotation is not NullableAnnotation.Annotated)
+            var element = array.ElementType;
+            while (element is IArrayTypeSymbol inner && inner.NullableAnnotation is not NullableAnnotation.Annotated)
             {
-                first--;
+                element = inner.ElementType;
             }
 
-            for (var index = first; index <= last; index++)
+            // A nullable inner array's ranks appear before the containing ranks, as in string[,]?[].
+            var leaf = element is IArrayTypeSymbol nullableArray ? AppendArraySuffix(nullableArray) : element;
+            for (IArrayTypeSymbol? level = array; level is not null; level = level.ElementType as IArrayTypeSymbol)
             {
                 suffix.Append('[');
-                suffix.Append(',', levels[index].Rank - 1);
+                suffix.Append(',', level.Rank - 1);
                 suffix.Append(']');
+
+                if (level.ElementType.NullableAnnotation is NullableAnnotation.Annotated)
+                {
+                    break;
+                }
             }
 
-            if (levels[first].NullableAnnotation is NullableAnnotation.Annotated)
+            if (array.NullableAnnotation is NullableAnnotation.Annotated)
             {
                 suffix.Append('?');
             }
 
-            last = first - 1;
+            return leaf;
         }
-
-        return suffix.ToString();
     }
 
     /// <summary>
