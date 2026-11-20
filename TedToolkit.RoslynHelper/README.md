@@ -139,21 +139,21 @@ Use `DataType.FunctionPointer` to build a signature for an `unsafe` context. Pas
 type, the calling convention, and the unnamed parameter types in order.
 
 ```csharp
-using TedToolkit.RoslynHelper;
+using System.Reflection.Metadata;
 using TedToolkit.RoslynHelper.Syntaxes;
 
 var callback = DataType.FunctionPointer(
     DataType.Void,
-    FunctionPointerCallingConvention.CDECL,
+    SignatureCallingConvention.CDecl,
     DataType.Int);
 // delegate* unmanaged[Cdecl]<int, void>
 ```
 
-The returned `DataType` can be used for a field, parameter, or return type. The enum also
-supports `MANAGED` (the default), platform-default `UNMANAGED`, `STDCALL`, `THISCALL`, and
-`FASTCALL`. The `FunctionPointerType` syntax object takes the same arguments. `DataType.FromSymbol`
-preserves named unmanaged modifiers such as `SuppressGCTransition` when converting Roslyn
-function pointer symbols.
+The returned `DataType` can be used for a field, parameter, or return type. The calling convention
+defaults to `SignatureCallingConvention.Default` for managed code. Use `Unmanaged` for the platform
+default, or select `CDecl`, `StdCall`, `ThisCall`, or `FastCall`. `FunctionPointerType` takes the same
+arguments. Parameters allow `ref`, `ref readonly`, `in`, or `out`. The return type allows `ref` or
+`ref readonly`. `DataType.FromSymbol` preserves named unmanaged modifiers such as `SuppressGCTransition`.
 
 ### 5. Stamp generated members with generator metadata
 

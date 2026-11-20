@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
@@ -140,7 +141,8 @@ public sealed class DataType(IExpression type) :
     /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
-    /// <exception cref="NotSupportedException">A function pointer calling convention has no C# syntax.</exception>
+    /// <exception cref="ArgumentException">A function pointer signature contains an invalid parameter or return type.</exception>
+    /// <exception cref="NotSupportedException">A function pointer calling convention or reference modifier has no C# syntax.</exception>
     public static DataType FromSymbol(ITypeSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
@@ -150,7 +152,14 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IArrayTypeSymbol arrayType)
         {
-            return FromSymbol(arrayType.ElementType, compilation).Array;
+            var element = FromSymbol(arrayType.ElementType, compilation);
+            if (element.PointCounter > 0)
+            {
+                // Emit the element's pointer suffix before writing the outer array suffix.
+                return new DataType(new CustomExpression(element.ToCode)).Array;
+            }
+
+            return element.Array;
         }
 
         if (symbol is IPointerTypeSymbol pointerType)
@@ -370,11 +379,12 @@ public sealed class DataType(IExpression type) :
     /// <param name="callingConvention">The calling convention. The default is managed.</param>
     /// <param name="parameterTypes">The unnamed parameter types in signature order.</param>
     /// <returns>The constructed function pointer type.</returns>
-    /// <exception cref="ArgumentNullException"><paramref name="parameterTypes"/> is null.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> is undefined.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="returnType"/> or <paramref name="parameterTypes"/> is null.</exception>
+    /// <exception cref="ArgumentException">A parameter type or the return type is invalid for a function pointer signature.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> has no C# function pointer syntax.</exception>
     public static DataType FunctionPointer(
         DataType returnType,
-        FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED,
+        SignatureCallingConvention callingConvention = SignatureCallingConvention.Default,
         params DataType[] parameterTypes)
     {
         return new(new FunctionPointerType(returnType, callingConvention, parameterTypes));

@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using TedToolkit.RoslynHelper.Syntaxes;
@@ -12,14 +14,14 @@ internal sealed class RoundTripTests
     /// Verifies that each calling convention generates a compilable function pointer field.
     /// </summary>
     [Test]
-    [Arguments(FunctionPointerCallingConvention.MANAGED, "")]
-    [Arguments(FunctionPointerCallingConvention.UNMANAGED, " unmanaged")]
-    [Arguments(FunctionPointerCallingConvention.CDECL, " unmanaged[Cdecl]")]
-    [Arguments(FunctionPointerCallingConvention.STDCALL, " unmanaged[Stdcall]")]
-    [Arguments(FunctionPointerCallingConvention.THISCALL, " unmanaged[Thiscall]")]
-    [Arguments(FunctionPointerCallingConvention.FASTCALL, " unmanaged[Fastcall]")]
+    [Arguments(SignatureCallingConvention.Default, "")]
+    [Arguments(SignatureCallingConvention.Unmanaged, " unmanaged")]
+    [Arguments(SignatureCallingConvention.CDecl, " unmanaged[Cdecl]")]
+    [Arguments(SignatureCallingConvention.StdCall, " unmanaged[Stdcall]")]
+    [Arguments(SignatureCallingConvention.ThisCall, " unmanaged[Thiscall]")]
+    [Arguments(SignatureCallingConvention.FastCall, " unmanaged[Fastcall]")]
     public async Task Should_compile_a_field_with_the_selected_calling_convention(
-        FunctionPointerCallingConvention convention, string specifier)
+        SignatureCallingConvention convention, string specifier)
     {
         var pointer = DataType.FunctionPointer(DataType.Void, convention, DataType.Int.Ref, DataType.Byte.Pointer);
         var field = new Field(pointer, "Callback").Public;
@@ -49,14 +51,17 @@ internal sealed class RoundTripTests
     /// Verifies that symbol conversion preserves nested pointers, calling-convention modifiers, and by-reference types.
     /// </summary>
     [Test]
-    [Arguments("delegate*<void>")]
-    [Arguments("delegate* unmanaged<void>")]
-    [Arguments("delegate* unmanaged[Cdecl]<int, void>")]
-    [Arguments("delegate* unmanaged[Stdcall]<int, void>")]
-    [Arguments("delegate* unmanaged[Thiscall]<int, void>")]
-    [Arguments("delegate* unmanaged[Fastcall]<int, void>")]
-    [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>")]
-    public async Task Should_preserve_the_signature_when_converting_a_symbol(string signature)
+    [Arguments("delegate*<void>", false)]
+    [Arguments("delegate* unmanaged<void>", false)]
+    [Arguments("delegate* unmanaged[Cdecl]<int, void>", false)]
+    [Arguments("delegate* unmanaged[Stdcall]<int, void>", false)]
+    [Arguments("delegate* unmanaged[Thiscall]<int, void>", false)]
+    [Arguments("delegate* unmanaged[Fastcall]<int, void>", false)]
+    [Arguments("delegate*<int*[], void*, void>", false)]
+    [Arguments("delegate*<int*[], void*, void>", true)]
+    [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>", false)]
+    [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>", true)]
+    public async Task Should_preserve_the_signature_when_converting_a_symbol(string signature, bool fromMetadata)
     {
         var input = CompileFunctionPointerSource($$"""
             public unsafe class Original
@@ -64,6 +69,20 @@ internal sealed class RoundTripTests
                 public {{signature}} Callback;
             }
             """);
+        if (fromMetadata)
+        {
+            using var stream = new MemoryStream();
+            var emission = input.Emit(stream);
+            if (!emission.Success)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, emission.Diagnostics));
+            }
+
+            input = input.RemoveAllSyntaxTrees()
+                .WithAssemblyName("RoslynHelper.Tests.FunctionPointerConsumer")
+                .AddReferences(MetadataReference.CreateFromImage(stream.ToArray()));
+        }
+
         var symbol = RoslynTestHelper.GetNamedType(input, "Original")
             .GetMembers("Callback")
             .OfType<IFieldSymbol>()
@@ -79,6 +98,76 @@ internal sealed class RoundTripTests
                 public {{generated}} Callback;
             }
             """);
+    }
+
+    /// <summary>
+    /// Verifies that a function pointer return type rejects parameter-only modifiers.
+    /// </summary>
+    [Test]
+    [Arguments(StorageKind.IN)]
+    [Arguments(StorageKind.OUT)]
+    [Arguments(StorageKind.SCOPED_REF)]
+    public async Task Should_reject_invalid_return_modifiers(StorageKind modifier)
+    {
+        var returnType = DataType.Int;
+        returnType.StorageKind = modifier;
+
+        await Assert.That(() => DataType.FunctionPointer(returnType)).Throws<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Verifies that function pointer parameters reject scoped modifiers.
+    /// </summary>
+    [Test]
+    [Arguments(StorageKind.SCOPED_REF)]
+    [Arguments(StorageKind.SCOPED_IN)]
+    [Arguments(StorageKind.SCOPED_REF_READONLY)]
+    public async Task Should_reject_scoped_parameter_modifiers(StorageKind modifier)
+    {
+        var parameterType = DataType.Int;
+        parameterType.StorageKind = modifier;
+
+        await Assert.That(() => DataType.FunctionPointer(DataType.Void, parameterTypes: [parameterType]))
+            .Throws<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Verifies that void requires a pointer in parameter positions and by-reference returns.
+    /// </summary>
+    [Test]
+    public async Task Should_reject_invalid_void_types()
+    {
+        await Assert.That(() => DataType.FunctionPointer(DataType.Void, parameterTypes: [DataType.Void]))
+            .Throws<ArgumentException>();
+        await Assert.That(() => DataType.FunctionPointer(DataType.Void.Ref)).Throws<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Verifies that modifying a signature type after construction cannot bypass validation.
+    /// </summary>
+    [Test]
+    public async Task Should_reject_a_parameter_that_becomes_invalid_before_emission()
+    {
+        var parameterType = DataType.Int;
+        var pointer = DataType.FunctionPointer(DataType.Void, parameterTypes: [parameterType]);
+        parameterType.StorageKind = StorageKind.SCOPED_REF;
+
+        await Assert.That(() => TestRenderers.Render(pointer)).Throws<ArgumentException>();
+    }
+
+    /// <summary>
+    /// Verifies that the factory and the Roslyn conversion reject the unsupported VarArgs convention.
+    /// </summary>
+    [Test]
+    public async Task Should_reject_the_varargs_calling_convention()
+    {
+        var input = CompileFunctionPointerSource("");
+        var symbol = input.CreateFunctionPointerTypeSymbol(
+            input.GetSpecialType(SpecialType.System_Void), RefKind.None, [], [], SignatureCallingConvention.VarArgs);
+
+        await Assert.That(() => DataType.FunctionPointer(DataType.Void, SignatureCallingConvention.VarArgs))
+            .Throws<ArgumentOutOfRangeException>();
+        await Assert.That(() => DataType.FromSymbol(symbol, input)).Throws<NotSupportedException>();
     }
 
     private static CSharpCompilation CompileFunctionPointerSource(string source)

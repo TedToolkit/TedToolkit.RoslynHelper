@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Globalization;
 using System.Reflection.Metadata;
 using System.Security;
 
@@ -17,6 +18,8 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// </summary>
 public sealed class FunctionPointerType : IExpression
 {
+    private readonly DataType[] _signatureTypes;
+
     private readonly TypeParameterExpression _signature;
 
     /// <summary>
@@ -25,37 +28,32 @@ public sealed class FunctionPointerType : IExpression
     /// <param name="returnType">The return type. Use <see cref="DataType.Void"/> for no return value.</param>
     /// <param name="callingConvention">The calling convention to emit.</param>
     /// <param name="parameterTypes">The unnamed parameter types in signature order.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="parameterTypes"/> is null.</exception>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> is undefined.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="returnType"/> or <paramref name="parameterTypes"/> is null.</exception>
+    /// <exception cref="ArgumentException">A parameter type or the return type is invalid for a function pointer signature.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> has no C# function pointer syntax.</exception>
     public FunctionPointerType(
         DataType returnType,
-        FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED,
+        SignatureCallingConvention callingConvention = SignatureCallingConvention.Default,
         params DataType[] parameterTypes)
-        : this(returnType, callingConvention switch
-        {
-            FunctionPointerCallingConvention.MANAGED => "",
-            FunctionPointerCallingConvention.UNMANAGED => " unmanaged",
-            FunctionPointerCallingConvention.CDECL => " unmanaged[Cdecl]",
-            FunctionPointerCallingConvention.STDCALL => " unmanaged[Stdcall]",
-            FunctionPointerCallingConvention.THISCALL => " unmanaged[Thiscall]",
-            FunctionPointerCallingConvention.FASTCALL => " unmanaged[Fastcall]",
-            _ => throw new ArgumentOutOfRangeException(nameof(callingConvention), callingConvention, null),
-        }, parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes)))
+        : this(
+            GetCallingConventionSpecifier(callingConvention)
+                ?? throw new ArgumentOutOfRangeException(nameof(callingConvention), callingConvention, null),
+            [.. parameterTypes ?? throw new ArgumentNullException(nameof(parameterTypes)), returnType,])
     {
     }
 
-    private FunctionPointerType(DataType returnType, string callingConvention, DataType[] parameterTypes)
+    private FunctionPointerType(string conventionSpecifier, DataType[] signatureTypes)
     {
-        _signature = new SimpleNameExpression($"delegate*{callingConvention}")
-            .Generic([
-                .. parameterTypes,
-                returnType,
-            ]);
+        _signatureTypes = signatureTypes;
+        ValidateSignature();
+        _signature = new SimpleNameExpression($"delegate*{conventionSpecifier}").Generic(signatureTypes);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentException">A parameter type or the return type is invalid for a function pointer signature.</exception>
     public void ToCode(ref SourceBuilder builder)
     {
+        ValidateSignature();
         _signature.ToCode(ref builder);
     }
 
@@ -71,56 +69,116 @@ public sealed class FunctionPointerType : IExpression
     /// <param name="symbol">The function pointer symbol.</param>
     /// <param name="compilation">The compilation used to resolve type aliases.</param>
     /// <returns>The function pointer type.</returns>
-    /// <exception cref="NotSupportedException">The calling convention has no C# syntax.</exception>
+    /// <exception cref="ArgumentException">The signature contains an invalid parameter or return type.</exception>
+    /// <exception cref="NotSupportedException">The calling convention or reference modifier has no C# syntax.</exception>
     internal static FunctionPointerType FromSymbol(IFunctionPointerTypeSymbol symbol, Compilation? compilation)
     {
         var signature = symbol.Signature;
-        var returnType = DataType.FromSymbol(signature.ReturnType, compilation);
-        returnType.StorageKind = signature.RefKind switch
+        var convention = signature.CallingConvention;
+        var conventionSpecifier = GetCallingConventionSpecifier(convention)
+            ?? throw new NotSupportedException($"Function pointer calling convention '{convention.ToString()}' has no C# syntax.");
+        if (convention is SignatureCallingConvention.Unmanaged && !signature.UnmanagedCallingConventionTypes.IsDefaultOrEmpty)
         {
-            RefKind.Ref => StorageKind.REF,
-            RefKind.RefReadOnly => StorageKind.REF_READONLY,
-            _ => StorageKind.NONE,
-        };
+            const string prefix = "CallConv";
+            var names = signature.UnmanagedCallingConventionTypes.Select(type => type.Name.Substring(prefix.Length).ToValidIdentifier());
+            conventionSpecifier += $"[{string.Join(", ", names)}]";
+        }
 
-        var parameterTypes = new DataType[signature.Parameters.Length];
-        for (var index = 0; index < parameterTypes.Length; index++)
+        var parameterCount = signature.Parameters.Length;
+        var signatureTypes = new DataType[parameterCount + 1];
+        for (var index = 0; index < parameterCount; index++)
         {
             var parameter = signature.Parameters[index];
             var type = DataType.FromSymbol(parameter.Type, compilation);
             type.StorageKind = parameter.RefKind switch
             {
+                RefKind.None => StorageKind.NONE,
                 RefKind.Ref => StorageKind.REF,
                 RefKind.In => StorageKind.IN,
                 RefKind.Out => StorageKind.OUT,
                 RefKind.RefReadOnlyParameter => StorageKind.REF_READONLY,
-                _ => StorageKind.NONE,
+                _ => throw new NotSupportedException(
+                    $"Unexpected reference modifier on function pointer parameter {(index + 1).ToString(CultureInfo.InvariantCulture)}."),
             };
-            parameterTypes[index] = type;
+            signatureTypes[index] = type;
         }
 
-        return signature.CallingConvention switch
+        var returnType = DataType.FromSymbol(signature.ReturnType, compilation);
+        returnType.StorageKind = signature.RefKind switch
         {
-            SignatureCallingConvention.Default => new(returnType, parameterTypes: parameterTypes),
-            SignatureCallingConvention.CDecl => new(returnType, FunctionPointerCallingConvention.CDECL, parameterTypes),
-            SignatureCallingConvention.StdCall => new(returnType, FunctionPointerCallingConvention.STDCALL, parameterTypes),
-            SignatureCallingConvention.ThisCall => new(returnType, FunctionPointerCallingConvention.THISCALL, parameterTypes),
-            SignatureCallingConvention.FastCall => new(returnType, FunctionPointerCallingConvention.FASTCALL, parameterTypes),
-            SignatureCallingConvention.Unmanaged => new(returnType, GetUnmanagedConvention(signature), parameterTypes),
-            _ => throw new NotSupportedException(
-                $"Function pointer calling convention '{signature.CallingConvention.ToString()}' has no C# syntax."),
+            RefKind.None => StorageKind.NONE,
+            RefKind.Ref => StorageKind.REF,
+            RefKind.RefReadOnly => StorageKind.REF_READONLY,
+            _ => throw new NotSupportedException("Unexpected reference modifier on a function pointer return type."),
+        };
+        signatureTypes[parameterCount] = returnType;
+        return new(conventionSpecifier, signatureTypes);
+    }
+
+    private static string? GetCallingConventionSpecifier(SignatureCallingConvention convention)
+    {
+        return convention switch
+        {
+            SignatureCallingConvention.Default => "",
+            SignatureCallingConvention.Unmanaged => " unmanaged",
+            SignatureCallingConvention.CDecl => " unmanaged[Cdecl]",
+            SignatureCallingConvention.StdCall => " unmanaged[Stdcall]",
+            SignatureCallingConvention.ThisCall => " unmanaged[Thiscall]",
+            SignatureCallingConvention.FastCall => " unmanaged[Fastcall]",
+            _ => null,
         };
     }
 
-    private static string GetUnmanagedConvention(IMethodSymbol signature)
+    private void ValidateSignature()
     {
-        if (signature.UnmanagedCallingConventionTypes.IsDefaultOrEmpty)
+        var parameterCount = _signatureTypes.Length - 1;
+        ValidateReturnType(_signatureTypes[parameterCount]);
+        ValidateParameterTypes(_signatureTypes.AsSpan(0, parameterCount));
+    }
+
+    private static void ValidateReturnType(DataType returnType)
+    {
+        if (returnType is null)
         {
-            return " unmanaged";
+            throw new ArgumentNullException(nameof(returnType));
         }
 
-        const string prefix = "CallConv";
-        var names = signature.UnmanagedCallingConventionTypes.Select(type => type.Name.Substring(prefix.Length).ToValidIdentifier());
-        return $" unmanaged[{string.Join(", ", names)}]";
+        if (returnType.StorageKind is not (StorageKind.NONE or StorageKind.REF or StorageKind.REF_READONLY))
+        {
+            throw new ArgumentException("A function pointer return type allows only ref or ref readonly.", nameof(returnType));
+        }
+
+        if (!IsNonPointerVoid(returnType) || (!returnType.IsArray && returnType.StorageKind is StorageKind.NONE))
+        {
+            return;
+        }
+
+        throw new ArgumentException("A void return type cannot be an array or returned by reference.", nameof(returnType));
+    }
+
+    private static void ValidateParameterTypes(scoped in ReadOnlySpan<DataType> parameterTypes)
+    {
+        for (var index = 0; index < parameterTypes.Length; index++)
+        {
+            var type = parameterTypes[index];
+            if (type is null || IsNonPointerVoid(type))
+            {
+                var position = (index + 1).ToString(CultureInfo.InvariantCulture);
+                throw new ArgumentException($"Function pointer parameter {position} must have a non-void type.", nameof(parameterTypes));
+            }
+
+            if (type.StorageKind is not
+                (StorageKind.NONE or StorageKind.REF or StorageKind.REF_READONLY or StorageKind.IN or StorageKind.OUT))
+            {
+                var position = (index + 1).ToString(CultureInfo.InvariantCulture);
+                throw new ArgumentException(
+                    $"Function pointer parameter {position} allows only ref, ref readonly, in, or out.", nameof(parameterTypes));
+            }
+        }
+    }
+
+    private static bool IsNonPointerVoid(DataType type)
+    {
+        return type.PointCounter <= 0 && type.Type is SimpleNameExpression name && name.Name == "void";
     }
 }
