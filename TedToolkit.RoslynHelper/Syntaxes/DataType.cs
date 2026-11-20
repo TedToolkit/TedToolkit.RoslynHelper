@@ -362,6 +362,34 @@ public sealed class DataType(IExpression type) :
     {
         return ValueTask.Generic(resultType);
     }
+
+    /// <summary>
+    /// Creates a function pointer type for use in an <see langword="unsafe"/> context.
+    /// </summary>
+    /// <param name="returnType">The return type. Use <see cref="Void"/> for no return value.</param>
+    /// <param name="callingConvention">The calling convention. The default is managed.</param>
+    /// <param name="parameterTypes">The unnamed parameter types in signature order.</param>
+    /// <returns>The constructed function pointer type.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="parameterTypes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> is undefined.</exception>
+    public static DataType FunctionPointer(
+        DataType returnType,
+        FunctionPointerCallingConvention callingConvention = FunctionPointerCallingConvention.MANAGED,
+        params DataType[] parameterTypes)
+    {
+        if (parameterTypes is null)
+        {
+            throw new ArgumentNullException(nameof(parameterTypes));
+        }
+
+        var pointer = new FunctionPointerType(returnType, callingConvention);
+        foreach (var parameterType in parameterTypes)
+        {
+            pointer.AddParameter(parameterType);
+        }
+
+        return new(pointer);
+    }
 #pragma warning disable CA1720
     /// <summary>
     /// Gets <see langword="string"/>.

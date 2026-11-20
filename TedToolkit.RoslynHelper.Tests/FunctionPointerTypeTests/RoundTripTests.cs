@@ -21,10 +21,8 @@ internal sealed class RoundTripTests
     public async Task Should_compile_a_field_with_the_selected_calling_convention(
         FunctionPointerCallingConvention convention, string specifier)
     {
-        var pointer = new FunctionPointerType(DataType.Void, convention)
-            .AddParameter(DataType.Int.Ref)
-            .AddParameter(DataType.Byte.Pointer);
-        var field = new Field(new DataType(pointer), "Callback").Public;
+        var pointer = DataType.FunctionPointer(DataType.Void, convention, DataType.Int.Ref, DataType.Byte.Pointer);
+        var field = new Field(pointer, "Callback").Public;
         var source = TestRenderers.Render(field);
 
         await Assert.That(source.Trim()).IsEqualTo($"public delegate*{specifier}<ref int, byte*, void> Callback;");
@@ -34,6 +32,17 @@ internal sealed class RoundTripTests
                 {{source}}
             }
             """);
+    }
+
+    /// <summary>
+    /// Verifies that the factory can create a managed function pointer with an empty parameter list.
+    /// </summary>
+    [Test]
+    public async Task Should_default_to_a_managed_signature_without_parameters()
+    {
+        var pointer = DataType.FunctionPointer(DataType.Void);
+
+        await Assert.That(TestRenderers.Render(pointer)).IsEqualTo("delegate*<void>");
     }
 
     /// <summary>
