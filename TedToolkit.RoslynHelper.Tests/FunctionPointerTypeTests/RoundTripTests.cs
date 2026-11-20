@@ -1,10 +1,13 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using TedToolkit.RoslynHelper.Syntaxes;
 
 namespace TedToolkit.RoslynHelper.Tests;
 
 internal sealed class RoundTripTests
 {
+    private static readonly MetadataReference _coreLibrary = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+
     /// <summary>
     /// Verifies that each calling convention generates a compilable function pointer field.
     /// </summary>
@@ -25,12 +28,12 @@ internal sealed class RoundTripTests
         var source = TestRenderers.Render(field);
 
         await Assert.That(source.Trim()).IsEqualTo($"public delegate*{specifier}<ref int, byte*, void> Callback;");
-        RoslynTestHelper.CreateCompilation($$"""
+        CompileFunctionPointerSource($$"""
             public unsafe class Generated
             {
                 {{source}}
             }
-            """, allowUnsafe: true);
+            """);
     }
 
     /// <summary>
@@ -46,12 +49,12 @@ internal sealed class RoundTripTests
     [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>")]
     public async Task Should_preserve_the_signature_when_converting_a_symbol(string signature)
     {
-        var input = RoslynTestHelper.CreateCompilation($$"""
+        var input = CompileFunctionPointerSource($$"""
             public unsafe class Original
             {
                 public {{signature}} Callback;
             }
-            """, allowUnsafe: true);
+            """);
         var symbol = RoslynTestHelper.GetNamedType(input, "Original")
             .GetMembers("Callback")
             .OfType<IFieldSymbol>()
@@ -61,11 +64,30 @@ internal sealed class RoundTripTests
         var generated = TestRenderers.Render(DataType.FromSymbol(symbol, input));
 
         await Assert.That(generated).IsEqualTo(signature);
-        RoslynTestHelper.CreateCompilation($$"""
+        CompileFunctionPointerSource($$"""
             public unsafe class Generated
             {
                 public {{generated}} Callback;
             }
-            """, allowUnsafe: true);
+            """);
+    }
+
+    private static CSharpCompilation CompileFunctionPointerSource(string source)
+    {
+        var compilation = CSharpCompilation.Create(
+            "RoslynHelper.Tests.FunctionPointers",
+            [CSharpSyntaxTree.ParseText(source)],
+            [_coreLibrary],
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+
+        var errors = compilation.GetDiagnostics()
+            .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
+            .ToArray();
+        if (errors.Length > 0)
+        {
+            throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
+        }
+
+        return compilation;
     }
 }
