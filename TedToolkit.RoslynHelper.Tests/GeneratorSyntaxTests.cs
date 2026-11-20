@@ -163,6 +163,39 @@ internal sealed class GeneratorSyntaxTests
     }
 
     /// <summary>
+    /// Verifies that ArrayOf composes ranks and nullable layers in C# order.
+    /// </summary>
+    [Test]
+    public async Task Should_render_array_factory_shapes()
+    {
+        var matrix = DataType.ArrayOf(DataType.Int, rank: 2);
+        var nullableMatrix = DataType.ArrayOf(DataType.String.Null, rank: 2, isNullable: true);
+
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(matrix))).IsEqualTo("int[][,]");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(nullableMatrix, isNullable: true)))
+            .IsEqualTo("string?[,]?[]?");
+    }
+
+    /// <summary>
+    /// Verifies that modifying an array or its input type does not rewrite the other's array layers.
+    /// </summary>
+    [Test]
+    public async Task Should_isolate_array_factory_type_mutations()
+    {
+        var innerArray = DataType.ArrayOf(DataType.String, rank: 2, isNullable: true);
+        var outerArray = DataType.ArrayOf(innerArray).Null;
+
+        await Assert.That(TestRenderers.Render(innerArray)).IsEqualTo("string[,]?");
+        await Assert.That(TestRenderers.Render(outerArray)).IsEqualTo("string?[,]?[]");
+
+        var pointer = DataType.Int.Pointer;
+        var pointerArray = DataType.ArrayOf(pointer);
+        _ = pointer.Pointer;
+
+        await Assert.That(TestRenderers.Render(pointerArray)).IsEqualTo("int*[]");
+    }
+
+    /// <summary>
     /// Verifies that enum members include descriptions, attributes, and explicit values.
     /// </summary>
     [Test]

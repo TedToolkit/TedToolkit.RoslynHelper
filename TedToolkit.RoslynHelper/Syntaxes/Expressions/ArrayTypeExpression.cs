@@ -15,24 +15,24 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1) : IExpression
 {
     /// <summary>
-    /// Gets or sets the immediate element type.
+    /// Gets the immediate element type.
     /// </summary>
-    internal IExpression ElementType { get; set; } = elementType;
+    internal IExpression ElementType { get; } = elementType;
 
     /// <summary>
-    /// Gets the innermost array layer through any nullable wrappers.
+    /// Gets the underlying element type through any nullable array layers.
     /// </summary>
-    internal ArrayTypeExpression InnermostLayer
+    internal IExpression BaseElementType
     {
         get
         {
-            var layer = this;
-            while (Unwrap(layer.ElementType) is { } nested)
+            var element = ElementType;
+            while (Unwrap(element) is { } nested)
             {
-                layer = nested;
+                element = nested.ElementType;
             }
 
-            return layer;
+            return element;
         }
     }
 
@@ -51,6 +51,23 @@ internal sealed class ArrayTypeExpression(IExpression elementType, int rank = 1)
             NullExpression { Operand: ArrayTypeExpression array, } => array,
             _ => null,
         };
+    }
+
+    /// <summary>
+    /// Replaces the underlying element while retaining any array layers and nullable wrappers.
+    /// </summary>
+    /// <param name="expression">The original type expression.</param>
+    /// <param name="elementType">The replacement element type.</param>
+    /// <returns>The resulting type expression.</returns>
+    internal static IExpression WithBaseElementType(IExpression expression, IExpression elementType)
+    {
+        if (Unwrap(expression) is not { } array)
+        {
+            return elementType;
+        }
+
+        var updated = new ArrayTypeExpression(WithBaseElementType(array.ElementType, elementType), array.Rank);
+        return expression is NullExpression ? updated.Null : updated;
     }
 
     /// <inheritdoc />

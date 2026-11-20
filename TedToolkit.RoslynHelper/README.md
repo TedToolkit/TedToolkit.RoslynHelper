@@ -135,6 +135,16 @@ var typeParameter = SourceComposer.TypeParameter(typeParameterSymbol, compilatio
 
 This is the main bridge between Roslyn analysis data and generated code composition.
 
+Use `DataType.ArrayOf` to wrap an element type in an array layer. Set `rank` for a
+multidimensional layer and `isNullable` when that layer can be null.
+
+```csharp
+using TedToolkit.RoslynHelper.Syntaxes;
+
+var matrix = DataType.ArrayOf(DataType.Int, rank: 2); // int[,]
+var matrices = DataType.ArrayOf(matrix, isNullable: true); // int[][,]?
+```
+
 Use `DataType.FunctionPointer` to build a signature for an `unsafe` context. Pass the return
 type, the calling convention, and the unnamed parameter types in order.
 

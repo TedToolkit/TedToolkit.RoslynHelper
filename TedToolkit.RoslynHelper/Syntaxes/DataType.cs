@@ -34,19 +34,12 @@ public sealed class DataType(IExpression type) :
     {
         get
         {
-            return ArrayTypeExpression.Unwrap(_type)?.InnermostLayer.ElementType ?? _type;
+            return ArrayTypeExpression.Unwrap(_type)?.BaseElementType ?? _type;
         }
 
         private set
         {
-            if (ArrayTypeExpression.Unwrap(_type) is { } array)
-            {
-                array.InnermostLayer.ElementType = value;
-            }
-            else
-            {
-                _type = value;
-            }
+            _type = ArrayTypeExpression.WithBaseElementType(_type, value);
         }
     }
 
@@ -186,7 +179,10 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IArrayTypeSymbol arrayType)
         {
-            return FromArraySymbol(arrayType, compilation);
+            return ArrayOf(
+                FromSymbol(arrayType.ElementType, compilation),
+                arrayType.Rank,
+                arrayType.NullableAnnotation is NullableAnnotation.Annotated);
         }
 
         if (symbol is IPointerTypeSymbol pointerType)
@@ -247,21 +243,6 @@ public sealed class DataType(IExpression type) :
         return annotation is NullableAnnotation.Annotated ? type.Null : type;
     }
 
-    private static DataType FromArraySymbol(IArrayTypeSymbol arrayType, Compilation? compilation)
-    {
-        var elementType = FromSymbol(arrayType.ElementType, compilation);
-        var element = elementType.PointCounter > 0
-            ? new CustomExpression(elementType.ToCode)
-            : elementType._type;
-        IExpression array = new ArrayTypeExpression(element, arrayType.Rank);
-        if (arrayType.NullableAnnotation is NullableAnnotation.Annotated)
-        {
-            array = array.Null;
-        }
-
-        return new DataType(array).Array;
-    }
-
     /// <summary>
     /// Implicit convert.
     /// </summary>
@@ -307,12 +288,12 @@ public sealed class DataType(IExpression type) :
 
         if (type.IsPointer)
         {
-            return FromType(type.GetElementType()!).Pointer;
+            return FromType(type.GetElementType()!, alias).Pointer;
         }
 
         if (type.IsArray)
         {
-            return FromType(type.GetElementType()!).Array;
+            return ArrayOf(FromType(type.GetElementType()!, alias), type.GetArrayRank());
         }
 
         if (type.IsGenericType)
@@ -412,6 +393,43 @@ public sealed class DataType(IExpression type) :
     public static DataType ValueTaskOf(DataType resultType)
     {
         return ValueTask.Generic(resultType);
+    }
+
+    /// <summary>
+    /// Creates an array with the supplied element type and number of dimensions.
+    /// </summary>
+    /// <param name="elementType">The immediate element type, which may itself be an array.</param>
+    /// <param name="rank">The number of dimensions in the new array layer.</param>
+    /// <param name="isNullable">Whether the new array layer is nullable.</param>
+    /// <returns>The constructed array type.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="elementType"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="rank"/> is less than one.</exception>
+    public static DataType ArrayOf(DataType elementType, int rank = 1, bool isNullable = false)
+    {
+        if (elementType is null)
+        {
+            throw new ArgumentNullException(nameof(elementType));
+        }
+
+        if (rank < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(rank));
+        }
+
+        var element = elementType.IsArray ? elementType._type : elementType.Type;
+        if (elementType.PointCounter > 0)
+        {
+            var pointedAt = element;
+            var pointerCount = elementType.PointCounter;
+            element = new CustomExpression((ref builder) =>
+            {
+                pointedAt.ToCode(ref builder);
+                builder.Append('*', pointerCount);
+            });
+        }
+
+        var array = new ArrayTypeExpression(element, rank);
+        return new DataType(isNullable ? array.Null : array).Array;
     }
 
     /// <summary>
