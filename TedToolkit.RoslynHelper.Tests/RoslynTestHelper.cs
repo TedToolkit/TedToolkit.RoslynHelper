@@ -24,7 +24,8 @@ internal static class RoslynTestHelper
     public static CSharpCompilation CreateCompilation(
         string source,
         string assemblyName = "RoslynHelper.Tests.Dynamic",
-        IEnumerable<MetadataReference>? additionalReferences = null)
+        IEnumerable<MetadataReference>? additionalReferences = null,
+        bool allowUnsafe = false)
     {
         var references = _defaultReferences;
         if (additionalReferences is not null)
@@ -38,6 +39,7 @@ internal static class RoslynTestHelper
             references,
             new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,
+                allowUnsafe: allowUnsafe,
                 nullableContextOptions: NullableContextOptions.Enable));
 
         var errors = compilation.GetDiagnostics()

@@ -135,6 +135,23 @@ var typeParameter = SourceComposer.TypeParameter(typeParameterSymbol, compilatio
 
 This is the main bridge between Roslyn analysis data and generated code composition.
 
+Use `FunctionPointerType` to build a signature for an `unsafe` context. Add unnamed parameter
+types in order and pass the return type to the constructor.
+
+```csharp
+using TedToolkit.RoslynHelper;
+using TedToolkit.RoslynHelper.Syntaxes;
+
+var callback = new DataType(
+    new FunctionPointerType(DataType.Void, FunctionPointerCallingConvention.CDECL)
+        .AddParameter(DataType.Int));
+// delegate* unmanaged[Cdecl]<int, void>
+```
+
+The enum also supports `MANAGED` (the default), platform-default `UNMANAGED`, `STDCALL`,
+`THISCALL`, and `FASTCALL`. `DataType.FromSymbol` can convert Roslyn function pointer symbols
+and preserves named unmanaged modifiers such as `SuppressGCTransition`.
+
 ### 5. Stamp generated members with generator metadata
 
 ```csharp

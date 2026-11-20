@@ -140,6 +140,7 @@ public sealed class DataType(IExpression type) :
     /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
+    /// <exception cref="NotSupportedException">A function pointer calling convention has no C# syntax.</exception>
     public static DataType FromSymbol(ITypeSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
@@ -155,6 +156,11 @@ public sealed class DataType(IExpression type) :
         if (symbol is IPointerTypeSymbol pointerType)
         {
             return FromSymbol(pointerType.PointedAtType, compilation).Pointer;
+        }
+
+        if (symbol is IFunctionPointerTypeSymbol functionPointerType)
+        {
+            return new(FunctionPointerType.FromSymbol(functionPointerType, compilation));
         }
 
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
