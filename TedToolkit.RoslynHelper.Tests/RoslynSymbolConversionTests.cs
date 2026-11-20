@@ -72,6 +72,39 @@ public class Sample
     }
 
     /// <summary>
+    /// Verifies that DataType.FromSymbol keeps array ranks and nullable annotations at each level.
+    /// </summary>
+    [Test]
+    [Arguments("int[]")]
+    [Arguments("int[][]")]
+    [Arguments("int[,]")]
+    [Arguments("int[][,,][,]")]
+    [Arguments("int[]?[,,][,]")]
+    [Arguments("string?[]?")]
+    [Arguments("string?[,]?[]?[][,,]?")]
+    [Arguments("global::System.Collections.Generic.List<string?>?[]?")]
+    [Arguments("T?[]?")]
+    public async Task Should_preserve_array_shape_when_creating_data_type_from_symbol(string typeName)
+    {
+        var compilation = RoslynTestHelper.CreateCompilation($$"""
+            public class Sample<T>
+            {
+                public {{typeName}} Property { get; set; } = default!;
+            }
+            """);
+        var symbol = RoslynTestHelper.GetNamedType(compilation, "Sample`1")
+            .GetMembers("Property")
+            .OfType<IPropertySymbol>()
+            .Single()
+            .Type;
+
+        var dataType = DataType.FromSymbol(symbol, compilation);
+
+        await Assert.That(dataType.IsArray).IsTrue();
+        await Assert.That(TestRenderers.Render(dataType)).IsEqualTo(typeName);
+    }
+
+    /// <summary>
     /// Verifies that symbol-derived type names escape C# keywords in every qualified segment.
     /// </summary>
     [Test]

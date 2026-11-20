@@ -59,6 +59,8 @@ internal sealed class RoundTripTests
     [Arguments("delegate* unmanaged[Fastcall]<int, void>", false)]
     [Arguments("delegate*<int*[], void*, void>", false)]
     [Arguments("delegate*<int*[], void*, void>", true)]
+    [Arguments("delegate*<int*[][], int*[,], void>", false)]
+    [Arguments("delegate*<string?[]?, void>", true)]
     [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>", false)]
     [Arguments("delegate* unmanaged[Cdecl, SuppressGCTransition]<delegate*<void>, in int, out int, ref readonly int, ref readonly int>", true)]
     public async Task Should_preserve_the_signature_when_converting_a_symbol(string signature, bool fromMetadata)
@@ -176,7 +178,10 @@ internal sealed class RoundTripTests
             "RoslynHelper.Tests.FunctionPointers",
             [CSharpSyntaxTree.ParseText(source)],
             [_coreLibrary],
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true));
+            new CSharpCompilationOptions(
+                OutputKind.DynamicallyLinkedLibrary,
+                allowUnsafe: true,
+                nullableContextOptions: NullableContextOptions.Enable));
 
         var errors = compilation.GetDiagnostics()
             .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)

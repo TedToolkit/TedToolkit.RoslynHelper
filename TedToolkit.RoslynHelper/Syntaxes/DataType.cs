@@ -23,6 +23,8 @@ public sealed class DataType(IExpression type) :
     IToCode,
     ICref
 {
+    private string? _arraySuffix;
+
     /// <summary>
     /// Gets the Type.
     /// </summary>
@@ -113,7 +115,7 @@ public sealed class DataType(IExpression type) :
         Type.ToCode(ref builder);
         if (IsArray)
         {
-            builder.Append("[]");
+            builder.Append(_arraySuffix ?? "[]");
         }
 
         if (PointCounter <= 0)
@@ -152,14 +154,7 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IArrayTypeSymbol arrayType)
         {
-            var element = FromSymbol(arrayType.ElementType, compilation);
-            if (element.PointCounter > 0)
-            {
-                // Emit the element's pointer suffix before writing the outer array suffix.
-                return new DataType(new CustomExpression(element.ToCode)).Array;
-            }
-
-            return element.Array;
+            return FromArraySymbol(arrayType, compilation);
         }
 
         if (symbol is IPointerTypeSymbol pointerType)
@@ -190,18 +185,12 @@ public sealed class DataType(IExpression type) :
 
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
         {
-            return new(symbol.Name.ToValidIdentifier().ToSimpleName());
+            return WithNullableAnnotation(new(symbol.Name.ToValidIdentifier().ToSimpleName()), symbol.NullableAnnotation);
         }
 
         if (_specialTypeAlias.TryGetValue(symbol.SpecialType, out var specialTypeFactory))
         {
-            var dataType = specialTypeFactory();
-            if (symbol.NullableAnnotation is NullableAnnotation.Annotated)
-            {
-                dataType = dataType.Null;
-            }
-
-            return dataType;
+            return WithNullableAnnotation(specialTypeFactory(), symbol.NullableAnnotation);
         }
 
         var name = ZString.Concat(symbol.GetAlias(compilation), "::", symbol.FullName);
@@ -216,8 +205,65 @@ public sealed class DataType(IExpression type) :
             return new(name.ToSimpleName());
         }
 
-        return new(name.Substring(0, index).ToSimpleName()
+        var genericType = new DataType(name.Substring(0, index).ToSimpleName()
             .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, compilation)).ToArray()));
+        return WithNullableAnnotation(genericType, symbol.NullableAnnotation);
+    }
+
+    private static DataType WithNullableAnnotation(DataType type, NullableAnnotation annotation)
+    {
+        return annotation is NullableAnnotation.Annotated ? type.Null : type;
+    }
+
+    private static DataType FromArraySymbol(IArrayTypeSymbol arrayType, Compilation? compilation)
+    {
+        var levels = new List<IArrayTypeSymbol>();
+        ITypeSymbol elementSymbol = arrayType;
+        while (elementSymbol is IArrayTypeSymbol level)
+        {
+            levels.Add(level);
+            elementSymbol = level.ElementType;
+        }
+
+        var elementType = FromSymbol(elementSymbol, compilation);
+        var dataType = elementType.PointCounter > 0
+            ? new DataType(new CustomExpression(elementType.ToCode))
+            : elementType;
+        dataType._arraySuffix = GetArraySuffix(levels);
+        return dataType.Array;
+    }
+
+    private static string GetArraySuffix(List<IArrayTypeSymbol> levels)
+    {
+        using var suffix = ZString.CreateStringBuilder();
+
+        // A nullable array splits the rank specifiers into separate groups. Within each group,
+        // C# writes the outermost rank first, but the group for a nullable element precedes its containing group.
+        var last = levels.Count - 1;
+        while (last >= 0)
+        {
+            var first = last;
+            while (first > 0 && levels[first].NullableAnnotation is not NullableAnnotation.Annotated)
+            {
+                first--;
+            }
+
+            for (var index = first; index <= last; index++)
+            {
+                suffix.Append('[');
+                suffix.Append(',', levels[index].Rank - 1);
+                suffix.Append(']');
+            }
+
+            if (levels[first].NullableAnnotation is NullableAnnotation.Annotated)
+            {
+                suffix.Append('?');
+            }
+
+            last = first - 1;
+        }
+
+        return suffix.ToString();
     }
 
     /// <summary>
