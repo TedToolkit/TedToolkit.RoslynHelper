@@ -81,14 +81,22 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// Gets make Null.
+    /// Marks the current type as nullable and returns the same instance.
     /// </summary>
     public DataType Null
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            Type = Type.Null;
+            if (!IsArray)
+            {
+                Type = Type.Null;
+            }
+            else if (_type is not NullExpression)
+            {
+                _type = _type.Null;
+            }
+
             return this;
         }
     }
@@ -179,10 +187,8 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IArrayTypeSymbol arrayType)
         {
-            return ArrayOf(
-                FromSymbol(arrayType.ElementType, compilation),
-                arrayType.Rank,
-                arrayType.NullableAnnotation is NullableAnnotation.Annotated);
+            var array = ArrayOf(FromSymbol(arrayType.ElementType, compilation), arrayType.Rank);
+            return WithNullableAnnotation(array, arrayType.NullableAnnotation);
         }
 
         if (symbol is IPointerTypeSymbol pointerType)
@@ -400,11 +406,10 @@ public sealed class DataType(IExpression type) :
     /// </summary>
     /// <param name="elementType">The immediate element type, which may itself be an array.</param>
     /// <param name="rank">The number of dimensions in the new array layer.</param>
-    /// <param name="isNullable">Whether the new array layer is nullable.</param>
     /// <returns>The constructed array type.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="elementType"/> is null.</exception>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="rank"/> is less than one.</exception>
-    public static DataType ArrayOf(DataType elementType, int rank = 1, bool isNullable = false)
+    public static DataType ArrayOf(DataType elementType, int rank = 1)
     {
         if (elementType is null)
         {
@@ -428,8 +433,7 @@ public sealed class DataType(IExpression type) :
             });
         }
 
-        var array = new ArrayTypeExpression(element, rank);
-        return new DataType(isNullable ? array.Null : array).Array;
+        return new DataType(new ArrayTypeExpression(element, rank)).Array;
     }
 
     /// <summary>

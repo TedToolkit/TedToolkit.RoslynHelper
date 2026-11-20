@@ -169,10 +169,13 @@ internal sealed class GeneratorSyntaxTests
     public async Task Should_render_array_factory_shapes()
     {
         var matrix = DataType.ArrayOf(DataType.Int, rank: 2);
-        var nullableMatrix = DataType.ArrayOf(DataType.String.Null, rank: 2, isNullable: true);
+        var nullableMatrix = DataType.ArrayOf(DataType.String.Null, rank: 2).Null;
 
         await Assert.That(TestRenderers.Render(DataType.ArrayOf(matrix))).IsEqualTo("int[][,]");
-        await Assert.That(TestRenderers.Render(DataType.ArrayOf(nullableMatrix, isNullable: true)))
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(DataType.String).Null.Null)).IsEqualTo("string[]?");
+        await Assert.That(TestRenderers.Render(DataType.String.Array.Null)).IsEqualTo("string[]?");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(DataType.String.Null))).IsEqualTo("string?[]");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(nullableMatrix).Null))
             .IsEqualTo("string?[,]?[]?");
     }
 
@@ -182,11 +185,11 @@ internal sealed class GeneratorSyntaxTests
     [Test]
     public async Task Should_isolate_array_factory_type_mutations()
     {
-        var innerArray = DataType.ArrayOf(DataType.String, rank: 2, isNullable: true);
-        var outerArray = DataType.ArrayOf(innerArray).Null;
+        var innerArray = DataType.ArrayOf(new DataType("Container"), rank: 2).Null;
+        var outerArray = DataType.ArrayOf(innerArray).Generic(DataType.Int);
 
-        await Assert.That(TestRenderers.Render(innerArray)).IsEqualTo("string[,]?");
-        await Assert.That(TestRenderers.Render(outerArray)).IsEqualTo("string?[,]?[]");
+        await Assert.That(TestRenderers.Render(innerArray)).IsEqualTo("Container[,]?");
+        await Assert.That(TestRenderers.Render(outerArray)).IsEqualTo("Container<int>[,]?[]");
 
         var pointer = DataType.Int.Pointer;
         var pointerArray = DataType.ArrayOf(pointer);

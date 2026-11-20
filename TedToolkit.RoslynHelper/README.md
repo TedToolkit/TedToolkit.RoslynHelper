@@ -136,13 +136,14 @@ var typeParameter = SourceComposer.TypeParameter(typeParameterSymbol, compilatio
 This is the main bridge between Roslyn analysis data and generated code composition.
 
 Use `DataType.ArrayOf` to wrap an element type in an array layer. Set `rank` for a
-multidimensional layer and `isNullable` when that layer can be null.
+multidimensional layer and use `.Null` on the array type to mark that layer as nullable.
 
 ```csharp
 using TedToolkit.RoslynHelper.Syntaxes;
 
 var matrix = DataType.ArrayOf(DataType.Int, rank: 2); // int[,]
-var matrices = DataType.ArrayOf(matrix, isNullable: true); // int[][,]?
+var matrices = DataType.ArrayOf(matrix).Null; // int[][,]?
+var nullableElements = DataType.ArrayOf(DataType.String.Null); // string?[]
 ```
 
 Use `DataType.FunctionPointer` to build a signature for an `unsafe` context. Pass the return
