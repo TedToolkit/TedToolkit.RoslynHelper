@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 
 using Cysharp.Text;
@@ -22,18 +23,49 @@ public sealed class DataType(IExpression type) :
     IToCode,
     ICref
 {
+    private IExpression _type = type;
+
+    private bool _isArray;
+
     /// <summary>
-    /// Gets the Type.
+    /// Gets the underlying type expression before applying array and pointer modifiers.
     /// </summary>
-    public IExpression Type { get; private set; } = type;
+    public IExpression Type
+    {
+        get
+        {
+            return ArrayTypeExpression.Unwrap(_type)?.BaseElementType ?? _type;
+        }
+
+        private set
+        {
+            _type = ArrayTypeExpression.WithBaseElementType(_type, value);
+        }
+    }
 
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether is Array.
+    /// Gets or sets a value indicating whether to emit the array shape.
     /// </summary>
-    public bool IsArray { get; set; }
+    public bool IsArray
+    {
+        get
+        {
+            return _isArray;
+        }
+
+        set
+        {
+            if (value && ArrayTypeExpression.Unwrap(_type) is null)
+            {
+                _type = new ArrayTypeExpression(_type);
+            }
+
+            _isArray = value;
+        }
+    }
 
     /// <summary>
     /// Gets make Array.
@@ -49,14 +81,22 @@ public sealed class DataType(IExpression type) :
     }
 
     /// <summary>
-    /// Gets make Null.
+    /// Marks the current type as nullable and returns the same instance.
     /// </summary>
     public DataType Null
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            Type = Type.Null;
+            if (!IsArray)
+            {
+                Type = Type.Null;
+            }
+            else if (_type is not NullExpression)
+            {
+                _type = _type.Null;
+            }
+
             return this;
         }
     }
@@ -109,11 +149,7 @@ public sealed class DataType(IExpression type) :
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddStorageKind(ref builder);
-        Type.ToCode(ref builder);
-        if (IsArray)
-        {
-            builder.Append("[]");
-        }
+        (IsArray ? _type : Type).ToCode(ref builder);
 
         if (PointCounter <= 0)
         {
@@ -140,6 +176,8 @@ public sealed class DataType(IExpression type) :
     /// <param name="compilation">compilation.</param>
     /// <returns>result.</returns>
     /// <exception cref="ArgumentNullException">throw if symbol is null.</exception>
+    /// <exception cref="ArgumentException">A function pointer signature contains an invalid parameter or return type.</exception>
+    /// <exception cref="NotSupportedException">A function pointer calling convention or reference modifier has no C# syntax.</exception>
     public static DataType FromSymbol(ITypeSymbol symbol, Compilation? compilation = null)
     {
         if (symbol is null)
@@ -149,12 +187,18 @@ public sealed class DataType(IExpression type) :
 
         if (symbol is IArrayTypeSymbol arrayType)
         {
-            return FromSymbol(arrayType.ElementType, compilation).Array;
+            var array = ArrayOf(FromSymbol(arrayType.ElementType, compilation), arrayType.Rank);
+            return WithNullableAnnotation(array, arrayType.NullableAnnotation);
         }
 
         if (symbol is IPointerTypeSymbol pointerType)
         {
             return FromSymbol(pointerType.PointedAtType, compilation).Pointer;
+        }
+
+        if (symbol is IFunctionPointerTypeSymbol functionPointerType)
+        {
+            return new(FunctionPointerTypeExpression.FromSymbol(functionPointerType, compilation));
         }
 
         if (symbol is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullableType)
@@ -175,18 +219,12 @@ public sealed class DataType(IExpression type) :
 
         if (symbol.TypeKind is TypeKind.TypeParameter or TypeKind.Error)
         {
-            return new(symbol.Name.ToValidIdentifier().ToSimpleName());
+            return WithNullableAnnotation(new(symbol.Name.ToValidIdentifier().ToSimpleName()), symbol.NullableAnnotation);
         }
 
         if (_specialTypeAlias.TryGetValue(symbol.SpecialType, out var specialTypeFactory))
         {
-            var dataType = specialTypeFactory();
-            if (symbol.NullableAnnotation is NullableAnnotation.Annotated)
-            {
-                dataType = dataType.Null;
-            }
-
-            return dataType;
+            return WithNullableAnnotation(specialTypeFactory(), symbol.NullableAnnotation);
         }
 
         var name = ZString.Concat(symbol.GetAlias(compilation), "::", symbol.FullName);
@@ -201,8 +239,14 @@ public sealed class DataType(IExpression type) :
             return new(name.ToSimpleName());
         }
 
-        return new(name.Substring(0, index).ToSimpleName()
+        var genericType = new DataType(name.Substring(0, index).ToSimpleName()
             .Generic(namedType.TypeArguments.Select(i => FromSymbol(i, compilation)).ToArray()));
+        return WithNullableAnnotation(genericType, symbol.NullableAnnotation);
+    }
+
+    private static DataType WithNullableAnnotation(DataType type, NullableAnnotation annotation)
+    {
+        return annotation is NullableAnnotation.Annotated ? type.Null : type;
     }
 
     /// <summary>
@@ -250,12 +294,12 @@ public sealed class DataType(IExpression type) :
 
         if (type.IsPointer)
         {
-            return FromType(type.GetElementType()!).Pointer;
+            return FromType(type.GetElementType()!, alias).Pointer;
         }
 
         if (type.IsArray)
         {
-            return FromType(type.GetElementType()!).Array;
+            return ArrayOf(FromType(type.GetElementType()!, alias), type.GetArrayRank());
         }
 
         if (type.IsGenericType)
@@ -355,6 +399,59 @@ public sealed class DataType(IExpression type) :
     public static DataType ValueTaskOf(DataType resultType)
     {
         return ValueTask.Generic(resultType);
+    }
+
+    /// <summary>
+    /// Creates an array with the supplied element type and number of dimensions.
+    /// </summary>
+    /// <param name="elementType">The immediate element type, which may itself be an array.</param>
+    /// <param name="rank">The number of dimensions in the new array layer.</param>
+    /// <returns>The constructed array type.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="elementType"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="rank"/> is less than one.</exception>
+    public static DataType ArrayOf(DataType elementType, int rank = 1)
+    {
+        if (elementType is null)
+        {
+            throw new ArgumentNullException(nameof(elementType));
+        }
+
+        if (rank < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(rank));
+        }
+
+        var element = elementType.IsArray ? elementType._type : elementType.Type;
+        if (elementType.PointCounter > 0)
+        {
+            var pointedAt = element;
+            var pointerCount = elementType.PointCounter;
+            element = new CustomExpression((ref builder) =>
+            {
+                pointedAt.ToCode(ref builder);
+                builder.Append('*', pointerCount);
+            });
+        }
+
+        return new DataType(new ArrayTypeExpression(element, rank)).Array;
+    }
+
+    /// <summary>
+    /// Creates a function pointer type for use in an <see langword="unsafe"/> context.
+    /// </summary>
+    /// <param name="returnType">The return type. Use <see cref="Void"/> for no return value.</param>
+    /// <param name="callingConvention">The calling convention. The default is managed.</param>
+    /// <param name="parameterTypes">The unnamed parameter types in signature order.</param>
+    /// <returns>The constructed function pointer type.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="returnType"/> or <paramref name="parameterTypes"/> is null.</exception>
+    /// <exception cref="ArgumentException">A parameter type or the return type is invalid for a function pointer signature.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="callingConvention"/> has no C# function pointer syntax.</exception>
+    public static DataType FunctionPointer(
+        DataType returnType,
+        SignatureCallingConvention callingConvention = SignatureCallingConvention.Default,
+        params DataType[] parameterTypes)
+    {
+        return new(new FunctionPointerTypeExpression(returnType, callingConvention, parameterTypes));
     }
 #pragma warning disable CA1720
     /// <summary>

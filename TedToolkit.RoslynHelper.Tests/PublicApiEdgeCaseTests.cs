@@ -12,11 +12,23 @@ internal sealed class PublicApiEdgeCaseTests
     {
         await Assert.That(() => DataType.FromType((Type)null!)).Throws<ArgumentNullException>();
         await Assert.That(() => DataType.FromSymbol(null!)).Throws<ArgumentNullException>();
+        await Assert.That(() => DataType.ArrayOf(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => Parameter.FromSymbol(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => Parameter.FromInfo(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => TedToolkit.RoslynHelper.Syntaxes.Attribute.FromSymbol(null!)).Throws<ArgumentNullException>();
         await Assert.That(() => new TypeDeclaration("Demo", TypeDeclarationType.CLASS).AddBaseType((Type)null!))
             .Throws<ArgumentNullException>();
+    }
+
+    /// <summary>
+    /// Verifies that the array factory rejects ranks below one.
+    /// </summary>
+    [Test]
+    [Arguments(0)]
+    [Arguments(-1)]
+    public async Task Should_reject_invalid_array_ranks(int rank)
+    {
+        await Assert.That(() => DataType.ArrayOf(DataType.Int, rank)).Throws<ArgumentOutOfRangeException>();
     }
 
     /// <summary>
@@ -28,11 +40,17 @@ internal sealed class PublicApiEdgeCaseTests
         var byRef = TestRenderers.Render(DataType.FromType(typeof(int).MakeByRefType()));
         var pointer = TestRenderers.Render(DataType.FromType(typeof(int*)));
         var array = TestRenderers.Render(DataType.FromType(typeof(Dictionary<string, int>[])));
+        var arrayOfMatrices = TestRenderers.Render(DataType.FromType(typeof(int[][,])));
+        var arrayOfPointers = TestRenderers.Render(DataType.FromType(typeof(int*[])));
+        var aliasedMatrix = TestRenderers.Render(DataType.FromType(typeof(Dictionary<string, int>[,]), "external"));
         var nested = TestRenderers.Render(DataType.FromType(typeof(LocalNestedType.Container.Inner)));
 
         await Assert.That(byRef).IsEqualTo("int");
         await Assert.That(pointer).IsEqualTo("int*");
         await Assert.That(array).IsEqualTo("global::System.Collections.Generic.Dictionary<string, int>[]");
+        await Assert.That(arrayOfMatrices).IsEqualTo("int[][,]");
+        await Assert.That(arrayOfPointers).IsEqualTo("int*[]");
+        await Assert.That(aliasedMatrix).IsEqualTo("external::System.Collections.Generic.Dictionary<string, int>[,]");
         await Assert.That(nested).IsEqualTo("global::TedToolkit.RoslynHelper.Tests.LocalNestedType.Container.Inner");
     }
 
