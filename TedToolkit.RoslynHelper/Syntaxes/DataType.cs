@@ -23,20 +23,56 @@ public sealed class DataType(IExpression type) :
     IToCode,
     ICref
 {
-    private string? _arraySuffix;
+    private IExpression _type = type;
+
+    private bool _isArray;
 
     /// <summary>
-    /// Gets the Type.
+    /// Gets the underlying type expression before applying array and pointer modifiers.
     /// </summary>
-    public IExpression Type { get; private set; } = type;
+    public IExpression Type
+    {
+        get
+        {
+            return _type is ArrayTypeExpression array ? array.InnermostLayer.ElementType : _type;
+        }
+
+        private set
+        {
+            if (_type is ArrayTypeExpression array)
+            {
+                array.InnermostLayer.ElementType = value;
+            }
+            else
+            {
+                _type = value;
+            }
+        }
+    }
 
     /// <inheritdoc />
     public StorageKind StorageKind { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether is Array.
+    /// Gets or sets a value indicating whether to emit the array shape.
     /// </summary>
-    public bool IsArray { get; set; }
+    public bool IsArray
+    {
+        get
+        {
+            return _isArray;
+        }
+
+        set
+        {
+            if (value && _type is not ArrayTypeExpression)
+            {
+                _type = new ArrayTypeExpression(_type);
+            }
+
+            _isArray = value;
+        }
+    }
 
     /// <summary>
     /// Gets make Array.
@@ -112,11 +148,7 @@ public sealed class DataType(IExpression type) :
     public void ToCode(ref SourceBuilder builder)
     {
         this.AddStorageKind(ref builder);
-        Type.ToCode(ref builder);
-        if (IsArray)
-        {
-            builder.Append(_arraySuffix ?? "[]");
-        }
+        (IsArray ? _type : Type).ToCode(ref builder);
 
         if (PointCounter <= 0)
         {
@@ -217,43 +249,12 @@ public sealed class DataType(IExpression type) :
 
     private static DataType FromArraySymbol(IArrayTypeSymbol arrayType, Compilation? compilation)
     {
-        using var suffix = ZString.CreateStringBuilder();
-        var elementType = FromSymbol(AppendArraySuffix(arrayType), compilation);
-        var dataType = elementType.PointCounter > 0
-            ? new DataType(new CustomExpression(elementType.ToCode))
-            : elementType;
-        dataType._arraySuffix = suffix.ToString();
-        return dataType.Array;
-
-        ITypeSymbol AppendArraySuffix(IArrayTypeSymbol array)
-        {
-            var element = array.ElementType;
-            while (element is IArrayTypeSymbol inner && inner.NullableAnnotation is not NullableAnnotation.Annotated)
-            {
-                element = inner.ElementType;
-            }
-
-            // A nullable inner array's ranks appear before the containing ranks, as in string[,]?[].
-            var leaf = element is IArrayTypeSymbol nullableArray ? AppendArraySuffix(nullableArray) : element;
-            for (IArrayTypeSymbol? level = array; level is not null; level = level.ElementType as IArrayTypeSymbol)
-            {
-                suffix.Append('[');
-                suffix.Append(',', level.Rank - 1);
-                suffix.Append(']');
-
-                if (level.ElementType.NullableAnnotation is NullableAnnotation.Annotated)
-                {
-                    break;
-                }
-            }
-
-            if (array.NullableAnnotation is NullableAnnotation.Annotated)
-            {
-                suffix.Append('?');
-            }
-
-            return leaf;
-        }
+        var elementType = FromSymbol(arrayType.ElementType, compilation);
+        var element = elementType.PointCounter > 0
+            ? new CustomExpression(elementType.ToCode)
+            : elementType._type;
+        var array = new ArrayTypeExpression(element, arrayType.Rank, arrayType.NullableAnnotation is NullableAnnotation.Annotated);
+        return new DataType(array).Array;
     }
 
     /// <summary>

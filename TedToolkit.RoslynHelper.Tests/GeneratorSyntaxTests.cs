@@ -146,6 +146,23 @@ internal sealed class GeneratorSyntaxTests
     }
 
     /// <summary>
+    /// Verifies that changing the element type and toggling the array modifier can be combined.
+    /// </summary>
+    [Test]
+    public async Task Should_compose_array_and_generic_modifiers()
+    {
+        var array = new DataType("Container").Array.Generic(DataType.Int);
+
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>[]");
+
+        array.IsArray = false;
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>");
+
+        array.IsArray = true;
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>[]");
+    }
+
+    /// <summary>
     /// Verifies that enum members include descriptions, attributes, and explicit values.
     /// </summary>
     [Test]
