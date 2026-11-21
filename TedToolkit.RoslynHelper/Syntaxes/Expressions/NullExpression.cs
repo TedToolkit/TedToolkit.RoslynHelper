@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="NullExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -13,10 +13,15 @@ namespace TedToolkit.RoslynHelper.Syntaxes;
 /// <param name="expression">the null expression.</param>
 public sealed class NullExpression(IExpression expression) : IExpression
 {
+    /// <summary>
+    /// Gets the expression to which the nullable modifier applies.
+    /// </summary>
+    internal IExpression Operand { get; } = expression;
+
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)
     {
-        expression.ToCode(ref builder);
+        Operand.ToCode(ref builder);
         builder.Append('?');
     }
 

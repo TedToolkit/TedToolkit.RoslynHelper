@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SimpleNameExpression.cs" company="TedToolkit">
 // Copyright (c) TedToolkit. All rights reserved.
 // Licensed under the LGPL-3.0 license. See COPYING, COPYING.LESSER file in the project root for full license information.
@@ -23,6 +23,17 @@ public sealed class SimpleNameExpression(string name) :
     /// Gets <see langword="default"/>.
     /// </summary>
     public static SimpleNameExpression Default { get; } = new("default");
+
+    /// <summary>
+    /// Gets the name as it will appear in source.
+    /// </summary>
+    internal string Name
+    {
+        get
+        {
+            return name;
+        }
+    }
 
     /// <inheritdoc />
     public void ToCode(ref SourceBuilder builder)

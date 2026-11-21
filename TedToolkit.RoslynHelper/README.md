@@ -135,6 +135,37 @@ var typeParameter = SourceComposer.TypeParameter(typeParameterSymbol, compilatio
 
 This is the main bridge between Roslyn analysis data and generated code composition.
 
+Use `DataType.ArrayOf` to wrap an element type in an array layer. Set `rank` for a
+multidimensional layer and use `.Null` on the array type to mark that layer as nullable.
+
+```csharp
+using TedToolkit.RoslynHelper.Syntaxes;
+
+var matrix = DataType.ArrayOf(DataType.Int, rank: 2); // int[,]
+var matrices = DataType.ArrayOf(matrix).Null; // int[][,]?
+var nullableElements = DataType.ArrayOf(DataType.String.Null); // string?[]
+```
+
+Use `DataType.FunctionPointer` to build a signature for an `unsafe` context. Pass the return
+type, the calling convention, and the unnamed parameter types in order.
+
+```csharp
+using System.Reflection.Metadata;
+using TedToolkit.RoslynHelper.Syntaxes;
+
+var callback = DataType.FunctionPointer(
+    DataType.Void,
+    SignatureCallingConvention.CDecl,
+    DataType.Int);
+// delegate* unmanaged[Cdecl]<int, void>
+```
+
+The returned `DataType` can be used for a field, parameter, or return type. The calling convention
+defaults to `SignatureCallingConvention.Default` for managed code. Use `Unmanaged` for the platform
+default, or select `CDecl`, `StdCall`, `ThisCall`, or `FastCall`. `FunctionPointerTypeExpression` takes
+the same arguments. Parameters allow `ref`, `ref readonly`, `in`, or `out`. The return type allows `ref` or
+`ref readonly`. `DataType.FromSymbol` preserves named unmanaged modifiers such as `SuppressGCTransition`.
+
 ### 5. Stamp generated members with generator metadata
 
 ```csharp

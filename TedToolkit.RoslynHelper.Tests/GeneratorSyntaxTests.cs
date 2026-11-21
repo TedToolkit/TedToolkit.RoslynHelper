@@ -146,6 +146,59 @@ internal sealed class GeneratorSyntaxTests
     }
 
     /// <summary>
+    /// Verifies that changing the element type and toggling the array modifier can be combined.
+    /// </summary>
+    [Test]
+    public async Task Should_compose_array_and_generic_modifiers()
+    {
+        var array = new DataType("Container").Array.Generic(DataType.Int);
+
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>[]");
+
+        array.IsArray = false;
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>");
+
+        array.IsArray = true;
+        await Assert.That(TestRenderers.Render(array)).IsEqualTo("Container<int>[]");
+    }
+
+    /// <summary>
+    /// Verifies that ArrayOf composes ranks and nullable layers in C# order.
+    /// </summary>
+    [Test]
+    public async Task Should_render_array_factory_shapes()
+    {
+        var matrix = DataType.ArrayOf(DataType.Int, rank: 2);
+        var nullableMatrix = DataType.ArrayOf(DataType.String.Null, rank: 2).Null;
+
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(matrix))).IsEqualTo("int[][,]");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(DataType.String).Null.Null)).IsEqualTo("string[]?");
+        await Assert.That(TestRenderers.Render(DataType.String.Array.Null)).IsEqualTo("string[]?");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(DataType.String.Null))).IsEqualTo("string?[]");
+        await Assert.That(TestRenderers.Render(DataType.ArrayOf(nullableMatrix).Null))
+            .IsEqualTo("string?[,]?[]?");
+    }
+
+    /// <summary>
+    /// Verifies that modifying an array or its input type does not rewrite the other's array layers.
+    /// </summary>
+    [Test]
+    public async Task Should_isolate_array_factory_type_mutations()
+    {
+        var innerArray = DataType.ArrayOf(new DataType("Container"), rank: 2).Null;
+        var outerArray = DataType.ArrayOf(innerArray).Generic(DataType.Int);
+
+        await Assert.That(TestRenderers.Render(innerArray)).IsEqualTo("Container[,]?");
+        await Assert.That(TestRenderers.Render(outerArray)).IsEqualTo("Container<int>[,]?[]");
+
+        var pointer = DataType.Int.Pointer;
+        var pointerArray = DataType.ArrayOf(pointer);
+        _ = pointer.Pointer;
+
+        await Assert.That(TestRenderers.Render(pointerArray)).IsEqualTo("int*[]");
+    }
+
+    /// <summary>
     /// Verifies that enum members include descriptions, attributes, and explicit values.
     /// </summary>
     [Test]

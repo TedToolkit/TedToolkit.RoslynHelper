@@ -16,10 +16,8 @@ Current projects in the repository:
   Test project covering member generation, expressions, statements, conditional compilation, Roslyn symbol conversion, and end-to-end composition.
 - `TedToolkit.RoslynHelper.Benchmarks`
   Benchmark project.
-- `Build`
-  Build orchestration project.
-- `externals/TedToolkit`
-  Shared external props and build configuration.
+
+MSBuild restores the shared configuration from the version of `TedToolkit.Build.Sdk` pinned in `global.json`.
 
 ## README Split
 
@@ -57,7 +55,7 @@ For most maintenance work, the first two commands are enough.
 
 ## Packaging Constraints
 
-Current packaging behavior comes from [TedToolkit.RoslynHelper.csproj](TedToolkit.RoslynHelper/TedToolkit.RoslynHelper.csproj) and [NugetPackage.props](externals/TedToolkit/props/NugetPackage.props):
+Current packaging behavior comes from [TedToolkit.RoslynHelper.csproj](TedToolkit.RoslynHelper/TedToolkit.RoslynHelper.csproj) and the SDK import `NugetPackage.props`:
 
 - The package targets `netstandard2.0`
 - NuGet package generation is enabled in `Release`
